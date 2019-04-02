@@ -1,11 +1,17 @@
 <p>
   cue-card!
 </p>
-<div>
-  Question:
-  <span>{{cueCard.question}}</span>
+
+<div class="tp-wrapper">
+  <div class="tp-box" (click)="toggleFlip()" [@flipState]="flip">
+    <div class="tp-box__side tp-box__front">
+      <span class="title">Question:</span><br/>
+      <span>{{cueCard.question}}</span>
+    </div>
+    <div class="tp-box__side tp-box__back">
+      <span class="title">Answer:</span><br/>
+      <span>{{cueCard.answer}}</span>
+    </div>
+  </div>
 </div>
-<div>
-  Answer:
-  <span>{{cueCard.answer}}</span>
-</div>
+
