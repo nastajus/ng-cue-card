@@ -1,0 +1,14 @@
+<p>
+  cue-card-entry-form works!
+</p>
+
+<form [formGroup]="cueCardEntryForm">
+  Value: {{ cueCardEntryForm.value | json }}
+  <hr>
+  <label for="f_question">Question:</label><input formControlName="question" id="f_question">
+  <span *ngIf="question.invalid && question.touched">Please input a question.</span>
+  <label for="f_answer">Answer:</label><input formControlName="answer" id="f_answer">
+  <button [disabled]="cueCardEntryForm.invalid" (click)="submitHandler()">Submit</button> <button (click)="clearFormValues()">Clear</button>
+  <div *ngIf="successfulSubmissionTimer?.counter.valueOf() > 0">Successfully Saved New Cue Card!</div>
+
+</form>

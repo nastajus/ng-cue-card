@@ -13,4 +13,13 @@ export class CueCardLoaderService {
   constructor(private fakeDb: DbFakeComponent) { 
     this._cueCards = this.fakeDb.records;
   }
+
+  public add(cueCard: CueCard) {
+    if (cueCard !== null) {
+      this._cueCards.push(cueCard)
+    }
+    else {
+      throw new Error("invalid CueCard, it was null!");
+    }
+  }
 }
