@@ -1,0 +1,69 @@
+// variables related to cue card
+$primary-font-color: #fff;
+$primary-card-background: #f30d36;
+$secondary-card-background: #c30d16;
+$tertiary-card-background: #a30000;
+$list-font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+$list-font-size: 1.1em;
+
+//font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px;"
+
+
+// misc
+.cc-select {
+    color: $primary-font-color;
+    background: $tertiary-card-background;
+    font-family: $list-font-family;
+    font-size: $list-font-size;
+}
+
+.cc-option {
+    color: $primary-font-color;
+    background: $secondary-card-background;
+    font-family: $list-font-family;
+    font-size: $list-font-size;
+}
+
+
+
+// front / back box colors
+
+.tp-wrapper {
+  perspective: 800px;
+  display: flex;
+  justify-content: center;
+}
+
+.tp-box {
+  position: relative;
+  width: 400px;
+  height: 200px;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
+.tp-box__side {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  color: $primary-font-color;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+}
+.tp-box__front {
+  background: $primary-card-background;
+}
+.tp-box__back {
+  background: #23262d;
+  transform: rotateY(179.9deg);
+}
+.title {
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
+}

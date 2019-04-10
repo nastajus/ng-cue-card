@@ -6,7 +6,7 @@ import { CueCard } from 'src/app/models/cue-card';
 @Component({
   selector: 'app-cue-card-entry-form',
   templateUrl: './cue-card-entry-form.component.html',
-  styleUrls: ['./cue-card-entry-form.component.css']
+  styleUrls: ['./cue-card-entry-form.component.scss']
 })
 export class CueCardEntryFormComponent implements OnInit {
 

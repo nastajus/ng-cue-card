@@ -8,6 +8,7 @@ import { CueCardListComponent } from './components/cue-card-list/cue-card-list.c
 import { DbFakeComponent } from './components/db-fake/db-fake.component';
 import { CueCardEntryFormComponent } from './components/cue-card-entry-form/cue-card-entry-form.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CueCardSelectorComponent } from './components/cue-card-selector/cue-card-selector.component';
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CueCardComponent,
     CueCardListComponent,
     DbFakeComponent,
-    CueCardEntryFormComponent
+    CueCardEntryFormComponent,
+    CueCardSelectorComponent
   ],
   imports: [
     BrowserModule,
