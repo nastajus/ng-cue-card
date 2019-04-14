@@ -3,12 +3,12 @@
 </p>
 
 <div class="tp-wrapper">
-  <div class="tp-box" (click)="toggleFlip()" [@flipState]="flip">
-    <div class="tp-box__side tp-box__front">
+  <div class="tp-card" (click)="toggleFlip()" [@flipState]="flip">
+    <div class="tp-card__side tp-card__front">
       <span class="title">Question:</span><br/>
       <span>{{cueCard.question}}</span>
     </div>
-    <div class="tp-box__side tp-box__back">
+    <div class="tp-card__side tp-card__back">
       <span class="title">Answer:</span><br/>
       <span>{{cueCard.answer}}</span>
     </div>

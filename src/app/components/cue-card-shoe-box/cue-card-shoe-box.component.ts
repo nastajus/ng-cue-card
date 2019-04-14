@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CueCardLoaderService } from 'src/app/services/cue-card-loader.service';
 
 @Component({
   selector: 'app-cue-card-shoe-box',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CueCardShoeBoxComponent implements OnInit {
 
-  constructor() { }
+  constructor(private ccLoaderService: CueCardLoaderService) { }
 
   ngOnInit() {
+    this.ccLoaderService.cueCards;
   }
 
 }

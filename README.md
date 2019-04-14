@@ -67,3 +67,4 @@ common screen size
 - https://developers.google.com/web/fundamentals/design-and-ux/responsive/
 - https://blog.prototypr.io/designing-for-multiple-screen-densities-on-android-5fba8afe7ead
 - https://www.reddit.com/r/explainlikeimfive/comments/yub3a/why_did_the_world_switch_to_1366_x_768_when_all/
+- https://webdesign.tutsplus.com/tutorials/create-an-isometric-layout-with-3d-transforms--cms-27134
