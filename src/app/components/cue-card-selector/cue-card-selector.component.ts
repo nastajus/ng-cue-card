@@ -14,7 +14,7 @@ export class CueCardSelectorComponent implements OnInit {
 
   constructor(private ccLoaderService: CueCardLoaderService) { 
     this.cueCards = ccLoaderService.cueCards;
-    this.cueCardActive = ccLoaderService.cueCardActive;
+    // this.cueCardActive = ccLoaderService.cueCardActive; //improperly committed partial 
   }
 
   ngOnInit() {
