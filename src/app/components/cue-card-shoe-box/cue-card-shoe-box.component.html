@@ -3,12 +3,16 @@
 </p>
 
 <div class="scene">
-  <div class="box show-isometric">
+  <div class="box show-iso">
     <div class="box__face box__face--top">top</div>
     <div class="box__face box__face--bottom">bottom</div>
     <div class="box__face box__face--back">back</div>
     <div class="box__face box__face--front">front</div>
     <div class="box__face box__face--left">left</div>
     <div class="box__face box__face--right">right</div>
+
+    <app-cue-card [cueCard]="dummyCard" class="put-card-in-box"></app-cue-card>
+
   </div>
 </div>
+
