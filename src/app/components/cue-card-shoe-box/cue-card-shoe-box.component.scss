@@ -1,7 +1,7 @@
 @import 'src/styles/cue-card.scss';
 
 .scene {
-  perspective: 500px;
+  perspective: 800px;
   width: 768px;
   height: 512px;
   border: 2px dashed gray;
@@ -51,23 +51,27 @@
 .box__face--left   { transform: rotateX( 90deg) translateZ(100px); }
 .box__face--right  { transform: rotateX(-90deg) translateZ(100px); }
 
-.box.show-top    { transform: translateZ(-100px) rotateX( -90deg); }
-.box.show-bottom { transform: translateZ(-100px) rotateX(  90deg); }
-.box.show-front  { transform: translateZ( -50px) rotateY(   0deg); }
-.box.show-back   { transform: translateZ( -50px) rotateY(-180deg); }
-.box.show-right  { transform: translateZ(-150px) rotateY( -90deg); }
-.box.show-left   { transform: translateZ(-150px) rotateY(  90deg); }
+.box.show-top    { transform: translateZ( -50px) rotateY(   0deg); }
+.box.show-bottom { transform: translateZ( -50px) rotateY(-180deg); }
+.box.show-front  { transform: translateZ(-150px) rotateY(  90deg); }
+.box.show-back   { transform: translateZ(-150px) rotateY( -90deg); }
+.box.show-left   { transform: translateZ(-100px) rotateX( -90deg); }
+.box.show-right  { transform: translateZ(-100px) rotateX(  90deg); }
 
-.box.show-isometric { transform: rotateX( 45deg) rotateZ(-45deg); }
+.box.show-iso, .box.show-isometric { transform: rotateX( 45deg) rotateZ(-45deg); }
 
+.put-card-in-box {
+  position: absolute;
+  transform: rotateX(-90deg) rotateY(-90deg) translateZ(-100px);
 
-.card-in-box {
-    width: 90px;
-    height: 190px;
-    left: 100px;
-    background-color: $primary-card-background;
-}
+  //width: 190px !important;
+  // height: 90px !important;
+  // left: 100px; //affects with translateZ.
+  // top: 100px;
+  
+  // top: 0;
+  // left: 0;
+  // bottom: 0;
+  // margin: 0;
 
-.card-in-box-config {
-    transform: rotateY(-90deg) translateZ(140px);
 }
