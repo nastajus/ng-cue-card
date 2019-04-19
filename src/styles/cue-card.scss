@@ -40,7 +40,15 @@ $list-font-size: 1.1em;
   height: 200px;
   transform-style: preserve-3d;
   transition: transform 1s;
+
+  &--in-box {
+    @extend .tp-card;
+    width: 200px;
+    height: 100px;
+    left: 50px;  
+  }
 }
+
 .tp-card__side {
   width: 100%;
   height: 100%;
@@ -57,6 +65,13 @@ $list-font-size: 1.1em;
   justify-content: center;
   flex-direction: column;
   text-align: center;
+
+  &--in-box {
+    @extend .tp-card__side;
+    font-size: 12px;
+    font-weight: 350;
+    border-radius: 2px;
+  }
 }
 .tp-card__front {
   background: $primary-card-background;

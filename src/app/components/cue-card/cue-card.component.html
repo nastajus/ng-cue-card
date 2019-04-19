@@ -1,10 +1,10 @@
 <div class="tp-wrapper">
-  <div class="tp-card" (click)="toggleFlip()" [@flipState]="flip">
-    <div class="tp-card__side tp-card__front">
+  <div [ngClass]="shoeBox ? 'tp-card--in-box' : 'tp-card'" (click)="toggleFlip()" [@flipState]="flip">
+    <div [ngClass]="shoeBox ? 'tp-card__side--in-box' : 'tp-card__side'" class="tp-card__front">
       <span class="title">Question:</span><br/>
       <span>{{cueCard.question}}</span>
     </div>
-    <div class="tp-card__side tp-card__back">
+    <div [ngClass]="shoeBox ? 'tp-card__side--in-box' : 'tp-card__side'" class="tp-card__back">
       <span class="title">Answer:</span><br/>
       <span>{{cueCard.answer}}</span>
     </div>
