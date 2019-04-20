@@ -1,0 +1,129 @@
+
+.scene {
+  width: 200px;
+  height: 200px;
+  perspective: 600px;
+  //border: 1px dashed gray;
+}
+
+.cube {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.cube__face {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background-color: rgba(255, 69, 0, 0.2);
+  border: 3px dashed white;
+  //left: -110px;
+}
+
+
+.cube__face--front  { transform: rotateY(  0deg) translateZ(100px); 
+  width: 220px;
+  height: 200px;
+}
+.cube__face--right  { transform: rotateY( 90deg) translateZ(120px); }
+.cube__face--back   { transform: rotateY(180deg) translateZ(100px); }
+.cube__face--left   { transform: rotateY(-90deg) translateZ(100px); }
+// .cube__face--top    { transform: rotateX( 90deg) translateZ(100px); }
+// .cube__face--bottom { transform: rotateX(-90deg) translateZ(100px); }
+
+// .cube.show-front  { transform: translateZ(-100px) rotateY(   0deg); }
+// .cube.show-right  { transform: translateZ(-100px) rotateY( -90deg); }
+// .cube.show-back   { transform: translateZ(-100px) rotateY(-180deg); }
+// .cube.show-left   { transform: translateZ(-100px) rotateY(  90deg); }
+// .cube.show-top    { transform: translateZ(-100px) rotateX( -90deg); }
+// .cube.show-bottom { transform: translateZ(-100px) rotateX(  90deg); }
+
+
+
+.cube { transform: translateZ(-100px); }
+
+
+
+// @import 'src/styles/cue-card.scss';
+
+
+// $box-length: 300;
+// $box-width: 200;
+// $box-height: 100;
+
+// $box-length-halved: calc( ( #{$box-length} / 2 ) * 1px ) ;
+// $box-width-halved:  calc( ( #{$box-width} / 2 ) * 1px ) ;
+// $box-height-halved: calc( ( #{$box-height} / 2) * 1px ) ;
+
+// .scene {
+//   perspective: 500px;
+//   // perspective-origin: -80%;
+//   // perspective-origin: top left;
+//   perspective-origin: bottom right;
+//   width: 768px;
+//   height: 512px;
+//   border: 2px dashed gray;
+//   margin: 100px;
+// }
+
+// .box {
+//   transform-style: preserve-3d;
+//   position: relative;
+//   width: $box-width + px;
+//   height: $box-length + px;
+//   // transform: translateZ(-50px); 
+//   // left: 450px;
+//   // top: 250px;
+//   // left: 200px;
+//   // top: 200px;
+// }
+
+// .box__face {
+//   position: absolute;
+//   background-color: rgba(255, 69, 0, 0.6);
+//   border: 5px solid black;
+//   border-radius: 7px;
+// }
+
+// .box__face--top, 
+// .box__face--bottom {
+//     width: $box-length + px;
+//     height: $box-width + px;
+// }
+
+// .box__face--back,
+// .box__face--front {
+//     width: $box-height + px;
+//     height: $box-width + px;
+//     left: 100px ;
+// }
+
+// .box__face--left,
+// .box__face--right {
+//     width: $box-length + px;
+//     height: $box-height + px;
+//     top: 50px ;
+// }
+
+// .box__face--top    { transform: rotateY(  0deg) translateZ($box-height-halved); }
+// .box__face--bottom { transform: rotateY(180deg) translateZ($box-height-halved); }
+// .box__face--front  { transform: rotateY(-90deg) translateZ($box-length-halved); }
+// .box__face--back   { transform: rotateY( 90deg) translateZ($box-length-halved); }
+// .box__face--left   { transform: rotateX( 90deg) translateZ($box-width-halved); }
+// .box__face--right  { transform: rotateX(-90deg) translateZ($box-width-halved); }
+
+// .box.show-top    { transform: translateZ(calc( -1 * #{$box-height-halved})) rotateY(   0deg); }
+// .box.show-bottom { transform: translateZ(calc( -1 * #{$box-height-halved})) rotateY(-180deg); }
+// .box.show-front  { transform: translateZ(calc( -1 * #{$box-length-halved})) rotateY(  90deg); }
+// .box.show-back   { transform: translateZ(calc( -1 * #{$box-length-halved})) rotateY( -90deg); }
+// .box.show-left   { transform: translateZ(calc( -1 * #{$box-width-halved}))  rotateX( -90deg); }
+// .box.show-right  { transform: translateZ(calc( -1 * #{$box-width-halved}))  rotateX(  90deg); }
+
+// .box.show-iso, .box.show-isometric { transform: rotateX( 45deg) rotateZ(-45deg); }
+
+// .put-card-in-box {
+//   position: absolute;
+//   transform: rotateX(-90deg) rotateY(-90deg) translateZ(-100px);
+// }

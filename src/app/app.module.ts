@@ -10,6 +10,7 @@ import { CueCardEntryFormComponent } from './components/cue-card-entry-form/cue-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CueCardSelectorComponent } from './components/cue-card-selector/cue-card-selector.component';
 import { CueCardShoeBoxComponent } from './components/cue-card-shoe-box/cue-card-shoe-box.component';
+import { TestComponent } from './components/test/test.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { CueCardShoeBoxComponent } from './components/cue-card-shoe-box/cue-card
     DbFakeComponent,
     CueCardEntryFormComponent,
     CueCardSelectorComponent,
-    CueCardShoeBoxComponent
+    CueCardShoeBoxComponent,
+    TestComponent
   ],
   imports: [
     BrowserModule,

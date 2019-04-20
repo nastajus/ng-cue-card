@@ -86,4 +86,5 @@ woops i caused a bug (broke box-front, etc), fixing them... needed ~~calc withou
 thinking how to dynamically apply pixel positions of cards-in-box...
 - https://stackoverflow.com/questions/10765755/how-to-apply-multiple-transforms-in-css
 
--  
+trying to understand how rotations and position offsets work
+- https://tympanus.net/codrops/css_reference/rotate3d/
