@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CueCardLoaderService } from 'src/app/services/cue-card-loader.service';
 import { CueCard } from 'src/app/models/cue-card';
+import * as shoeBoxStylesJson from 'src/app/generated/styles/cue-card-shoe-box.json';
+
 
 @Component({
   selector: 'app-cue-card-shoe-box',
@@ -9,12 +11,10 @@ import { CueCard } from 'src/app/models/cue-card';
 })
 export class CueCardShoeBoxComponent implements OnInit {
 
-  constructor(private ccLoaderService: CueCardLoaderService) { }
-
-  dummyCard: CueCard = new CueCard("asdf", "qwer");
-
+  constructor(public ccLoaderService: CueCardLoaderService) { }
+  
   ngOnInit() {
-    this.ccLoaderService.cueCards;
+    console.log(shoeBoxStylesJson);
   }
 
 }

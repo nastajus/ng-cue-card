@@ -60,7 +60,7 @@ common screen size
 
 
 
-(interesting, not really used)
+(interesting information, but not really used)
 - https://rajeeshcv.com/2015/05/08/How-to-Fill-Remaining-Height-with-a-Div/
 - https://css-tricks.com/equal-height-blocks-in-rows/
 - https://stackoverflow.com/questions/36201863/how-to-make-the-child-divs-height-higher-the-parent-div
@@ -68,3 +68,22 @@ common screen size
 - https://blog.prototypr.io/designing-for-multiple-screen-densities-on-android-5fba8afe7ead
 - https://www.reddit.com/r/explainlikeimfive/comments/yub3a/why_did_the_world_switch_to_1366_x_768_when_all/
 - https://webdesign.tutsplus.com/tutorials/create-an-isometric-layout-with-3d-transforms--cms-27134
+
+
+importing sass into typescript class in angular via json
+- https://scotch.io/tutorials/angular-shortcut-to-importing-styles-files-in-components
+- https://stackoverflow.com/a/50713353/1277651 -- idea to use script 
+- https://stackoverflow.com/questions/41638980/export-scss-map-to-json-format -- idea to use `sass-export` 
+- https://stackoverflow.com/questions/46991237/how-to-import-json-file-into-a-typescript-file
+
+woops i caused a bug (broke box-front, etc), fixing them... needed ~~calc without px units~~ to be _extremely careful_ with `calc` syntax!
+- https://stackoverflow.com/questions/29505279/css-calc-multiplication-and-division-with-unit-ed-values
+- https://stackoverflow.com/questions/38205885/can-i-use-calc-inside-transformscale-function-in-css
+- https://stackoverflow.com/questions/44806076/css-calc-number-division
+- https://stackoverflow.com/questions/53654888/using-css-variables-with-calc-not-working-when-2nd-parameter
+- https://stackoverflow.com/questions/25205039/is-it-possible-to-get-a-negative-value-with-css-calc/25205523 ... at this point, i hate `calc`.
+
+thinking how to dynamically apply pixel positions of cards-in-box...
+- https://stackoverflow.com/questions/10765755/how-to-apply-multiple-transforms-in-css
+
+-  

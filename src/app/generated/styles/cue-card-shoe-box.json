@@ -1,0 +1,32 @@
+[
+  {
+    "name": "$box-length",
+    "value": "300",
+    "compiledValue": "300"
+  },
+  {
+    "name": "$box-width",
+    "value": "200",
+    "compiledValue": "200"
+  },
+  {
+    "name": "$box-height",
+    "value": "100",
+    "compiledValue": "100"
+  },
+  {
+    "name": "$box-length-halved",
+    "value": "calc( ( #{$box-length} / 2 ) * 1px )",
+    "compiledValue": "calc( ( 300 / 2 ) * 1px)"
+  },
+  {
+    "name": "$box-width-halved",
+    "value": "calc( ( #{$box-width} / 2 ) * 1px )",
+    "compiledValue": "calc( ( 200 / 2 ) * 1px)"
+  },
+  {
+    "name": "$box-height-halved",
+    "value": "calc( ( #{$box-height} / 2) * 1px )",
+    "compiledValue": "calc( ( 100 / 2) * 1px)"
+  }
+]
