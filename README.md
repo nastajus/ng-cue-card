@@ -88,3 +88,28 @@ thinking how to dynamically apply pixel positions of cards-in-box...
 
 trying to understand how rotations and position offsets work
 - https://tympanus.net/codrops/css_reference/rotate3d/
+- https://tympanus.net/codrops/css_reference/transform/
+- https://oreillymedia.github.io/Using_SVG/extras/ch11-3d.html
+
+find way to prepend `default export` to json output file
+- https://stackoverflow.com/questions/55417262/how-to-prepend-text-to-a-file-as-an-npm-script-command -- ok so i'm running via `git bash`, so that's helpful
+- https://stackoverflow.com/questions/10587615/unix-command-to-prepend-text-to-a-file
+- https://unix.stackexchange.com/questions/187145/whats-the-difference-between-semicolon-and-double-ampersand
+- https://stackoverflow.com/questions/39172536/running-npm-scripts-sequentially
+- 
+how do package.json script commands work
+- https://stackoverflow.com/questions/48942691/how-angular-builds-and-runs - well, super interesting, but very irrelevent.
+- https://stackoverflow.com/questions/26398537/do-i-need-node-js-to-use-angularjs - 'node only manages dependencies in angular'... ahh. interesting, and seemingly irrelevent... but actually narrows my search, so it was useful.
+- https://stackoverflow.com/questions/27736579/in-node-package-json-invoke-script-from-another-script-with-extra-parameter-in -- getting warmer.
+- https://michael-kuehnel.de/tooling/2018/03/22/helpers-and-tips-for-npm-run-scripts.html 
+- https://stackoverflow.com/questions/11580961/sending-command-line-arguments-to-npm-script
+  - Eureka moment!
+  - Eventually realized I needed to execute internally-referenced package.json script names with preceding `npm run foo`... sigh.
+  - I now have a buildable pipeline with one-click again.
+
+should i usse import or require for `reduce-css-calc` to work in ts class? 
+- https://stackoverflow.com/questions/31173738/typescript-getting-error-ts2304-cannot-find-name-require
+how to import npm module in angular
+
+figuring out why i get an error with the updated syntax `import * as foo from 'node_modules/reduce-css-calc`...
+- https://www.amadousall.com/angular-cli-module-not-found-error-cant-resolve/

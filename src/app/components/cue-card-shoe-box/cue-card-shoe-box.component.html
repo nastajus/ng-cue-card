@@ -14,8 +14,8 @@
     </div>
 
     <div id="cards">
-      <ng-container *ngFor="let cueCard of ccLoaderService.cueCards">
-        <app-cue-card [cueCard]="cueCard" class="put-card-in-box" shoeBox="anyStringAtAll"></app-cue-card>
+      <ng-container *ngFor="let cueCard of ccLoaderService.cueCards; let i = index;">
+        <app-cue-card [cueCard]="cueCard" class="put-card-in-box" shoeBox="anyStringAtAll" [id]="'bcc'+i" ></app-cue-card>
       </ng-container>
     </div>
 

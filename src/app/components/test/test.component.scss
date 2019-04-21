@@ -22,14 +22,15 @@
   //left: -110px;
 }
 
-
+//(STEP 1): accept premise of an initial "square distance from epicenter, and understand the left-hand axes rule system in use!
 .cube__face--front  { transform: rotateY(  0deg) translateZ(100px); 
-  width: 220px;
+  width: 220px;  //(STEP 2): eliminate left and top, that made this too confusing. just make as wide or tall as I like.
   height: 200px;
 }
-.cube__face--right  { transform: rotateY( 90deg) translateZ(120px); }
+.cube__face--right  { transform: rotateY( 90deg) translateZ(120px); } //(STEP 3): just put all shifting on one side, the side far away from the TOP LEFT CORNER of the actual parent div!
+// aka : put all the "extra size" (20px) beyond the "minimal square" into here only! 
 .cube__face--back   { transform: rotateY(180deg) translateZ(100px); }
-.cube__face--left   { transform: rotateY(-90deg) translateZ(100px); }
+.cube__face--left   { transform: rotateY(-90deg) translateZ(100px); } //(STEP 4): leave alone, do not put any "extra size" here (leave at normal translation distance from "square center"!)  
 // .cube__face--top    { transform: rotateX( 90deg) translateZ(100px); }
 // .cube__face--bottom { transform: rotateX(-90deg) translateZ(100px); }
 

@@ -8,7 +8,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "sass2json": "sass-export ./src/app/components/cue-card-shoe-box/cue-card-shoe-box.component.scss -o ./src/app/generated/styles/cue-card-shoe-box.json -a"
+    "sass2json": "sass-export ./src/app/components/cue-card-shoe-box/cue-card-shoe-box.component.scss -o ./src/app/generated/styles/cue-card-shoe-box.ts && npm run json2module",
+    "json2module": "sed -i '1i export default' ./src/app/generated/styles/cue-card-shoe-box.ts"
+    
   },
   "private": true,
   "dependencies": {
@@ -21,6 +23,7 @@
     "@angular/platform-browser-dynamic": "~7.2.0",
     "@angular/router": "~7.2.0",
     "core-js": "^2.5.4",
+    "reduce-css-calc": "^2.1.6",
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26"

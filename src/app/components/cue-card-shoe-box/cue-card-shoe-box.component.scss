@@ -1,71 +1,93 @@
 @import 'src/styles/cue-card.scss';
 
+//DIMENSION REQUIREMENTS: CUE CARDS IN 2:1 RATIO (HENCE== BOX WIDTH 2 : BOX HEIGHT 1)
+//BOX ANY LENGTH, IDEALLY "SHOE BOX" LENGTH.
+//REFERENCE: ACTUAL SHOE BOX 14" x 8" x 5" -- ALMOST SAME.
+
+//in this case,  think of every div being centered on the "minimum dimension", so centered at 50px after rotations, since minimum dimension is height: 100. (because will do a translateY(100) on all divs as base premise.)
 
 $box-length: 300;
 $box-width: 200;
 $box-height: 100;
 
-$box-length-halved: calc( ( #{$box-length} / 2 ) * 1px ) ;
-$box-width-halved:  calc( ( #{$box-width} / 2 ) * 1px ) ;
-$box-height-halved: calc( ( #{$box-height} / 2) * 1px ) ;
+$box-length-px: #{$box-length}px;
+$box-width-px: #{$box-width}px;
+$box-height-px: #{$box-height}px;
+
+$box-length-halved-px: calc( ( #{$box-length} / 2 ) * 1px ) ;
+$box-width-halved-px: calc( ( #{$box-width} / 2 ) * 1px ) ;
+$box-distance-from-pivot-px: calc( ( #{$box-height} / 2) * 1px ) ; 
+
+//use these next *2* variables (front, back) in javascript to determine card position
+$box-front-translate-px: #{$box-distance-from-pivot-px};
+$box-back-translate-px: calc( #{$box-distance-from-pivot-px} + #{$box-width-px} );
+$box-right-translate-px: calc( #{$box-distance-from-pivot-px} + #{$box-height-px} );
+
+// $box-length-delta: 
 
 .scene {
   perspective: 800px;
+  // perspective-origin: -80%;
+  // perspective-origin: top left;     //PLAY WITH THIS TO SEE WHERE SIDES LINE UP SCENE EDGE (TOGGLE ON/OFF)
+  // perspective-origin: bottom right; //PLAY WITH THIS TO SEE WHERE SIDES LINE UP SCENE EDGE (TOGGLE ON/OFF)
   width: 768px;
   height: 512px;
   border: 2px dashed gray;
+  //margin: 100px;
 }
 
 .box {
   transform-style: preserve-3d;
   position: relative;
-  width: $box-width + px;
-  height: $box-length + px;
-  // transform: translateZ(-50px); 
-  left: 450px;
-  top: 250px;
+  width: $box-width-px;
+  height: $box-length-px;
+  //transform: translateZ(-50px);
+  transform: translateZ($box-distance-from-pivot-px); //"UNFUZZ TEXT", WON'T NOTICE WHEN NO WORDS
+  left: 425px;   //PLAY WITH THIS TO SEE SIDE (ADJUST HUNDREDS OF PX)
+  top: 175px;    //PLAY WITH THIS TO SEE SIDE (ADJUST HUNDREDS OF PX)
 }
 
 .box__face {
   position: absolute;
-  background-color: rgba(255, 69, 0, 0.6);
+  background-color: rgba(255, 69, 0, 0.2);
   border: 5px solid black;
   border-radius: 7px;
 }
 
 .box__face--top, 
 .box__face--bottom {
-    width: $box-length + px;
-    height: $box-width + px;
+    width: $box-length-px;
+    height: $box-width-px;
 }
 
 .box__face--back,
 .box__face--front {
-    width: $box-height + px;
-    height: $box-width + px;
-    left: $box-width-halved ;
+    width: $box-height-px;
+    height: $box-width-px;
 }
 
 .box__face--left,
 .box__face--right {
-    width: $box-length + px;
-    height: $box-height + px;
-    top: $box-height-halved ;
+    width: $box-length-px;
+    height: $box-height-px;
 }
 
-.box__face--top    { transform: rotateY(  0deg) translateZ($box-height-halved); }
-.box__face--bottom { transform: rotateY(180deg) translateZ($box-height-halved); }
-.box__face--front  { transform: rotateY(-90deg) translateZ($box-length-halved); }
-.box__face--back   { transform: rotateY( 90deg) translateZ($box-length-halved); }
-.box__face--left   { transform: rotateX( 90deg) translateZ($box-width-halved); }
-.box__face--right  { transform: rotateX(-90deg) translateZ($box-width-halved); }
+.box__face--top    { transform: rotateY(  0deg) translateZ($box-distance-from-pivot-px); }
+.box__face--bottom { transform: rotateY(180deg) translateZ($box-distance-from-pivot-px); }
+.box__face--front  { transform: rotateY(-90deg) translateZ($box-front-translate-px); }
+//.box__face--back   { transform: rotateY( 90deg) translateZ(250px); }
+.box__face--back   { transform: rotateY( 90deg) translateZ($box-back-translate-px ); }
+//.box__face--left   { transform: rotateX( 90deg) translateZ(50px); }
+.box__face--left   { transform: rotateX( 90deg) translateZ($box-distance-from-pivot-px); }
+//.box__face--right  { transform: rotateX(-90deg) translateZ(150px) ; }
+.box__face--right  { transform: rotateX(-90deg) translateZ($box-right-translate-px ) ; }
 
-.box.show-top    { transform: translateZ(calc( -1 * #{$box-height-halved})) rotateY(   0deg); }
-.box.show-bottom { transform: translateZ(calc( -1 * #{$box-height-halved})) rotateY(-180deg); }
-.box.show-front  { transform: translateZ(calc( -1 * #{$box-length-halved})) rotateY(  90deg); }
-.box.show-back   { transform: translateZ(calc( -1 * #{$box-length-halved})) rotateY( -90deg); }
-.box.show-left   { transform: translateZ(calc( -1 * #{$box-width-halved}))  rotateX( -90deg); }
-.box.show-right  { transform: translateZ(calc( -1 * #{$box-width-halved}))  rotateX(  90deg); }
+.box.show-top    { transform: translateZ(calc( -1 * #{$box-distance-from-pivot-px})) rotateY(   0deg); }
+.box.show-bottom { transform: translateZ(calc( -1 * #{$box-distance-from-pivot-px})) rotateY(-180deg); }
+.box.show-front  { transform: translateZ(calc( -1 * #{$box-distance-from-pivot-px})) rotateY(  90deg); }
+.box.show-back   { transform: translateZ(calc( -1 * #{$box-back-translate-px})) rotateY( -90deg); }
+.box.show-left   { transform: translateZ(calc( -1 * #{$box-distance-from-pivot-px}))  rotateX( -90deg); }
+.box.show-right  { transform: translateZ(calc( -1 * #{$box-right-translate-px}))  rotateX(  90deg); }
 
 .box.show-iso, .box.show-isometric { transform: rotateX( 45deg) rotateZ(-45deg); }
 
