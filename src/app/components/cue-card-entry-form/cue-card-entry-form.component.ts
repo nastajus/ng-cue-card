@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnChanges } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CueCardLoaderService } from 'src/app/services/cue-card-loader.service';
 import { CueCard } from 'src/app/models/cue-card';
@@ -10,35 +10,66 @@ import { CueCard } from 'src/app/models/cue-card';
 })
 export class CueCardEntryFormComponent implements OnInit {
 
-  cueCardEntryForm: FormGroup;
+  ccEntryForm: FormGroup;
   successfulSubmissionTimer: Timer;
 
-
-  constructor(private fb: FormBuilder, private cueCardLoaderService: CueCardLoaderService) { }
-
-  ngOnInit() {
-    this.cueCardEntryForm = this.fb.group({
-      question: ['',  Validators.required],
-      answer: ''
-    });
-
-    this.cueCardEntryForm.valueChanges.subscribe(console.log);
-  }
-
   get question() {
-    return this.cueCardEntryForm.get('question');
+    return this.ccEntryForm.get('question');
   }
 
   get answer() {
-    return this.cueCardEntryForm.get('answer');
+    return this.ccEntryForm.get('answer');
   }
 
-  submitHandler() {
+  constructor(private fb: FormBuilder, public ccLoaderService: CueCardLoaderService) { 
+    //ccLoaderService.cueCardActiveChange.subscribe( 
+    ccLoaderService.cueCardActive$.subscribe( 
+      (cueCard: CueCard) => {
+        this.cueCardUpdateTo(cueCard);
+      }
+    );
+  }
+
+  ngOnInit() { 
+    this.cueCardUpdateTo(this.ccLoaderService.cueCardActive);
+  }
+
+  //ngOnChanges() {
+  cueCardUpdateTo(cueCardActive: CueCard) {
+
+    //ugly nested ternary operator, as TS doesn't yet support Null-conditional operators
+    // let q = this.ccLoaderService.cueCardActive == null ? '' : (this.ccLoaderService.cueCardActive.question == null ? '' : this.ccLoaderService.cueCardActive.question);
+    // let a = this.ccLoaderService.cueCardActive == null ? '' : (this.ccLoaderService.cueCardActive.answer == null ? '' : this.ccLoaderService.cueCardActive.answer);
+
+    let q = cueCardActive == null ? '' : (cueCardActive.question == null ? '' : cueCardActive.question);
+    let a = cueCardActive == null ? '' : (cueCardActive.answer == null ? '' : cueCardActive.answer);
+
+    this.ccEntryForm = this.fb.group({
+      question: [q, Validators.required],
+      answer: a
+    });
+
+    //this captures output when user types in the input field, bc `valueChanges` is an Observable
+    this.ccEntryForm.valueChanges.subscribe( console.log );
+  }
+
+  submitHandler(currentFormsCueCard) {
+    //if (this.ccLoaderService.cueCardActive !== null) {
+      //this.editInService(new CueCard(this.question.value, this.answer.value));
+    if (currentFormsCueCard !== null) { 
+      this.editInService(currentFormsCueCard);
+    }
+    else {
+      this.addToService();
+    }
+  }
+
+  addToService() {
     const cueCard = new CueCard(this.question.value, this.answer.value);
     var successful = false;
 
     try {
-      this.cueCardLoaderService.add(cueCard);
+      this.ccLoaderService.add(cueCard);
       successful = true;
       this.successfulSubmissionTimer = new Timer();
     } catch(err) {
@@ -50,6 +81,22 @@ export class CueCardEntryFormComponent implements OnInit {
     }
   }
 
+  editInService(newCueCard: CueCard) {
+    try {
+      this.ccLoaderService.edit(this.ccLoaderService.cueCardActive, newCueCard);
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
+  deleteFromService() {
+    try {
+      this.ccLoaderService.delete(this.ccLoaderService.cueCardActive);
+    } catch(err) {
+      console.error(err);
+    }
+  }
+
   clearFormValues() {
     //reset() affects restors to `untouched` state, but also puts `null`. want '' instead.
     this.question.reset();
@@ -57,6 +104,12 @@ export class CueCardEntryFormComponent implements OnInit {
     this.answer.reset();
     this.answer.setValue('');
   }
+
+
+  //////
+  /// trying to use observable methods below instead
+  //////
+  
 
 }
 

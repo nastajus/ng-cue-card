@@ -2,13 +2,20 @@
   <strong>cue-card-entry-form works!</strong>
 </p>
 
-<form [formGroup]="cueCardEntryForm">
-  Value: {{ cueCardEntryForm.value | json }}
-  <hr>
-  <label for="f_question">Question:</label><input formControlName="question" id="f_question">
+<form [formGroup]="ccEntryForm">
+  Value: {{ ccEntryForm.value | json }}
+  
+  <label for="f_question">Question:</label>
+    <input formControlName="question" id="f_question">
   <span *ngIf="question.invalid && question.touched">Please input a question.</span>
-  <label for="f_answer">Answer:</label><input formControlName="answer" id="f_answer">
-  <button [disabled]="cueCardEntryForm.invalid" (click)="submitHandler()">Submit</button> <button (click)="clearFormValues()">Clear</button>
+  <label for="f_answer">Answer:</label>
+    <input formControlName="answer" id="f_answer">
+
+  <button (click)="submitHandler(ccEntryForm.value)" [disabled]="ccEntryForm.invalid">Submit</button>
+  <button (click)="clearFormValues()">Clear</button>
+  <button (click)="deleteFromService()" [disabled]="ccLoaderService.cueCards.length <= 0 || ccLoaderService.cueCardActive === null">Delete</button>
   <div *ngIf="successfulSubmissionTimer?.counter.valueOf() > 0">Successfully Saved New Cue Card!</div>
 
 </form>
+
+<hr>

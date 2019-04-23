@@ -2,7 +2,18 @@
   <strong>cue-card-selector works!</strong>
 </p>
 
-<select class="cc-select">
-  <option *ngFor="let cueCard of cueCards" value="cueCard.question" class="cc-option">{{cueCard.question}}</option>
+<!-- [] binding is from CLASS to VIEW -->
+<!-- () binding is resverse -->
+<select class="cc-select"
+  [(ngModel)]="ccLoaderService.cueCardActive" >
+  <option *ngFor="let cueCard of cueCards" [ngValue]="cueCard" class="cc-option">{{cueCard.question}}</option>
 </select>
+
+<!-- (ngModelChange)="updateActiveCueCare($event)" ..... as far as I can tell, this does nothing for me now. -->
+
+{{ccLoaderService.cueCardActive | json}} {{ cueCards.length | json }} 
+
+<button (click)="editHandler()">Edit</button> <button (click)="cancelHandler()">Nevermind</button>
+
+<app-cue-card-entry-form *ngIf="uglyEditStateTracker"></app-cue-card-entry-form>
 

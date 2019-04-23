@@ -113,3 +113,32 @@ how to import npm module in angular
 
 figuring out why i get an error with the updated syntax `import * as foo from 'node_modules/reduce-css-calc`...
 - https://www.amadousall.com/angular-cli-module-not-found-error-cant-resolve/
+
+how to get select to reactively update 'active' data object upon click event bound to each selection.
+- https://stackoverflow.com/questions/44840735/change-vs-ngmodelchange-in-angular
+- https://stackoverflow.com/questions/38893207/angular-2-ngonchanges-fires-when-template-renders -- when ngOnChanges fires.
+- https://angular.io/guide/lifecycle-hooks#lifecycle-sequence
+- https://dzone.com/articles/understanding-output-and-eventemitter-in-angular -- how to use @Input and @Output of type EventEmitter()
+- https://stackoverflow.com/questions/36076700/what-is-the-proper-use-of-an-eventemitter
+- https://stackoverflow.com/a/34402436/1277651 -- "actually, using an EventEmitter in a service is bad practice." -- oh, interesting. okay.
+
+
+deciding when observables vs eventEmitters are preferrable:
+- https://stackoverflow.com/questions/34717451/when-to-use-observable-vs-eventemitter-vs-dot-rule-for-change-detection-in-angul 
+    - "As a side note: According to the documentation for EventEmitter it should really only be used by components & directives; implying that it is not meant for services where Observables are preferred it would seem."
+  - when to use `new Observable` vs `of()`
+    - https://blog.angularindepth.com/how-to-read-the-rxjs-6-sources-part-1-understanding-of-and-subscriptions-694e7d9def6b
+  - ~~do i need .share()? ... unclear (was thinking it was out-of-date, but now more of ........ other things)~~
+    - ~~https://stackoverflow.com/questions/35141722/how-does-the-rxjs-5-share-operator-work~~
+  - i think I need a `Subject`, not just an `Observer`. ... i'm not _just_ observing, i'm also _updating_ the active cue card external to the service. 
+    - https://stackoverflow.com/questions/39494058/behaviorsubject-vs-observable
+    - https://stackoverflow.com/questions/37671700/angular2-style-guide-property-with-dollar-sign (try confirm $ used for Subjects as well, looks so.)
+- https://netbasal.com/why-its-important-to-unsubscribe-from-rxjs-subscription-a7a6455d6a02
+
+how to work with observables
+- https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
+- https://github.com/jhades/angular2-rxjs-observable-data-services/blob/master/src/state/TodoStore.ts
+
+
+ok so... i have pair of get/set going in the service for tracking the active Cue Card, and I'm debating pros/cons switching that to EventEmitter in the service.
+
