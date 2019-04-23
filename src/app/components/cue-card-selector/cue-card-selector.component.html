@@ -2,14 +2,10 @@
   <strong>cue-card-selector works!</strong>
 </p>
 
-<!-- [] binding is from CLASS to VIEW -->
-<!-- () binding is resverse -->
 <select class="cc-select"
   [(ngModel)]="ccLoaderService.cueCardActive" >
   <option *ngFor="let cueCard of cueCards" [ngValue]="cueCard" class="cc-option">{{cueCard.question}}</option>
 </select>
-
-<!-- (ngModelChange)="updateActiveCueCare($event)" ..... as far as I can tell, this does nothing for me now. -->
 
 {{ccLoaderService.cueCardActive | json}} {{ cueCards.length | json }} 
 

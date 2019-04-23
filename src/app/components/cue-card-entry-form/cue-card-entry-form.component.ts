@@ -22,7 +22,6 @@ export class CueCardEntryFormComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, public ccLoaderService: CueCardLoaderService) { 
-    //ccLoaderService.cueCardActiveChange.subscribe( 
     ccLoaderService.cueCardActive$.subscribe( 
       (cueCard: CueCard) => {
         this.cueCardUpdateTo(cueCard);
@@ -34,13 +33,9 @@ export class CueCardEntryFormComponent implements OnInit {
     this.cueCardUpdateTo(this.ccLoaderService.cueCardActive);
   }
 
-  //ngOnChanges() {
   cueCardUpdateTo(cueCardActive: CueCard) {
 
     //ugly nested ternary operator, as TS doesn't yet support Null-conditional operators
-    // let q = this.ccLoaderService.cueCardActive == null ? '' : (this.ccLoaderService.cueCardActive.question == null ? '' : this.ccLoaderService.cueCardActive.question);
-    // let a = this.ccLoaderService.cueCardActive == null ? '' : (this.ccLoaderService.cueCardActive.answer == null ? '' : this.ccLoaderService.cueCardActive.answer);
-
     let q = cueCardActive == null ? '' : (cueCardActive.question == null ? '' : cueCardActive.question);
     let a = cueCardActive == null ? '' : (cueCardActive.answer == null ? '' : cueCardActive.answer);
 
@@ -54,8 +49,6 @@ export class CueCardEntryFormComponent implements OnInit {
   }
 
   submitHandler(currentFormsCueCard) {
-    //if (this.ccLoaderService.cueCardActive !== null) {
-      //this.editInService(new CueCard(this.question.value, this.answer.value));
     if (currentFormsCueCard !== null) { 
       this.editInService(currentFormsCueCard);
     }
@@ -104,12 +97,6 @@ export class CueCardEntryFormComponent implements OnInit {
     this.answer.reset();
     this.answer.setValue('');
   }
-
-
-  //////
-  /// trying to use observable methods below instead
-  //////
-  
 
 }
 
