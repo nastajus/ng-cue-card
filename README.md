@@ -149,7 +149,69 @@ how to work with observables
 so `sass-to-json` wasn't building on other computers.... because I'd installed it globally on my originally computer, without ``--save-dev``
 - https://stackoverflow.com/questions/6480549/install-dependencies-globally-and-locally-using-package-json -- okay, --save-dev is pretty cool
 
-
-
 ok so... i have pair of get/set going in the service for tracking the active Cue Card, and I'm debating pros/cons switching that to EventEmitter in the service.
+- ultimately I kept all of: `get`, `set`, and used a `BehaviorSubject` source variable internally in the service, and exposed another variable$ with `.asObservable()` applied to that same source variable.
+- might make sense to drop later the get/set property design, and replace with normally-named function name like "updateFoo()" instead. TBD.
 
+
+calculate distance of mouse from element:
+- https://jsfiddle.net/chriscoyier/t5Kts/
+
+what's the right way to listen to mouse movement events in angular?
+- https://stackoverflow.com/questions/46389002/how-to-listen-for-mousemove-event-on-document-object-in-angular
+
+my template reference variable to each cue card wasn't working (was undefined), seemingly as it wasn't being assigned yet (not until entry form appears)
+- https://stackoverflow.com/questions/34947154/angular-2-viewchild-annotation-returns-undefined
+
+despite my efforts, still not working. instead i'll do a workaround for now
+- https://stackoverflow.com/questions/17230242/angular-element-vs-document-getelementbyid-or-jquery-selector-with-spin-busy-c
+
+how does mouseEvent work?
+- https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent
+- https://plainjs.com/javascript/events/getting-the-current-mouse-position-16/
+
+what typescript type do i need so vscode lets me compile successfully `e.pageX` etc? 
+- https://stackoverflow.com/questions/49226309/what-are-the-proper-typescript-types-for-addeventlistener-mousemove-and-its-eve
+
+how to get offset() / width() / etc without jquery?
+- https://stackoverflow.com/questions/18953144/how-do-i-get-the-offset-top-value-of-an-element-without-using-jquery
+- https://stackoverflow.com/questions/21887774/get-width-of-an-element-without-jquery
+
+what best practice is there for a utils class in angular? I need one for `getCssObject` soon... rule of 3s is coming. but not yet.
+- https://stackoverflow.com/questions/32790311/how-to-structure-utility-class
+
+how to get reference to child element by class?
+- https://stackoverflow.com/questions/12166753/how-to-get-child-element-by-class-name
+
+looking for if any typescript type standard exists for json-transformed-into-exported class (`generated/styles/*.ts`)?
+- https://github.com/Microsoft/TypeScript/issues/1897 -- nevermind, too much overhead for this project.
+- https://stackoverflow.com/questions/39392853/is-there-a-type-for-class-in-typescript-and-does-any-include-it -- unsure i want to declare any types yet.
+- https://stackoverflow.com/questions/18961203/any-vs-object -- i'll go with `Object` type for this.
+  
+looking for javascript equivalent to C#'s extension methods, suspect not applicable
+- https://stackoverflow.com/questions/9354298/how-do-i-write-an-extension-method-in-javascript -- confirmed, bad idea.
+
+using hex codes in javascript:
+- https://stackoverflow.com/questions/8172384/what-does-0x-mean
+- https://stackoverflow.com/questions/21647928/javascript-unicode-string-to-hex
+- https://stackoverflow.com/questions/11023144/working-with-hex-strings-and-hex-values-more-easily-in-javascript -- prepending 0x seems unnecessary actually.
+- https://stackoverflow.com/questions/573145/get-everything-after-the-dash-in-a-string-in-javascript
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Bitwise_Operators -- bitshifting... sigh.
+
+is pushing values exceeding `255` into the rgba function reliable? e.g. is `rgba(1357, 13, 1013, 1)` reliable in other browsers?
+- https://developer.mozilla.org/en-US/docs/Web/CSS/color_value -- well, doesn't really directly answer how input ranges work exceeding 1.
+- ... sigh. Tried to spend 10 minutes figuring out what the actual implementation specifies rgba will do, gave up searching
+- ignoring this possible rgba issue for now, with the known caveat the beautiful color range i'm enjoying from blues to pinks may not work in non-Chrome browsers.
+- realized it's fine, documented why it goes pink, due to delta between primary and secondary colors.
+
+
+tried instead doing a quick visual test in each Firefox and Edge, discovered both have major visual problems beyond this issue.
+- noted into my backlog technical debt, i'll need to resolve these issues for my portfolio. sigh.
+
+
+
+
+
+
+
+https://stackoverflow.com/questions/40817336/whats-the-difference-between-ngoninit-and-ngafterviewinit-of-angular2

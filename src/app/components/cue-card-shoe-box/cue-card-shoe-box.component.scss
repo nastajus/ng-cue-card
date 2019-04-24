@@ -7,7 +7,7 @@
 //in this case,  think of every div being centered on the "minimum dimension", so centered at 50px after rotations, since minimum dimension is height: 100. (because will do a translateY(100) on all divs as base premise.)
 
 $box-length: 300;
-$box-width: 200;
+$box-width: 244;
 $box-height: 100;
 
 $box-length-px: #{$box-length}px;
@@ -20,8 +20,8 @@ $box-distance-from-pivot-px: calc( ( #{$box-height} / 2) * 1px ) ;
 
 //use these next *2* variables (front, back) in javascript to determine card position
 $box-front-translate-px: #{$box-distance-from-pivot-px};
-$box-back-translate-px: calc( #{$box-distance-from-pivot-px} + #{$box-width-px} );
-$box-right-translate-px: calc( #{$box-distance-from-pivot-px} + #{$box-height-px} );
+$box-back-translate-px: calc( #{$box-length-px} - #{$box-distance-from-pivot-px} );
+$box-right-translate-px: calc( #{$box-width-px} - #{$box-distance-from-pivot-px} );
 
 // $box-length-delta: 
 

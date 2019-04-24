@@ -8,8 +8,8 @@ export default
     },
     {
       "name": "$box-width",
-      "value": "200",
-      "compiledValue": "200"
+      "value": "244",
+      "compiledValue": "244"
     },
     {
       "name": "$box-height",
@@ -24,7 +24,7 @@ export default
     {
       "name": "$box-width-px",
       "value": "#{$box-width}px",
-      "compiledValue": "200px"
+      "compiledValue": "244px"
     },
     {
       "name": "$box-height-px",
@@ -39,7 +39,7 @@ export default
     {
       "name": "$box-width-halved-px",
       "value": "calc( ( #{$box-width} / 2 ) * 1px )",
-      "compiledValue": "calc( ( 200 / 2 ) * 1px)"
+      "compiledValue": "calc( ( 244 / 2 ) * 1px)"
     },
     {
       "name": "$box-distance-from-pivot-px",
@@ -53,13 +53,13 @@ export default
     },
     {
       "name": "$box-back-translate-px",
-      "value": "calc( #{$box-distance-from-pivot-px} + #{$box-width-px} )",
-      "compiledValue": "calc( calc( ( 100 / 2) * 1px) + 200px)"
+      "value": "calc( #{$box-length-px} - #{$box-distance-from-pivot-px} )",
+      "compiledValue": "calc( 300px - calc( ( 100 / 2) * 1px))"
     },
     {
       "name": "$box-right-translate-px",
-      "value": "calc( #{$box-distance-from-pivot-px} + #{$box-height-px} )",
-      "compiledValue": "calc( calc( ( 100 / 2) * 1px) + 100px)"
+      "value": "calc( #{$box-width-px} - #{$box-distance-from-pivot-px} )",
+      "compiledValue": "calc( 244px - calc( ( 100 / 2) * 1px))"
     }
   ]
 }

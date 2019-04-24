@@ -3,14 +3,15 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "npm run sass2json && ng serve",
-    "build": "npm run sass2json && ng build",
+    "start": "npm run sass2json-sb && npm run sass2json-cc && ng serve",
+    "build": "npm run sass2json-sb && npm run sass2json-cc && ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "sass2json": "sass-export ./src/app/components/cue-card-shoe-box/cue-card-shoe-box.component.scss -o ./src/app/generated/styles/cue-card-shoe-box.ts && npm run json2module",
-    "json2module": "sed -i '1i export default' ./src/app/generated/styles/cue-card-shoe-box.ts"
-    
+    "sass2json-sb": "sass-export ./src/app/components/cue-card-shoe-box/cue-card-shoe-box.component.scss -o ./src/app/generated/styles/cue-card-shoe-box.ts && npm run json2module-sb",
+    "json2module-sb": "sed -i '1i export default' ./src/app/generated/styles/cue-card-shoe-box.ts",
+    "sass2json-cc": "sass-export ./src/styles/cue-card.scss -o ./src/app/generated/styles/cue-card.ts && npm run json2module-cc",
+    "json2module-cc": "sed -i '1i export default' ./src/app/generated/styles/cue-card.ts"
   },
   "private": true,
   "dependencies": {
