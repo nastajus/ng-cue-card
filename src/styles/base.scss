@@ -1,0 +1,67 @@
+//***********************************
+// variables related to cue card
+//***********************************
+$primary-font-color: #fff;
+$primary-card-background: #f30d36;
+$secondary-card-background: #c30d16;
+$tertiary-card-background: #a30000;
+$list-font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
+$list-font-size: 1.1em;
+//font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px;"
+$card-in-box-width-px: 200px;
+$card-in-box-height-px: 100px;
+
+$magic-number-left-offset-px: 53px;
+//using `left: $magic-number-left-offset-px` appears to put exactly lined up at inside edge ... I *can't* explain why yet!
+//card-left: 53px appears correctly-left-aligned for box-width: 200px/204px && card-border: 2px, proven by reducing 1 pixel, rebuilding, and seeing intersection.
+//this is applied exclusively at runtime via javascript.
+
+//***********************************
+// variables related to shoe box
+//***********************************
+
+$scene-width: 768px;
+$scene-height: 512px;
+
+//DIMENSION REQUIREMENTS: CUE CARDS IN 2:1 RATIO (HENCE== BOX WIDTH 2 : BOX HEIGHT 1)
+//BOX ANY LENGTH, IDEALLY "SHOE BOX" LENGTH.
+//REFERENCE: ACTUAL SHOE BOX 14" x 8" x 5" -- ALMOST SAME.
+
+//in this case,  think of every div being centered on the "minimum dimension", so centered at 50px after rotations, since minimum dimension is height: 100. (because will do a translateY(100) on all divs as base premise.)
+
+$box-length: 300;
+$box-width: 244;
+$box-height: 100;
+
+$box-length-px: #{$box-length}px;
+$box-width-px: #{$box-width}px;
+$box-height-px: #{$box-height}px;
+
+$box-length-halved-px: calc((#{$box-length} / 2) * 1px);
+$box-width-halved-px: calc((#{$box-width} / 2) * 1px);
+$box-distance-from-pivot-px: calc((#{$box-height} / 2) * 1px);
+
+//use these next *2* variables (front, back) in javascript to determine card position
+$box-front-translate-px: #{$box-distance-from-pivot-px};
+$box-back-translate-px: calc(#{$box-length-px} - #{$box-distance-from-pivot-px});
+$box-right-translate-px: calc(#{$box-width-px} - #{$box-distance-from-pivot-px});
+
+.flex li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.flex > li > label {
+  flex: 1 0 50px;
+  max-width: 100px;
+}
+/* We tell all items to be 200px width, via flex-basis */
+.flex > li > label + * {
+  flex: 3 1 100px;
+}
+
+.flex li button {
+  margin: auto;
+  padding: 22px 46px;
+}

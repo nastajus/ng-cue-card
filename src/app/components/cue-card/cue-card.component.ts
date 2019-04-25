@@ -4,7 +4,7 @@ import { trigger, state, style, transition, animate } from '@angular/animations'
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
 // import { CueCardEntryFormComponent } from '../cue-card-entry-form/cue-card-entry-form.component';
 import { Subscription, fromEvent } from 'rxjs';
-import sassExportCueCard from 'src/app/generated/styles/cue-card';
+import sassExport from 'src/app/generated/styles/base';
 // import * as tinycolor2 from 'node_modules/tinycolor2';
 
 
@@ -132,7 +132,7 @@ export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   //TODO: put in utils class or something
   getCssObject(cssPropertyName: string) : { name: string, value: string, compiledValue: string } {
-    var result = sassExportCueCard.variables.find(obj => {
+    var result = sassExport.variables.find(obj => {
       return obj.name === cssPropertyName;
     })
     return result;

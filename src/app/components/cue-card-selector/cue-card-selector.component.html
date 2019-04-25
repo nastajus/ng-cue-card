@@ -2,14 +2,20 @@
   <strong>cue-card-selector works!</strong>
 </p>
 
-<select class="cc-select"
-  [(ngModel)]="ccLoaderService.cueCardActive" >
-  <option *ngFor="let cueCard of cueCards" [ngValue]="cueCard" class="cc-option">{{cueCard.question}}</option>
-</select>
+<ul class="flex">
+  <li>
+    <select class="cc-select" [(ngModel)]="ccLoaderService.cueCardActive">
+      <option *ngFor="let cueCard of cueCards" [ngValue]="cueCard" class="cc-option">{{cueCard.question}}</option>
+    </select>
+  </li>
+  <li>
+    <button (click)="editHandler()">Edit Card</button> <button (click)="cancelHandler()">Nevermind</button>
+  </li>
+  <li>
+    Test: {{ccLoaderService.cueCardActive | json}} {{ cueCards.length | json }}
+  </li>
+</ul>
 
-{{ccLoaderService.cueCardActive | json}} {{ cueCards.length | json }} 
-
-<button (click)="editHandler()">Edit</button> <button (click)="cancelHandler()">Nevermind</button>
+<hr>
 
 <app-cue-card-entry-form *ngIf="uglyEditStateTracker"></app-cue-card-entry-form>
-

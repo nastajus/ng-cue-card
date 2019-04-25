@@ -104,7 +104,7 @@ find way to prepend `default export` to json output file
 - https://unix.stackexchange.com/questions/187145/whats-the-difference-between-semicolon-and-double-ampersand
 - https://stackoverflow.com/questions/39172536/running-npm-scripts-sequentially
 - 
-how do package.json script commands work
+how do package.json `script` commands work
 - https://stackoverflow.com/questions/48942691/how-angular-builds-and-runs - well, super interesting, but very irrelevent.
 - https://stackoverflow.com/questions/26398537/do-i-need-node-js-to-use-angularjs - 'node only manages dependencies in angular'... ahh. interesting, and seemingly irrelevent... but actually narrows my search, so it was useful.
 - https://stackoverflow.com/questions/27736579/in-node-package-json-invoke-script-from-another-script-with-extra-parameter-in -- getting warmer.
@@ -173,6 +173,9 @@ how does mouseEvent work?
 what typescript type do i need so vscode lets me compile successfully `e.pageX` etc? 
 - https://stackoverflow.com/questions/49226309/what-are-the-proper-typescript-types-for-addeventlistener-mousemove-and-its-eve
 
+what's the angular way to find elements? 
+- https://stackoverflow.com/questions/40817336/whats-the-difference-between-ngoninit-and-ngafterviewinit-of-angular2 -- oh! need `AfterViewInit`! 
+
 how to get offset() / width() / etc without jquery?
 - https://stackoverflow.com/questions/18953144/how-do-i-get-the-offset-top-value-of-an-element-without-using-jquery
 - https://stackoverflow.com/questions/21887774/get-width-of-an-element-without-jquery
@@ -222,8 +225,38 @@ how does truthiness work in javascript?
 - https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object -- used `Object.assign(obj, {key3: "value3"});` 
 - https://stackoverflow.com/questions/154059/how-to-check-empty-undefined-null-string-in-javascript -- test empty string vs null/und...
 
+how big should i make my question/answer text fields? they're definitely too small now.
+- https://en.wikipedia.org/wiki/Index_card -- ohh, picture!
+- https://www.quora.com/How-many-words-per-minute-can-a-person-write-on-paper-at-average-with-a-legible-handwriting -- speed, eh, not really what I want.
+- https://www.vletter.com/help/font-faq/handwriting-font-sizes.html -- "Most handwriting has a body height that is between 1/8 inch and 1/4 inch tall".
+- https://pearsonified.com/golden-ratio-typography-intro/ -- hmm... golden ratio... so these guys **suggest 25.88854px line _height_** and accompanying **670.21670px line _width_**... since I use ~16px... so that means a line width of ~412px... which fits in my "scene" size.
+- https://www.quora.com/How-long-is-the-average-sentence -- avg "20 words"... "many persons have the habit of constructing long sentences -- 40 to 100 words."
+- https://strainindex.wordpress.com/2008/07/28/the-average-sentence-length/ -- hmmm... 
+  - "survey shows readers find sentences of 8 words or less very easy to read; 11 words, easy; 14 words fairly easy; 17 words standard; 21 words fairly difficult; 25 words difficult and 29 words or more, very difficult."
+  - "Over the whole document, make the average sentence length 15-20 words, 25-33 syllables and 75-100 characters."
+- https://medium.com/@theacropolitan/sentence-length-has-declined-75-in-the-past-500-years-2e40f80f589f -- interesting, and mostly just justifying aiming towards 20ish words size.
+- https://www.hf.faa.gov/webtraining/visualdisplays/text/size1a1.htm -- Character Width-to-Height Ratio - Acceptable ratios range from 0.6:1 to 1:1.
+  - so ~20 words, which is ~100 characters, at 16px height, should need about ~960 px to fit on a single line.
+  - well, that's too long. oh well. okay. i'm done researching. i'm just going with the golden ratio recommended line width i calculated at ~400px. done.
 
+what's the best practice for referencing variables in scss?  (because i want to start using variables in `cue-card.scss` which no longer semantically belong in a file with that name)
+- https://medium.com/@mciastek/s-css-best-practices-that-you-have-not-yet-known-ba2f6329b5dd -- some example hierarchies...
+- https://sass-guidelin.es -- interesting, insightful, but doesn't help
+- https://stackoverflow.com/questions/17598996/sass-use-variables-across-multiple-files -- hmm... 
+- http://thesassway.com/beginner/how-to-structure-a-sass-project -- has a good "Basic directory structure" (except mixes sass/scss)... puts all variables in `_base.sass`... 
+  - here and elsewhere advocates for a specific file for just variables, like `variables.scss`(?). am uncertain i want this yet...
+  - decided to go with `base.scss`. Done.
 
+how to do a responsive form layout? (e.g. with label/input on one row on a large monitor, with consistent column distances, but not in a restrictive table, but also collapses into one-per-row when on a small device.)
+- https://www.creativebloq.com/how-to/how-to-design-responsive-and-device-agnostic-forms -- use flexbox! :D 
+  - eventually realized this code doesn't match the picture.
+  
+how does flexbox grow work? (inputs filling screen! why)
+- https://css-tricks.com/snippets/css/a-guide-to-flexbox/
 
+change indentation I'm getting (coming from UL)
+- https://stackoverflow.com/questions/30424248/does-ul-have-default-margin-or-padding -- oh, the browser adds it. okay.
 
-https://stackoverflow.com/questions/40817336/whats-the-difference-between-ngoninit-and-ngafterviewinit-of-angular2
+`resize: vertical` not working 
+- https://developer.mozilla.org/en-US/docs/Web/CSS/resize
+- https://stackoverflow.com/questions/29306297/css-resize-work-for-horizontal-but-not-vertical -- oh, i need textarea... nvm.

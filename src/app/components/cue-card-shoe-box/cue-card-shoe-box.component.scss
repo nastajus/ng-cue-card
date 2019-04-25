@@ -1,37 +1,13 @@
-@import 'src/styles/cue-card.scss';
+@import 'src/styles/base.scss';
 
-//DIMENSION REQUIREMENTS: CUE CARDS IN 2:1 RATIO (HENCE== BOX WIDTH 2 : BOX HEIGHT 1)
-//BOX ANY LENGTH, IDEALLY "SHOE BOX" LENGTH.
-//REFERENCE: ACTUAL SHOE BOX 14" x 8" x 5" -- ALMOST SAME.
-
-//in this case,  think of every div being centered on the "minimum dimension", so centered at 50px after rotations, since minimum dimension is height: 100. (because will do a translateY(100) on all divs as base premise.)
-
-$box-length: 300;
-$box-width: 244;
-$box-height: 100;
-
-$box-length-px: #{$box-length}px;
-$box-width-px: #{$box-width}px;
-$box-height-px: #{$box-height}px;
-
-$box-length-halved-px: calc( ( #{$box-length} / 2 ) * 1px ) ;
-$box-width-halved-px: calc( ( #{$box-width} / 2 ) * 1px ) ;
-$box-distance-from-pivot-px: calc( ( #{$box-height} / 2) * 1px ) ; 
-
-//use these next *2* variables (front, back) in javascript to determine card position
-$box-front-translate-px: #{$box-distance-from-pivot-px};
-$box-back-translate-px: calc( #{$box-length-px} - #{$box-distance-from-pivot-px} );
-$box-right-translate-px: calc( #{$box-width-px} - #{$box-distance-from-pivot-px} );
-
-// $box-length-delta: 
 
 .scene {
   perspective: 800px;
   // perspective-origin: -80%;
   // perspective-origin: top left;     //PLAY WITH THIS TO SEE WHERE SIDES LINE UP SCENE EDGE (TOGGLE ON/OFF)
   // perspective-origin: bottom right; //PLAY WITH THIS TO SEE WHERE SIDES LINE UP SCENE EDGE (TOGGLE ON/OFF)
-  width: 768px;
-  height: 512px;
+  width: $scene-width;
+  height: $scene-height;
   border: 2px dashed gray;
   //margin: 100px;
 }

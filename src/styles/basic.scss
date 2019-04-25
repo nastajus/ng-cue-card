@@ -1,19 +1,23 @@
+@import 'src/styles/base.scss';
+
+// try to keep basic elements separated... i am uncertain i will keep this design...
+
 body {
     background-color: #25171A;
     color: white;
-}
-
-input { 
-    background-color: #656361;
-    color: white;
+    width: $scene-width;
+    margin: auto;
 }
 
 a { 
     color: #98C1D9;
 }
 
-button {
-    
+ul {
+    list-style-type: none;
+    margin-left: 0px;     /* set to 0 because am not using a list-style-type */
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 li {

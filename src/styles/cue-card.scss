@@ -1,18 +1,4 @@
-// variables related to cue card
-$primary-font-color: #fff;
-$primary-card-background: #f30d36;
-$secondary-card-background: #c30d16;
-$tertiary-card-background: #a30000;
-$list-font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
-$list-font-size: 1.1em;
-//font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px;"
-$card-in-box-width-px: 200px;
-$card-in-box-height-px: 100px;
-
-$magic-number-left-offset-px: 53px;
-//using `left: $magic-number-left-offset-px` appears to put exactly lined up at inside edge ... I *can't* explain why yet!
-//card-left: 53px appears correctly-left-aligned for box-width: 200px/204px && card-border: 2px, proven by reducing 1 pixel, rebuilding, and seeing intersection.
-//this is applied exclusively at runtime via javascript.
+@import 'src/styles/base.scss';
 
 // misc
 .cc-select {
@@ -29,6 +15,14 @@ $magic-number-left-offset-px: 53px;
     font-size: $list-font-size;
 }
 
+input { 
+  background-color: #656361;
+  color: white;
+  //width: 400px;
+  // width: 60em;
+  font-family: $list-font-family;
+  font-size: $list-font-size;
+}
 
 
 // front / back box colors
