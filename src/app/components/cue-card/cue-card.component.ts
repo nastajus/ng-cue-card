@@ -3,7 +3,10 @@ import { CueCard } from 'src/app/models/cue-card';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
 // import { CueCardEntryFormComponent } from '../cue-card-entry-form/cue-card-entry-form.component';
-import { Subscription, fromEvent } from 'rxjs';
+import { Subscription, fromEvent, Subject } from 'rxjs';
+//import 'rxjs/add/operator/takeUntil';
+import { takeUntil, filter, mergeMap, map } from 'rxjs/operators';
+
 import sassExport from 'src/app/generated/styles/base';
 // import * as tinycolor2 from 'node_modules/tinycolor2';
 
@@ -29,6 +32,9 @@ import sassExport from 'src/app/generated/styles/base';
 export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _mouseSubscription: Subscription;
+  //private _componentDestoryed: Subscription;
+  private _componentDestroyed: Subject<any> = new Subject();
+
   // @ViewChild('cc') ccElemRef: ElementRef;
   // @ViewChildren('cc') 
   // public cueCardEntryComp: QueryList<CueCardEntryFormComponent>
@@ -63,12 +69,26 @@ export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
     //   this._cueCardEntryComp = comps.first;
     // })
 
+    //PROBLEM IS HERE, WHEN ADDING NEW CARDS... I've delegated authority to creating IDs to the template, cuz I wanted that dank nice little syntax *ngFor... it seems I've outgrown this by trying to implement `rebalancePositionsInBox()` in `shoe-box`... 
     this._elem = document.getElementById(this.ccId);
     this._colorPrimary = this.getCssObject('$primary-card-background').compiledValue;
     this._colorSecondary = this.getCssObject('$secondary-card-background').compiledValue;
     this._elemKid = this._elem.querySelector('.tp-card__front');
 
-    this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { 
+    //this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { //possibly causes my 2x call error to ngOnDestory...
+    // this._mouseSubscription = fromEvent(document, 'mousemove').takeUntil(this._componetDestroyed).subscribe( (e: MouseEvent) => {  // Property 'takeUntil' does not exist on type 'Observable<Event>'.
+    //this._mouseSubscription = fromEvent(document, 'mousemove').pipe(filter((event:Event) => event.takeUntil() )).subscribe( (e: MouseEvent) => {
+    //this._mouseSubscription = fromEvent(document, 'mousemove').pipe( takeUntil( (event: Event) => { return  ; } ).subscribe( (e: MouseEvent) => {
+    //this._mouseSubscription = fromEvent(document, 'mousemove').pipe(filter((event:Event) => takeUntil(this._componentDestoryed) )).subscribe( (e: MouseEvent) => {
+    let mousemove$ = fromEvent(document, 'mousemove');
+
+    //this._mouseSubscription = mousemove$.pipe(mergeMap(_ => { return mousemove$.pipe( map((e:any) => ({e})), takeUntil(this._componentDestoryed) ) })).subscribe( (e: MouseEvent) => { //Argument of type '(e: MouseEvent) => void' is not assignable to parameter of type '(value: { e: any; }) => void'.
+    //Argument of type 'Subscription' is not assignable to parameter of type 'Observable<any>'.
+
+    //this._mouseSubscription = mousemove$.pipe(mergeMap(_ => { return mousemove$.pipe( map((e:MouseEvent) => ({e})), takeUntil(this._componentDestoryed) ) })).subscribe( (e: MouseEvent) => { 
+    //Argument of type '(e: MouseEvent) => void' is not assignable to parameter of type '(value: { e: MouseEvent; }) => void'.
+
+    this._mouseSubscription = mousemove$.pipe(mergeMap(_ => { return mousemove$.pipe( /*map((e:MouseEvent) => ({e})),*/ takeUntil(this._componentDestroyed) ) })).subscribe( (e: MouseEvent) => {         
 
       //change height
       let distanceNew = this.calculateDistance(this._elem, e.pageX, e.pageY);
@@ -81,6 +101,15 @@ export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    //well, shoot. this didn't work. sigh... 
+    this._componentDestroyed.next();
+    this._componentDestroyed.unsubscribe();
+
+    //TODO remove this ugly hack -- it's ugly because it buries an unknown problem, and will lead to more problems later.
+    if (!this._mouseSubscription) { 
+      console.warn(`attempting to destroy cue card despite it already destroying successfully earlier... hiding error related to second unnecessary attempt to unsubscribe:  ${this._mouseSubscription}... `);
+      return;
+    }
     this._mouseSubscription.unsubscribe();
   }
 

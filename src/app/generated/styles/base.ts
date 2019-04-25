@@ -47,6 +47,16 @@ export default
       "compiledValue": "53px"
     },
     {
+      "name": "$scene-width",
+      "value": "768px",
+      "compiledValue": "768px"
+    },
+    {
+      "name": "$scene-height",
+      "value": "512px",
+      "compiledValue": "512px"
+    },
+    {
       "name": "$box-length",
       "value": "300",
       "compiledValue": "300"
@@ -78,33 +88,33 @@ export default
     },
     {
       "name": "$box-length-halved-px",
-      "value": "calc( ( #{$box-length} / 2 ) * 1px )",
-      "compiledValue": "calc( ( 300 / 2 ) * 1px)"
+      "value": "calc((#{$box-length} / 2) * 1px)",
+      "compiledValue": "calc((300 / 2) * 1px)"
     },
     {
       "name": "$box-width-halved-px",
-      "value": "calc( ( #{$box-width} / 2 ) * 1px )",
-      "compiledValue": "calc( ( 244 / 2 ) * 1px)"
+      "value": "calc((#{$box-width} / 2) * 1px)",
+      "compiledValue": "calc((244 / 2) * 1px)"
     },
     {
       "name": "$box-distance-from-pivot-px",
-      "value": "calc( ( #{$box-height} / 2) * 1px )",
-      "compiledValue": "calc( ( 100 / 2) * 1px)"
+      "value": "calc((#{$box-height} / 2) * 1px)",
+      "compiledValue": "calc((100 / 2) * 1px)"
     },
     {
       "name": "$box-front-translate-px",
       "value": "#{$box-distance-from-pivot-px}",
-      "compiledValue": "calc( ( 100 / 2) * 1px)"
+      "compiledValue": "calc((100 / 2) * 1px)"
     },
     {
       "name": "$box-back-translate-px",
-      "value": "calc( #{$box-length-px} - #{$box-distance-from-pivot-px} )",
-      "compiledValue": "calc( 300px - calc( ( 100 / 2) * 1px))"
+      "value": "calc(#{$box-length-px} - #{$box-distance-from-pivot-px})",
+      "compiledValue": "calc(300px - calc((100 / 2) * 1px))"
     },
     {
       "name": "$box-right-translate-px",
-      "value": "calc( #{$box-width-px} - #{$box-distance-from-pivot-px} )",
-      "compiledValue": "calc( 244px - calc( ( 100 / 2) * 1px))"
+      "value": "calc(#{$box-width-px} - #{$box-distance-from-pivot-px})",
+      "compiledValue": "calc(244px - calc((100 / 2) * 1px))"
     }
   ]
 }

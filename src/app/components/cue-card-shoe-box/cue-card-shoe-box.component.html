@@ -14,11 +14,13 @@
     </div>
 
     <div id="cards">
-      <ng-container *ngFor="let cueCard of ccLoaderService.cueCards; let i = index;">
+      <ng-container *ngFor="let cueCard of (ccLoaderService.cueCards$ | async); let i = index;"> <!-- let last=last -->
         <app-cue-card [cueCard]="cueCard" class="put-card-in-box" shoeBox="anyStringAtAll" [id]="'bcc'+i" [ccId]="'bcc'+i" #cc></app-cue-card>
+        <!-- *ngIf="last ? rebalanceBoxCardPositions() : ''" //nope, still not doing what i want. -->
       </ng-container>
     </div>
 
   </div>
 </div>
 
+Test: <pre>{{ ccLoaderService.cueCards$ | async | json }}</pre>

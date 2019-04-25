@@ -77,7 +77,10 @@ common screen size
 - https://webdesign.tutsplus.com/tutorials/create-an-isometric-layout-with-3d-transforms--cms-27134
 
 
-importing sass into typescript class in angular via json
+**figuring out to keep styles defined in styles, but use those *.scss variables in angular components**
+`<epic-centering-dynamically>`
+
+importing ~~sass~~ scss(?) into typescript class in angular via json
 - https://scotch.io/tutorials/angular-shortcut-to-importing-styles-files-in-components
 - https://stackoverflow.com/a/50713353/1277651 -- idea to use script 
 - https://stackoverflow.com/questions/41638980/export-scss-map-to-json-format -- idea to use `sass-export` 
@@ -121,6 +124,11 @@ how to import npm module in angular
 figuring out why i get an error with the updated syntax `import * as foo from 'node_modules/reduce-css-calc`...
 - https://www.amadousall.com/angular-cli-module-not-found-error-cant-resolve/
 
+`</epic-centering-dynamically>`
+
+**figuring out to**
+`<epic-mouse-reactivity>`
+
 how to get select to reactively update 'active' data object upon click event bound to each selection.
 - https://stackoverflow.com/questions/44840735/change-vs-ngmodelchange-in-angular
 - https://stackoverflow.com/questions/38893207/angular-2-ngonchanges-fires-when-template-renders -- when ngOnChanges fires.
@@ -130,28 +138,34 @@ how to get select to reactively update 'active' data object upon click event bou
 - https://stackoverflow.com/a/34402436/1277651 -- "actually, using an EventEmitter in a service is bad practice." -- oh, interesting. okay.
 
 
-deciding when observables vs eventEmitters are preferrable:
-- https://stackoverflow.com/questions/34717451/when-to-use-observable-vs-eventemitter-vs-dot-rule-for-change-detection-in-angul 
-    - "As a side note: According to the documentation for EventEmitter it should really only be used by components & directives; implying that it is not meant for services where Observables are preferred it would seem."
-  - when to use `new Observable` vs `of()`
-    - https://blog.angularindepth.com/how-to-read-the-rxjs-6-sources-part-1-understanding-of-and-subscriptions-694e7d9def6b
-  - ~~do i need .share()? ... unclear (was thinking it was out-of-date, but now more of ........ other things)~~
-    - ~~https://stackoverflow.com/questions/35141722/how-does-the-rxjs-5-share-operator-work~~
-  - i think I need a `Subject`, not just an `Observer`. ... i'm not _just_ observing, i'm also _updating_ the active cue card external to the service. 
-    - https://stackoverflow.com/questions/39494058/behaviorsubject-vs-observable
-    - https://stackoverflow.com/questions/37671700/angular2-style-guide-property-with-dollar-sign (try confirm $ used for Subjects as well, looks so.)
-- https://netbasal.com/why-its-important-to-unsubscribe-from-rxjs-subscription-a7a6455d6a02
+`<off-topic-ish>`
+  deciding when observables vs eventEmitters are preferrable:
+  - https://stackoverflow.com/questions/34717451/when-to-use-observable-vs-eventemitter-vs-dot-rule-for-change-detection-in-angul 
+      - "As a side note: According to the documentation for EventEmitter it should really only be used by components & directives; implying that it is not meant for services where Observables are preferred it would seem."
+    - when to use `new Observable` vs `of()`
+      - https://blog.angularindepth.com/how-to-read-the-rxjs-6-sources-part-1-understanding-of-and-subscriptions-694e7d9def6b
+    - ~~do i need .share()? ... unclear (was thinking it was out-of-date, but now more of ........ other things)~~
+      - ~~https://stackoverflow.com/questions/35141722/how-does-the-rxjs-5-share-operator-work~~
+    - i think I need a `Subject`, not just an `Observer`. ... i'm not _just_ observing, i'm also _updating_ the active cue card external to the service. 
+      - https://stackoverflow.com/questions/39494058/behaviorsubject-vs-observable
+      - https://stackoverflow.com/questions/37671700/angular2-style-guide-property-with-dollar-sign (try confirm $ used for Subjects as well, looks so.)
+  - https://netbasal.com/why-its-important-to-unsubscribe-from-rxjs-subscription-a7a6455d6a02
 
-how to work with observables
-- https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
-- https://github.com/jhades/angular2-rxjs-observable-data-services/blob/master/src/state/TodoStore.ts
+  how to work with observables
+  - https://blog.angular-university.io/how-to-build-angular2-apps-using-rxjs-observable-data-services-pitfalls-to-avoid/
+  - https://github.com/jhades/angular2-rxjs-observable-data-services/blob/master/src/state/TodoStore.ts
 
+  ok so... i have pair of get/set going in the service for tracking the active Cue Card, and I'm debating pros/cons switching that to EventEmitter in the service.
+  - ultimately I kept all of: `get`, `set`, and used a `BehaviorSubject` source variable internally in the service, and exposed another variable$ with `.asObservable()` applied to that same source variable.
+  - might make sense to drop later the get/set property design, and replace with normally-named function name like "updateFoo()" instead. TBD.
+`</off-topic-ish>`
+
+
+`<bug-missing-dependency>`
 so `sass-to-json` wasn't building on other computers.... because I'd installed it globally on my originally computer, without ``--save-dev``
 - https://stackoverflow.com/questions/6480549/install-dependencies-globally-and-locally-using-package-json -- okay, --save-dev is pretty cool
+`</bug-missing-dependency>`
 
-ok so... i have pair of get/set going in the service for tracking the active Cue Card, and I'm debating pros/cons switching that to EventEmitter in the service.
-- ultimately I kept all of: `get`, `set`, and used a `BehaviorSubject` source variable internally in the service, and exposed another variable$ with `.asObservable()` applied to that same source variable.
-- might make sense to drop later the get/set property design, and replace with normally-named function name like "updateFoo()" instead. TBD.
 
 
 calculate distance of mouse from element:
@@ -207,10 +221,16 @@ is pushing values exceeding `255` into the rgba function reliable? e.g. is `rgba
 - ignoring this possible rgba issue for now, with the known caveat the beautiful color range i'm enjoying from blues to pinks may not work in non-Chrome browsers.
 - realized it's fine, documented why it goes pink, due to delta between primary and secondary colors.
 
+`</epic-mouse-reactivity>`
 
+
+`<bug-cross-browser-support>`
 tried instead doing a quick visual test in each Firefox and Edge, discovered both have major visual problems beyond this issue.
 - noted into my backlog technical debt, i'll need to resolve these issues for my portfolio. sigh.
+`</bug-cross-browser-support>`
 
+
+`<epic-prettify-ui>`
 try use ternary in template's {{interpolation}} syntax for Submit button text to change dynamically
 - https://stackoverflow.com/questions/38642480/ngif-alternative-to-set-button-text-in-angular-2/38642523 -- just needed to see example again. 
 
@@ -239,6 +259,8 @@ how big should i make my question/answer text fields? they're definitely too sma
   - so ~20 words, which is ~100 characters, at 16px height, should need about ~960 px to fit on a single line.
   - well, that's too long. oh well. okay. i'm done researching. i'm just going with the golden ratio recommended line width i calculated at ~400px. done.
 
+
+`<task-best-practice-scss-hierarchy>`
 what's the best practice for referencing variables in scss?  (because i want to start using variables in `cue-card.scss` which no longer semantically belong in a file with that name)
 - https://medium.com/@mciastek/s-css-best-practices-that-you-have-not-yet-known-ba2f6329b5dd -- some example hierarchies...
 - https://sass-guidelin.es -- interesting, insightful, but doesn't help
@@ -246,7 +268,10 @@ what's the best practice for referencing variables in scss?  (because i want to 
 - http://thesassway.com/beginner/how-to-structure-a-sass-project -- has a good "Basic directory structure" (except mixes sass/scss)... puts all variables in `_base.sass`... 
   - here and elsewhere advocates for a specific file for just variables, like `variables.scss`(?). am uncertain i want this yet...
   - decided to go with `base.scss`. Done.
+`</task-best-practice-scss-hierarchy>`
 
+
+`<task-form-columns-responsively>`
 how to do a responsive form layout? (e.g. with label/input on one row on a large monitor, with consistent column distances, but not in a restrictive table, but also collapses into one-per-row when on a small device.)
 - https://www.creativebloq.com/how-to/how-to-design-responsive-and-device-agnostic-forms -- use flexbox! :D 
   - eventually realized this code doesn't match the picture.
@@ -260,3 +285,118 @@ change indentation I'm getting (coming from UL)
 `resize: vertical` not working 
 - https://developer.mozilla.org/en-US/docs/Web/CSS/resize
 - https://stackoverflow.com/questions/29306297/css-resize-work-for-horizontal-but-not-vertical -- oh, i need textarea... nvm.
+`</task-form-columns-responsively>`
+
+`</epic-prettify-ui>`
+
+
+
+**hoo boy, buggo found! my 'rebalance' card positions function is firing too early in the angular lifecycle and breaking. hmm. need more know-how.**
+`<epic-rebalance>`
+
+how does angular react after view change?
+- https://blog.angularindepth.com/what-every-front-end-developer-should-know-about-change-detection-in-angular-and-react-508f83f58c6a
+  - "Once bindings are created, Angular no longer works with the template. The change detection mechanism executes instructions that process bindings. The job of these instructions is to check if the value of an expression with a component property has changed and perform DOM updates if necessary."
+  - check if dirty, hmm, ok! got my clue!
+
+how to check dirty angular:
+- https://github.com/angular/angular/issues/17736 --- hmm... example at end just listens to dirty state of _form_... what about ... of the... model??? of pending updates??? maybe "dirty checking" is the wrong way to go.
+
+how to check dom updated angular:
+- https://blog.ninja-squad.com/2018/09/27/angular-performances-part-4/ 
+  - "Now that we shifted our component to be OnPush, Angular will only run the change detection if the _reference_ of the pony input changes" hmm... 
+    - grumble, this OnPush example only deals with _optimization_, reducing _all_ checks down to the _just necessary_ checks. NOT WHAT I NEED!
+  - "Angular only refreshes the template if one of the @Input's changed, or if an event was triggered" -- (an event??)
+  - "async pipe can be used to subscribe to a Promise or an Observable" ... hmm. 
+    - grumble, i'm doing the equivalent of this already, and my subscription is firing too early in the angular lifecycle, so, no! not this way neither!
+  - there's a "`Default` change detection strategy"
+  - "you can completely opt out from the automatic change detection in your component, and handle things yourself, by injecting in your component a ChangeDetectorRef", This class offers a few methods: detach(), detectChanges(), markForCheck(), reattach()
+    - okay! this looks legit! This will probably work, if I ~~`detach()` from .... and~~ manually call `detectChanges()`... so how about that? Hmm?
+    - well... suppose I put detectChanges into my subscription call back... buuut i STILL need to _INSERT THE WHOLE CUE CARD COMPONENT_... at this point I'm thinking I might need to wrestle control away from the template's *ngFor usege, and start adding new component instances myself via the class instead? seems also wrong... keep researching... still need to know a way to successfully change the order of (which?) operations to successfully inject my DOM-manipulation style code... (why? can I bypass?)
+
+how to trigger template reflow ngFor:
+- https://stackoverflow.com/questions/51619220/angular-how-to-trigger-a-ngfor-directive-again-after-pushing-some-datas-in-an -- using `trackBy` looks very promising
+
+- https://www.youtube.com/watch?v=dEIg-PR4Tew 
+  - @ 3:30 ... why angular tears down and recreates all the dom elements: because the reference is new in his example.... so he makes a function that returns a sub-portion of an 'employee' object, that employee's code, and changes to _that code_ cause the entire ... DOM to 'reflow' as I'm calling it. .... 
+  - so... his function limits unnecessary refreshes... because he was originally duplicating the entire _object_ of employees, and that caused a _new reference_ to be pushed to the template's `*ngFor` directive, which by the **nature of it being a new reference _caused it to refresh_**. in my case... maybe i can use `trackedBy` to _force an early refresh_??? ... of ... by... tracking by the observable?.... oh, okay, great... but then... hmm...
+  - so this entire latency is now seemingly the result of my to-be-deprecated design of relying on _getters_ in my service!! so if i eliminate my getters from my service, and replace with observable, and push that observable directly into the *ngFor reference, that seems like it would solve my problem! ... 
+  - so now i need to address my bias against `| async`... i heard it's 'bad practice' and it 'causes problems', but i have nothing to offer as justification for that! ... so... use it? hmm...
+
+when to use `| async` in angular?
+- https://blog.angularindepth.com/angular-question-rxjs-subscribe-vs-async-pipe-in-component-templates-c956c8c0c794
+  - "Subscribing to the observable manually in the ngOnInit() doesn’t work with OnPush change detection strategy out of the box. " -- woah! 
+  - "... can be avoided by using a dedicated wrapper element but that means that the state management is mandating changes to DOM structure which is pretty weird…" ... huh? 
+  - hmm, guy advocates for |async despite the list of cons... which seemingly isn't that big a deal yet in my application.
+- https://www.youtube.com/watch?v=l5jARPyOlkM -- 
+  - @2:15 shows syntax how to use: `<course-card *ngFor="let course of (courses$ | async)">` ... hmm. oh right! there's this further beautiful solution I did before! `<div *ngIf="courses$ | async) as courses"> <course-card *ngFor="let course of courses">... </...></...>`! this directly resolves the con above where the guy uses a dummy template, **this is the better way to avoid multiple unwrappings with async pipe**.
+- https://blog.thoughtram.io/angular/2017/02/27/three-things-you-didnt-know-about-the-async-pipe.html -- hmm... 
+
+
+ok so... i tried changing my `*ngFor="let cc of (ccService.cueCards$ | async)`... and nothing. hmm...
+
+when to call .next observables?
+- https://angular.io/api/common/AsyncPipe - "The async pipe subscribes to an Observable or Promise and returns the latest value it has emitted." -- yup, confirms... i think... 
+  
+why does debugging template with interpolation syntax `{{ thing }}` result in `[object Object]` ?
+- https://stackoverflow.com/a/53502462/1277651 -- basically i'm hoping for the moon to iteratively go through whole object and print all it's fields... oh wait `| json` surrounding with `<pre>` should solve this... can i combine both pipes like `{{ ccLoaderService.cueCards$ | async | json }}`? YES! WOOT!
+
+how to process after `*ngFor` ? 
+- https://stackoverflow.com/questions/35819264/angular-2-callback-when-ngfor-has-finished
+
+viewchildren changes.subscribe not working
+- https://stackoverflow.com/questions/43183465/querylist-changes-subscribe-does-not-work -- AHAHA!!!! THIS ANSWER!!! 
+
+`<bug-destroy-called-2x>`
+why is ngOnDestory called twice when deleting cards? second time causes error...
+- https://stackoverflow.com/questions/40468267/angular-2-does-ngondestroy-get-called-on-refresh-or-just-when-navigate-away-fr -- shouldn't happen... grumble...
+- https://stackoverflow.com/questions/53978845/subject-subscription-is-triggered-twice-when-i-call-next-once-in-angular-app -- hmm so it's quite possibly related to my usage of .next! ... ok... 
+  
+hmm, i see some out of date code in the earlier stack frames... despite saving changes that removed it... i'm restarting to eliminate doubt.
+- no change
+  
+well, in checking each stack frame call set, i saw the second call somehow originates from another component, the list comp. 
+- Since this is using the outdated getter service call, i hoped updating to the newer observable call would 'just get rid of this error'. Nope.
+- i hoped to trace the stack back to an '.next' call i did in the service, but.... there's so much bloat frames in angular it's hard to find... well, i loaded all frames, looked at every non-angular frame (so 2 of ~30) in both call stacks... none were the .next I called... probably having to do with the callback nature. hmm.
+- i'm uncertain how/if it relates to .next at this point... looking for another example. (
+  - probably a better method would be to focus on understanding better all the fundamentals of reactive implementation, i'm kinda diving in head-first without much swimming lessons... i dunno, work taught me to learn on-the-go, so i'm trying out this learning-method for now... i'll revisit this concept if i keep being stuck.
+
+  `<off-topic>`
+  - https://blog.strongbrew.io/share-replay-issue/
+  - https://stackoverflow.com/questions/51281017/upgrading-from-rxjs5-to-rxjs6 
+  - https://stackoverflow.com/questions/53483832/property-map-is-missing-in-type-observableany
+  - https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87
+  `</off-topic>`
+
+when to unsubscribe in angular
+- https://netbasal.com/when-to-unsubscribe-in-angular-d61c6b21bad3 -- "infinite observables"... interesting, okay.
+  - "Final tip — You should be more declarative and try as little as possible to call the unsubscribe method" -- what.. ooh.. ok.. try this!
+
+  `<bug-use-pipeable-operators-correctly>`
+  Property 'takeUntil' does not exist on type 'Observable`<Event>
+  - https://stackoverflow.com/questions/39514564/property-filter-does-not-exist-on-type-observableevent -- uhmm... not easy to jump into...
+
+  `fromevent` `takeuntil`
+  - https://stackoverflow.com/questions/51369830/need-help-on-using-takeuntil-and-observable-fromevent-methods -- NO! ATROCIOUSLY LARGE! must be simpler version.
+  
+  ~~Argument of type 'Subscription' is not assignable to parameter of type 'Observable`<any>'.~~
+  - ~~... rabbit hole ... ~~
+
+  idea, try to combine `takeUntil` with `fromEvent` and use **another** subscritption as the canary to abort...  but how to combine?
+  - https://alligator.io/angular/takeuntil-rxjs-unsubscribe/ 
+
+  docs
+  - https://www.learnrxjs.io/operators/filtering/takeuntil.html -- aha! example with both `takeUntil` with `fromEvent`!
+  
+  using Subject wrong from example - Generic type 'Subject<T>' requires 1 type argument(s).ts(2314)
+  - https://stackoverflow.com/questions/41757684/generic-type-observablet-requires-1-type-argument -- example didn't specify type, but i can use `Subject<any>`
+  
+
+
+
+  `</bug-use-pipeable-operators-correctly>`
+
+`</bug-destroy-called-2x>`
+
+`</epic-rebalance>`
+**EUREKA! i now have additions correctly triggering at the right time in the ~~flow~~ angular life cycle combined with newly added observables data in my service**

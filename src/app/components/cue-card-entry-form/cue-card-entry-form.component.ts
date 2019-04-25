@@ -22,6 +22,7 @@ export class CueCardEntryFormComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder, public ccLoaderService: CueCardLoaderService) { 
+    //TODO: unsubscribe?
     ccLoaderService.cueCardActive$.subscribe( 
       (cueCard: CueCard) => {
         this.cueCardUpdateTo(cueCard);

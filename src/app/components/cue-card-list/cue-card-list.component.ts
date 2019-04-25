@@ -11,8 +11,8 @@ export class CueCardListComponent implements OnInit {
 
   cueCards: CueCard[] = [];
 
-  constructor(private cueCardLoaderService: CueCardLoaderService) { 
-    this.cueCards = this.cueCardLoaderService.cueCards;
+  constructor(public ccLoaderService: CueCardLoaderService) { 
+    this.cueCards = this.ccLoaderService.cueCards;
   }
 
   ngOnInit() {

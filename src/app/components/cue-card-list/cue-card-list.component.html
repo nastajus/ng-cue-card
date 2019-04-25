@@ -3,7 +3,8 @@
 </p>
 
 <ul>
-  <li *ngFor="let cueCard of cueCards">
+  <!-- <li *ngFor="let cueCard of cueCards"> -->
+  <li *ngFor="let cueCard of (ccLoaderService.cueCards$ | async);">
     <app-cue-card [cueCard]="cueCard"></app-cue-card>
   </li>
 </ul>
