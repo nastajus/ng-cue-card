@@ -208,7 +208,19 @@ is pushing values exceeding `255` into the rgba function reliable? e.g. is `rgba
 tried instead doing a quick visual test in each Firefox and Edge, discovered both have major visual problems beyond this issue.
 - noted into my backlog technical debt, i'll need to resolve these issues for my portfolio. sigh.
 
+try use ternary in template's {{interpolation}} syntax for Submit button text to change dynamically
+- https://stackoverflow.com/questions/38642480/ngif-alternative-to-set-button-text-in-angular-2/38642523 -- just needed to see example again. 
 
+how to have `Validators.required` work for _one of several fields_? 
+- https://stackoverflow.com/questions/41020069/require-one-from-two-fields-using-angular-2 - sweet!
+
+how does truthiness work in javascript?
+- https://www.sitepoint.com/javascript-truthy-falsy/
+- https://stackoverflow.com/questions/35642809/understanding-javascript-truthy-and-falsy
+- https://stackoverflow.com/questions/17643965/automatically-create-object-if-undefined -- how to add property to an undefined object -- assignment syntax with || is cool.
+- https://stackoverflow.com/questions/39792221/adding-properties-to-an-empty-object -- "go behind typescripts back"... grumble...
+- https://stackoverflow.com/questions/1168807/how-can-i-add-a-key-value-pair-to-a-javascript-object -- used `Object.assign(obj, {key3: "value3"});` 
+- https://stackoverflow.com/questions/154059/how-to-check-empty-undefined-null-string-in-javascript -- test empty string vs null/und...
 
 
 

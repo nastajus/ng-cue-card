@@ -41,15 +41,33 @@ export class CueCardEntryFormComponent implements OnInit {
 
     this.ccEntryForm = this.fb.group({
       question: [q, Validators.required],
-      answer: a
-    });
+      answer: [a, Validators.required]
+    }, {validator: this.customValidationFunction});
 
     //this captures output when user types in the input field, bc `valueChanges` is an Observable
     this.ccEntryForm.valueChanges.subscribe( console.log );
   }
 
+  //allow either field Q or A to be a valid cue card. 
+  customValidationFunction(formGroup: FormGroup): any { 
+    // don't understand why question|answer are undefined. =/
+    // let question = this.question.value;
+    // let answer = this.answer.value;
+    let question = formGroup.controls['question'].value;
+    let answer = formGroup.controls['answer'].value;
+
+    let result = {};
+    //don't understand why ['answer'].value returns empty string "" instead of null. =/    
+    //if (question !== null) { result.questionHasContent = true };
+    //if (answer !== null) { result.answerHasContent = true };
+    if (question !== "") { Object.assign(result, { questionHasContent: true} ) };
+    if (answer !== "") { Object.assign(result, { answerHasContent: true} ) };
+    return result === {} ? null : result;
+  }
+
+  //submit handles both Edit and Add scenarios
   submitHandler(currentFormsCueCard) {
-    if (currentFormsCueCard !== null) { 
+    if (this.ccLoaderService.cueCardActive !== null && currentFormsCueCard !== null) { 
       this.editInService(currentFormsCueCard);
     }
     else {
@@ -97,7 +115,6 @@ export class CueCardEntryFormComponent implements OnInit {
     this.answer.reset();
     this.answer.setValue('');
   }
-
 }
 
 // just for limiting viewing time of "success!" message
