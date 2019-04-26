@@ -2,6 +2,7 @@
   <strong>cue-card-selector works!</strong>
 </p>
 
+<ng-container *ngIf="(ccLoaderService.cueCards$ | async) as cueCards">
 <ul class="flex">
   <li>
     <select class="cc-select" [(ngModel)]="ccLoaderService.cueCardActive">
@@ -15,6 +16,7 @@
     Test: {{ccLoaderService.cueCardActive | json}} {{ cueCards.length | json }}
   </li>
 </ul>
+</ng-container>
 
 <hr>
 

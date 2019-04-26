@@ -17,13 +17,20 @@ export class CueCardShoeBoxComponent implements OnInit, AfterViewInit {
 
   ngOnInit() { }
   ngAfterViewInit() {
-    //first call has *no* changes *yet*, so call directly first time.
-    this.rebalanceBoxCardPositions(this.ccLoaderService.cueCards);
 
-    this.cc.changes.subscribe(t => {
-      //subsequent calls to capture *changes* to model of cueCards, especially additions and deletions, but also modifications will trigger this.
-      this.rebalanceBoxCardPositions(this.ccLoaderService.cueCards);
-    })
+    this.ccLoaderService.cueCards$.subscribe( 
+      (cueCards: CueCard[]) => {
+        this.rebalanceBoxCardPositions(cueCards);
+      }
+    );
+
+    // //first call has *no* changes *yet*, so call directly first time.
+    // this.rebalanceBoxCardPositions(this.ccLoaderService.cueCards$);
+
+    // this.cc.changes.subscribe(t => {
+    //   //subsequent calls to capture *changes* to model of cueCards, especially additions and deletions, but also modifications will trigger this.
+    //   this.rebalanceBoxCardPositions(this.ccLoaderService.cueCards);
+    // })
   }
 
   rebalanceBoxCardPositions(cueCards: CueCard[]) {
@@ -48,8 +55,8 @@ export class CueCardShoeBoxComponent implements OnInit, AfterViewInit {
     var cardOffsetToCenterZ: number = (boxHeight - cardHeight) / 2; 
     var magicNumberLeftOffsetX: number = parseInt(this.getCssObject('$magic-number-left-offset-px', sassExport).compiledValue, 10);
     
-    for(var i = 0; i < this.ccLoaderService.cueCards.length; i++) {
-      var cardPosition = boxLength / this.ccLoaderService.cueCards.length * (i + 1);
+    for(var i = 0; i < cueCards.length; i++) {
+      var cardPosition = boxLength / cueCards.length * (i + 1);
       var boxLerpData = this.lerpCardInBox(boxFront, boxBack, cardPosition);
       var elem = document.getElementById("bcc" + i);
       elem.setAttribute("style", `transform: rotateX(-90deg) rotateY(-90deg) translateZ(${cardOffsetToCenterZ + boxLerpData}px) translateX(${cardOffsetToCenterX + magicNumberLeftOffsetX}px)`);

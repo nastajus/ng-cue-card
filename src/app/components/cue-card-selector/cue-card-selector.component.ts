@@ -21,9 +21,7 @@ export class CueCardSelectorComponent implements OnInit {
   cueCards: CueCard[];
   uglyEditStateTracker = false; //replace with more reactive design
 
-  constructor(public ccLoaderService: CueCardLoaderService) { 
-    this.cueCards = ccLoaderService.cueCards;
-  }
+  constructor(public ccLoaderService: CueCardLoaderService) { }
 
   ngOnInit() {
   }

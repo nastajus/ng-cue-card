@@ -9,11 +9,7 @@ import { CueCardLoaderService } from 'src/app/services/cue-card-loader.service';
 })
 export class CueCardListComponent implements OnInit {
 
-  cueCards: CueCard[] = [];
-
-  constructor(public ccLoaderService: CueCardLoaderService) { 
-    this.cueCards = this.ccLoaderService.cueCards;
-  }
+  constructor(public ccLoaderService: CueCardLoaderService) { }
 
   ngOnInit() {
   }

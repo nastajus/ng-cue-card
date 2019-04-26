@@ -2,6 +2,8 @@
   <strong>cue-card-entry-form works!</strong>
 </p>
 
+<ng-container *ngIf="(ccLoaderService.cueCards$ | async) as cueCards">
+
 <div class="scene-temporary-boundary">
   <form [formGroup]="ccEntryForm">
 
@@ -22,7 +24,7 @@
           [disabled]="!question.valid && !answer.valid">{{ccLoaderService.cueCardActive === null ? 'Add' : 'Save'}}</button>
         <button (click)="clearFormValues()" [disabled]="!question.valid && !answer.valid">Clear</button>
         <button (click)="deleteFromService()"
-          [disabled]="ccLoaderService.cueCards.length <= 0 || ccLoaderService.cueCardActive === null">Delete</button>
+          [disabled]="cueCards.length <= 0 || ccLoaderService.cueCardActive === null">Delete</button>
       </li>
       <li>
         <div *ngIf="successfulSubmissionTimer?.counter.valueOf() > 0">Successfully Saved New Cue Card!</div>
@@ -33,5 +35,6 @@
   </form>
 
 </div>
+</ng-container>
 
 <hr>

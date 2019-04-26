@@ -8,23 +8,13 @@ import { Observable, of, BehaviorSubject } from 'rxjs';
 })
 export class CueCardLoaderService {
 
-  /***************************************************************************************************************************************************/
-  /* DESIGN NOTE: keeping the pair of both a getter AND an observable$, as two different ways to access the same data, is quite likely a BAD PATTERN.*/
-  /* TODO: Research best practices, to support this intention, *DO THIS*: I should refactor to use entirely one, ideally all observables and no gets.*/
-  /***************************************************************************************************************************************************/
-  private _cueCards: CueCard[] = [];
-  public get cueCards() { return this._cueCards; } //for later, intending to deprecate entirely the whole `get` interface.
-  cueCardsSource: BehaviorSubject<CueCard[]> = new BehaviorSubject<CueCard[]>(this._cueCards); //for now, choosing to emit ENTIRE ARRAY... even if that's too much data when get above exists.
-  cueCards$ = this.cueCardsSource.asObservable(); 
-
-
   //EventEmitters are implied by ng documentation to not be used in services, instead to use Obsersables in their place.
   //Observable was not robust enough, needs to be ~~Subject~~, rather, a BehaviorSubject (which *does* accept param for init).
 
-  /***************************************************************************************************************************************************/
-  /* DESIGN NOTE: keeping the pair of both a getter AND an observable$, as two different ways to access the same data, is quite likely a BAD PATTERN.*/
-  /* TODO: Research best practices, to support this intention, *DO THIS*: I should refactor to use entirely one, ideally all observables and no gets.*/
-  /***************************************************************************************************************************************************/
+  private _cueCards: CueCard[] = [];
+  cueCardsSource: BehaviorSubject<CueCard[]> = new BehaviorSubject<CueCard[]>(this._cueCards); //for now, choosing to emit ENTIRE ARRAY... even if that's too much data when get above exists.
+  cueCards$ = this.cueCardsSource.asObservable(); 
+
   private _cueCardActive: CueCard = null;
   cueCardActiveSource: BehaviorSubject<CueCard> = new BehaviorSubject<CueCard>(this._cueCardActive);
   cueCardActive$ = this.cueCardActiveSource.asObservable();
@@ -70,7 +60,7 @@ export class CueCardLoaderService {
       this.cueCardsSource.next(this._cueCards);
     }
     else { 
-      throw new Error("invalid CueCard, it as null or not found! Cannot edit!")
+      throw new Error("invalid CueCard, it is null or not found! Cannot edit!")
     }
   }
 
