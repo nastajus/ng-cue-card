@@ -2,13 +2,9 @@ import { Component, OnInit, Input, AfterViewInit, OnDestroy, ViewChild, ElementR
 import { CueCard } from 'src/app/models/cue-card';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
-// import { CueCardEntryFormComponent } from '../cue-card-entry-form/cue-card-entry-form.component';
+import sassExport from 'src/app/generated/styles/base';
 import { Subscription, fromEvent, Subject } from 'rxjs';
 //import 'rxjs/add/operator/takeUntil';
-import { takeUntil, filter, mergeMap, map } from 'rxjs/operators';
-
-import sassExport from 'src/app/generated/styles/base';
-// import * as tinycolor2 from 'node_modules/tinycolor2';
 
 
 @Component({
@@ -32,13 +28,6 @@ import sassExport from 'src/app/generated/styles/base';
 export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private _mouseSubscription: Subscription;
-  //private _componentDestoryed: Subscription;
-  private _componentDestroyed: Subject<any> = new Subject();
-
-  // @ViewChild('cc') ccElemRef: ElementRef;
-  // @ViewChildren('cc') 
-  // public cueCardEntryComp: QueryList<CueCardEntryFormComponent>
-  // private _cueCardEntryComp: CueCardEntryFormComponent;\
 
   //needed to promote to class-level scope, so can be referenced inside mouse move subscribe callback.
   private _elem: HTMLElement;
@@ -61,50 +50,25 @@ export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     if (this.ccId === undefined) { return; }
-    // if (!this.ccId.includes('0')) { return; } //for debugging just one
-    
-    //failed to get ref aft comp entryForm loads bc ??? 
-    // this.cueCardEntryComp.changes.subscribe( (comps: QueryList<CueCardEntryFormComponent> ) => 
-    // {
-    //   this._cueCardEntryComp = comps.first;
-    // })
 
-    //PROBLEM IS HERE, WHEN ADDING NEW CARDS... I've delegated authority to creating IDs to the template, cuz I wanted that dank nice little syntax *ngFor... it seems I've outgrown this by trying to implement `rebalancePositionsInBox()` in `shoe-box`... 
     this._elem = document.getElementById(this.ccId);
     this._colorPrimary = this.getCssObject('$primary-card-background').compiledValue;
     this._colorSecondary = this.getCssObject('$secondary-card-background').compiledValue;
     this._elemKid = this._elem.querySelector('.tp-card__front');
 
-    //this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { //possibly causes my 2x call error to ngOnDestory...
-    // this._mouseSubscription = fromEvent(document, 'mousemove').takeUntil(this._componetDestroyed).subscribe( (e: MouseEvent) => {  // Property 'takeUntil' does not exist on type 'Observable<Event>'.
-    //this._mouseSubscription = fromEvent(document, 'mousemove').pipe(filter((event:Event) => event.takeUntil() )).subscribe( (e: MouseEvent) => {
-    //this._mouseSubscription = fromEvent(document, 'mousemove').pipe( takeUntil( (event: Event) => { return  ; } ).subscribe( (e: MouseEvent) => {
-    //this._mouseSubscription = fromEvent(document, 'mousemove').pipe(filter((event:Event) => takeUntil(this._componentDestoryed) )).subscribe( (e: MouseEvent) => {
-    let mousemove$ = fromEvent(document, 'mousemove');
-
-    //this._mouseSubscription = mousemove$.pipe(mergeMap(_ => { return mousemove$.pipe( map((e:any) => ({e})), takeUntil(this._componentDestoryed) ) })).subscribe( (e: MouseEvent) => { //Argument of type '(e: MouseEvent) => void' is not assignable to parameter of type '(value: { e: any; }) => void'.
-    //Argument of type 'Subscription' is not assignable to parameter of type 'Observable<any>'.
-
-    //this._mouseSubscription = mousemove$.pipe(mergeMap(_ => { return mousemove$.pipe( map((e:MouseEvent) => ({e})), takeUntil(this._componentDestoryed) ) })).subscribe( (e: MouseEvent) => { 
-    //Argument of type '(e: MouseEvent) => void' is not assignable to parameter of type '(value: { e: MouseEvent; }) => void'.
-
-    this._mouseSubscription = mousemove$.pipe(mergeMap(_ => { return mousemove$.pipe( /*map((e:MouseEvent) => ({e})),*/ takeUntil(this._componentDestroyed) ) })).subscribe( (e: MouseEvent) => {         
+    //possibly causes my 2x call error to ngOnDestory?
+    this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { 
 
       //change height
-      let distanceNew = this.calculateDistance(this._elem, e.pageX, e.pageY);
-      let newHeight = this.lerpChangeCardHeight(distanceNew, this._elem);
-      //console.log(this.ccId, distanceNew, newHeight);
+      let distance = this.calculateDistance(this._elem, e.pageX, e.pageY);
+      this.lerpChangeCardHeight(distance, this._elem);
 
       //change color
-      this.lerpChangeCardColor(distanceNew, this._elemKid);
+      this.lerpChangeCardColor(distance, this._elemKid);
     })
   }
 
   ngOnDestroy() {
-    //well, shoot. this didn't work. sigh... 
-    this._componentDestroyed.next();
-    this._componentDestroyed.unsubscribe();
-
     //TODO remove this ugly hack -- it's ugly because it buries an unknown problem, and will lead to more problems later.
     if (!this._mouseSubscription) { 
       console.warn(`attempting to destroy cue card despite it already destroying successfully earlier... hiding error related to second unnecessary attempt to unsubscribe:  ${this._mouseSubscription}... `);
@@ -129,28 +93,22 @@ export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
   lerpChangeCardColor(distance: number, elem: HTMLElement) {
     let lerpAmount = distance < 200 ? 1 / distance * 400 : 0;
     let lerpedHexValue = this.lerpColor(`0x${this._colorPrimary.split('#').pop()}`, `0x${this._colorSecondary.split('#').pop()}`, lerpAmount);
-    //let rgbaArray = {r: rgbColorNew.r, g: rgbColorNew.g, b: rgbColorNew.b, a: 1};
     let rgbaArray = [ lerpedHexValue.r, lerpedHexValue.g, lerpedHexValue.b, 1];
     elem.setAttribute('style', `background-color: rgba(${rgbaArray})`);
-    // console.log(distance, lerpAmount, lerpedHexValue, rgbaArray);
 
   }
   
   calculateDistance(elem: HTMLElement, mouseX: number, mouseY: number) {
-    //jquery version 
-    //return Math.floor(Math.sqrt(Math.pow(mouseX - (elem.offset().left+(elem.width()/2)), 2) + Math.pow(mouseY - (elem.offset().top+(elem.height()/2)), 2)));
-
-    //non-jquery version
     return Math.floor(Math.sqrt(Math.pow(mouseX - (this.getElementOffset(elem).left+(elem.clientWidth/2)), 2) + Math.pow(mouseY - (this.getElementOffset(elem).top+(elem.clientHeight/2)), 2)));
   }
 
   getElementOffset(element: HTMLElement)
   {
-      var de = document.documentElement;
-      var box = element.getBoundingClientRect();
-      var top = box.top + window.pageYOffset - de.clientTop;
-      var left = box.left + window.pageXOffset - de.clientLeft;
-      return { top: top, left: left };
+    var de = document.documentElement;
+    var box = element.getBoundingClientRect();
+    var top = box.top + window.pageYOffset - de.clientTop;
+    var left = box.left + window.pageXOffset - de.clientLeft;
+    return { top: top, left: left };
   }
 
   lerp(value1: number, value2: number, amount: number) {

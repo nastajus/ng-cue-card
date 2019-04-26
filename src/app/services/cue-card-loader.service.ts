@@ -50,10 +50,10 @@ export class CueCardLoaderService {
     this.cueCardsSource.next(this._cueCards);
   }
 
+  //Deliberately *NOT* forcing what is active in the service when adding. That sholud purely be a view-user decision, should be a decoupled responsibility 
   public add(cueCard: CueCard) {
     if (cueCard !== null) {
       this._cueCards.push(cueCard)
-      //TODO: decide if active cc should change now? currently, nope. still nope, reason it should be a decoupled responsibility.
       this.cueCardsSource.next(this._cueCards); 
     }
     else {
@@ -81,15 +81,9 @@ export class CueCardLoaderService {
       this._cueCardActive = null;
       this.cueCardActiveSource.next(null);
       this.cueCardsSource.next(this._cueCards); 
-      //thought maybe this is the problem here? i do .next upon delete... seems right though... and it wasn't the problem...still get ngOnDestroy invoked twice in cue card, causing an exception there with unsubscribing.
     }
     else {
       throw new Error("invalid CueCard, it was null! Cannot add!");
     }
   }
-
-  public getCueCards() : Observable<CueCard[]> {
-    return of( this._cueCards );
-  }
-
 }

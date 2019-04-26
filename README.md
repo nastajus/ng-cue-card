@@ -126,7 +126,8 @@ figuring out why i get an error with the updated syntax `import * as foo from 'n
 
 `</epic-centering-dynamically>`
 
-**figuring out to**
+**figuring out how to build reactivity into my cards, so it "pops" in an "enjoyable" manner**
+
 `<epic-mouse-reactivity>`
 
 how to get select to reactively update 'active' data object upon click event bound to each selection.
@@ -162,8 +163,10 @@ how to get select to reactively update 'active' data object upon click event bou
 
 
 `<bug-missing-dependency>`
+
 so `sass-to-json` wasn't building on other computers.... because I'd installed it globally on my originally computer, without ``--save-dev``
 - https://stackoverflow.com/questions/6480549/install-dependencies-globally-and-locally-using-package-json -- okay, --save-dev is pretty cool
+
 `</bug-missing-dependency>`
 
 
@@ -225,12 +228,15 @@ is pushing values exceeding `255` into the rgba function reliable? e.g. is `rgba
 
 
 `<bug-cross-browser-support>`
+
 tried instead doing a quick visual test in each Firefox and Edge, discovered both have major visual problems beyond this issue.
 - noted into my backlog technical debt, i'll need to resolve these issues for my portfolio. sigh.
+
 `</bug-cross-browser-support>`
 
 
 `<epic-prettify-ui>`
+
 try use ternary in template's {{interpolation}} syntax for Submit button text to change dynamically
 - https://stackoverflow.com/questions/38642480/ngif-alternative-to-set-button-text-in-angular-2/38642523 -- just needed to see example again. 
 
@@ -261,6 +267,7 @@ how big should i make my question/answer text fields? they're definitely too sma
 
 
 `<task-best-practice-scss-hierarchy>`
+
 what's the best practice for referencing variables in scss?  (because i want to start using variables in `cue-card.scss` which no longer semantically belong in a file with that name)
 - https://medium.com/@mciastek/s-css-best-practices-that-you-have-not-yet-known-ba2f6329b5dd -- some example hierarchies...
 - https://sass-guidelin.es -- interesting, insightful, but doesn't help
@@ -268,10 +275,12 @@ what's the best practice for referencing variables in scss?  (because i want to 
 - http://thesassway.com/beginner/how-to-structure-a-sass-project -- has a good "Basic directory structure" (except mixes sass/scss)... puts all variables in `_base.sass`... 
   - here and elsewhere advocates for a specific file for just variables, like `variables.scss`(?). am uncertain i want this yet...
   - decided to go with `base.scss`. Done.
+  - 
 `</task-best-practice-scss-hierarchy>`
 
 
 `<task-form-columns-responsively>`
+
 how to do a responsive form layout? (e.g. with label/input on one row on a large monitor, with consistent column distances, but not in a restrictive table, but also collapses into one-per-row when on a small device.)
 - https://www.creativebloq.com/how-to/how-to-design-responsive-and-device-agnostic-forms -- use flexbox! :D 
   - eventually realized this code doesn't match the picture.
@@ -285,13 +294,14 @@ change indentation I'm getting (coming from UL)
 `resize: vertical` not working 
 - https://developer.mozilla.org/en-US/docs/Web/CSS/resize
 - https://stackoverflow.com/questions/29306297/css-resize-work-for-horizontal-but-not-vertical -- oh, i need textarea... nvm.
+
 `</task-form-columns-responsively>`
 
 `</epic-prettify-ui>`
 
 
-
 **hoo boy, buggo found! my 'rebalance' card positions function is firing too early in the angular lifecycle and breaking. hmm. need more know-how.**
+
 `<epic-rebalance>`
 
 how does angular react after view change?
@@ -348,6 +358,7 @@ viewchildren changes.subscribe not working
 - https://stackoverflow.com/questions/43183465/querylist-changes-subscribe-does-not-work -- AHAHA!!!! THIS ANSWER!!! 
 
 `<bug-destroy-called-2x>`
+
 why is ngOnDestory called twice when deleting cards? second time causes error...
 - https://stackoverflow.com/questions/40468267/angular-2-does-ngondestroy-get-called-on-refresh-or-just-when-navigate-away-fr -- shouldn't happen... grumble...
 - https://stackoverflow.com/questions/53978845/subject-subscription-is-triggered-twice-when-i-call-next-once-in-angular-app -- hmm so it's quite possibly related to my usage of .next! ... ok... 
@@ -362,10 +373,12 @@ well, in checking each stack frame call set, i saw the second call somehow origi
   - probably a better method would be to focus on understanding better all the fundamentals of reactive implementation, i'm kinda diving in head-first without much swimming lessons... i dunno, work taught me to learn on-the-go, so i'm trying out this learning-method for now... i'll revisit this concept if i keep being stuck.
 
   `<off-topic>`
+
   - https://blog.strongbrew.io/share-replay-issue/
   - https://stackoverflow.com/questions/51281017/upgrading-from-rxjs5-to-rxjs6 
   - https://stackoverflow.com/questions/53483832/property-map-is-missing-in-type-observableany
   - https://medium.com/@benlesh/rxjs-dont-unsubscribe-6753ed4fda87
+  
   `</off-topic>`
 
 when to unsubscribe in angular
@@ -373,6 +386,7 @@ when to unsubscribe in angular
   - "Final tip — You should be more declarative and try as little as possible to call the unsubscribe method" -- what.. ooh.. ok.. try this!
 
   `<bug-use-pipeable-operators-correctly>`
+
   Property 'takeUntil' does not exist on type 'Observable`<Event>
   - https://stackoverflow.com/questions/39514564/property-filter-does-not-exist-on-type-observableevent -- uhmm... not easy to jump into...
 
@@ -399,4 +413,5 @@ when to unsubscribe in angular
 `</bug-destroy-called-2x>`
 
 `</epic-rebalance>`
+
 **EUREKA! i now have additions correctly triggering at the right time in the ~~flow~~ angular life cycle combined with newly added observables data in my service**
