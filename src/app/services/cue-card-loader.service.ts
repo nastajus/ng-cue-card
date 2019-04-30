@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CueCard } from '../models/cue-card';
-import { DbFakeComponent } from '../components/db-fake/db-fake.component';
+import { DbFakeService } from '../services/db-fake.service';
 import { Observable, of, BehaviorSubject } from 'rxjs';
 
 @Injectable({
@@ -34,7 +34,7 @@ export class CueCardLoaderService {
     }
   }
 
-  constructor(private fakeDb: DbFakeComponent) { 
+  constructor(private fakeDb: DbFakeService) { 
     this._cueCards = this.fakeDb.records;
     //i need to emit this right away ... my design is now RELIANT on this reactive pattern, so, since I'm REMOVING get, this MUST happen.
     this.cueCardsSource.next(this._cueCards);
@@ -73,7 +73,7 @@ export class CueCardLoaderService {
       this.cueCardsSource.next(this._cueCards); 
     }
     else {
-      throw new Error("invalid CueCard, it was null! Cannot add!");
+      throw new Error("invalid CueCard, it was null! Cannot delete!");
     }
   }
 }

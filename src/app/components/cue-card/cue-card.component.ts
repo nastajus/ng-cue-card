@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, AfterViewInit, OnDestroy, ViewChild, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, ViewChild, ElementRef, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
 import { CueCard } from 'src/app/models/cue-card';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
@@ -25,7 +25,7 @@ import { Subscription, fromEvent, Subject } from 'rxjs';
     ])  
   ]
 })
-export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
+export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
   private _mouseSubscription: Subscription;
 
@@ -44,9 +44,23 @@ export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() ccId: string;
 
+  private _backShown = false;
+  @Output() onBackShown: EventEmitter<boolean> = new EventEmitter();
+
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    if (!this.cueCard) { throw new Error("No CueCard passed in! Cannot initialize CueCard component!"); }
+  }
+
+  ngOnChanges() {
+    //reset toggle... yuck... is there a better design?? when reading this whole component, it'll be messier looking than is desirable.
+    //ugly AND BUGGY... yeesh
+    if (this._backShown) {
+      this._backShown = false;
+      this.toggleFlip();  
+    }
+  }
 
   ngAfterViewInit() {
     if (this.ccId === undefined) { return; }
@@ -79,6 +93,11 @@ export class CueCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   toggleFlip() {
     this.flip = (this.flip == 'inactive') ? 'active' : 'inactive';
+
+    //only need to know once in the lifetime of a card
+    if (this._backShown) { return; }
+    this.onBackShown.emit(true);
+    this._backShown = true;
   }
 
   //TODO: test performance on low-power devices, ugly jittering jumps visible console was logging, but gone without.

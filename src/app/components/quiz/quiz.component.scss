@@ -1,0 +1,10 @@
+@import 'src/styles/base.scss';
+@import 'src/styles/cue-card.scss';
+
+.congratulations-tp-card__side {
+    @extend .tp-card__side;
+    cursor: default;
+    background-color: #b3b3b3;
+    font-family: $list-font-family;
+    font-size: 5em;
+}

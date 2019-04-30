@@ -19,12 +19,20 @@ Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 
+## Support 
+- Currently designed for Chrome on desktop monitor. 
+- Ideally I want to make this cross-platform for all common operating systems, browsers and devices such as mobile, however I am uncertain at this time I'll be able to support those. 
+
+
 ## Remember
 - Optimized for VSCode using Git Bash to run on Windows. Minimal testing done in other contexts.
 
 - The scripts that make `generated/styles/*.ts` files currently rely on Bash being installed to run (for `sed` to function, which necessarily modifies the `sass-export` output to a valid module by prepending `export default`). Did not implement any PowerShell equivalent. So make sure bash is set to your shell, such as [here](https://stackoverflow.com/questions/43427631/how-to-add-multiple-terminal-in-vs-code) does.
 
 - Remember building generates updated variables in JS for CSS, which is used to calculate cue card positions in-box.  Simply doing `npm run start` and angular recompile does **not** regenerate the updated variables! To regenerate **terminate** the server and **re-start** (which rebuilds). 
+
+- Sometimes there's a build error regarding the `empty.ts` file. No idea why it's _intermittent_. Rebuilding solves it. I mean, it's a correct error... So I should come back to fix this.
+  - `ERROR in Source file not found: '/C/Users/<USER>/Documents/.../ng-cue-card/src/empty.ts'.`
 
 
 ## References used
@@ -415,3 +423,396 @@ when to unsubscribe in angular
 `</epic-rebalance>`
 
 **EUREKA! i now have additions correctly triggering at the right time in the ~~flow~~ angular life cycle combined with newly added observables data in my service**
+
+
+planning next major features
+
+i'd really like it if was possible to study with app offline while commuting on your phone. i'm forced to consider from a PM-perspective it is potentially "too much work" in my limited time I'm allotting myself for this project, so that it has a realistc end-date in ideally 1-2 weeks perhaps (I'll permit time extensions for **really good features** if I deem their effectiveness worthy-enough. )
+
+`(SPIKE) investigate feasibility of offline mode app.`
+
+how does angular offline work? 
+
+how do service workers work? 
+- https://developers.google.com/web/fundamentals/primers/service-workers/
+  - has 'background sync', but not 'perodic sync'
+  - extensive use of promises
+  - doesn't seem too bad yet.
+
+- https://blog.angular-university.io/angular-service-worker/
+  - hmm... lots of things.  
+
+
+
+service vs component business logic angular 
+- https://stackoverflow.com/a/41483202
+- https://angular.io/guide/styleguide#delegate-complex-component-logic-to-services -- ahh, interesting, okay... hmm.
+
+
+javascript when to throw errors
+- https://humanwhocodes.com/blog/2009/03/03/the-art-of-throwing-javascript-errors/
+   - all libs should throw errors, it shouldn't be my responsibility to debug other's code. 
+
+error types javascript
+- https://basarat.gitbooks.io/typescript/docs/types/exceptions.html
+
+lists vs. arrays javascript
+- https://www.reddit.com/r/javascript/comments/3jgxb1/arrays_vs_linked_list_in_javascript/
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
+  - essentially the same, hidden under the hood, i don't need to worry it appears. 
+
+how to handle the lack overloads in typescript 
+- https://stackoverflow.com/questions/12702548/constructor-overload-in-typescript -- "static factory methods"... hmm.
+
+
+~~`<task-leveraging-references>`~~
+`<task-designing-model-good>`
+
+**something is bugging me. I keep attempting to design a "good model", and the back of my consciousness keeps nagging me about the topic of references and mutability. This arc represents my trying to fill this gap of knowledge I have about "proper state management" as my model grows beyond the singular cue card object-sharing with public members, into something more complex using multiple models for quizzes, histories, leitner system, levels of progression..., and the rules that govern how these all interact.**
+
+sharing object references javascript
+- https://stackoverflow.com/questions/16880418/javascript-pass-object-as-reference - "In JavaScript objects are always passed by copy-reference" -- _I like this wording better._
+- https://stackoverflow.com/questions/6605640/javascript-by-reference-vs-by-value - "Javascript is always [pass by value]" -- _I hate this confusing conventional wording. Means same as above._
+- https://stackoverflow.com/questions/518000/is-javascript-a-pass-by-reference-or-pass-by-value-language -- more of the same... confusing wording... but it's another highly upvoted answer, so get used to it.
+- https://stackoverflow.com/questions/7744611/pass-variables-by-reference-in-javascript -- another post emphasizing "There is no 'pass by reference' available in JavaScript"
+
+data store angular
+- ... grumble ...
+
+angular store
+- https://medium.com/frontend-fun/angular-ngrx-a-clean-and-clear-introduction-4ed61c89c1fc - So, in a general opinion ngrx should be used in medium/big projects were managing the state starts to become hard to maintain and overwhelming. -- _perfect, I can ignore_
+
+
+how to store state in angular
+- https://dev.to/avatsaev/simple-state-management-in-angular-with-only-services-and-rxjs-41p8
+
+when to use immutable objects
+- https://softwareengineering.stackexchange.com/questions/151733/if-immutable-objects-are-good-why-do-people-keep-creating-mutable-objects
+  - Péter Török
+    - good point about state vs identity
+    - "Note that most developers of today have been trained well before immutability (and the containing paradigm, functional programming) became 'trendy'".
+    - counter-point: " “large and/or complex objects” can very well be immutable. Strings are often large, and usually benefit from immutability. "
+  - Onorio Catenacci: 
+    - "I think you've all missed the most obvious answer. Most developers create mutable objects because mutability is the default in imperative languages."
+    - immutability is not a panacea any more than any other approach. It makes some things easier but makes others much more difficult as some answers have already pointed out.
+  - smartcaveman
+    - There is a place for mutability. Domain driven design principles provide a solid understanding of what should be mutable and what should be immutable.
+
+
+Domain driven design quickly 
+- http://carfield.com.hk/document/software%2Bdesign/dddquickly.pdf
+  - page ~35
+    - It is necessary to distinguish between Entity Objects and Value Objects.
+    - Being immutable, and having no identity, "Value Objects" can be shared. 
+    - ... the entity definition...
+    - **Value Objects** ==  Having no identity, Value Objects can be easily created and discarded.
+      - "It is highly recommended that value objects be immutable." -- _why?_
+        - _which would conflict with my existing 'very simple model' that uses public members for cue cards_...
+      - Being immutable, and having no identity, **Value Objects can be _shared_**. -- _what is meant by_ **_shared_**?
+        - One golden rule is: if Value Objects are shareable, they should be immutable. 
+        - .... 
+
+object sharing programming
+- https://medium.com/@brianwill/object-oriented-programming-a-personal-disaster-1b044c2383ab -- briefly skimmed... 
+
+sharing object references
+...
+
+when to use immutability
+- https://medium.com/tribalscale/understanding-immutability-fdd627b66e58
+  - Waqqas Sheikh
+  - State Machines
+  - My personal favourite advantage of Immutability is state machines. A state machine is any system that, upon receiving an event, transitions from one known immutable state to another
+  - Notice how both when the job is assigned and when it is completed, the developer forgot to update the job status field. This is a very common problem when working with mutable objects.
+
+
+immutability typescript 
+- https://www.reddit.com/r/typescript/comments/59lab1/can_we_create_immutable_objects_in_typescript/
+  - You can use the `readonly` keyword to mark a class's field as un-writable. It can be initialized but never changed after that.
+  - And not just classes, also properties of interfaces. You can also use [`Object.freeze`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/freeze) to get runtime immutability as well.
+
+
+immutable design pattern angular
+- https://vsavkin.com/immutability-vs-encapsulation-90549ab74487
+  - Using mutable objects for modeling application state makes tracking changes hard and incurs a sizable performance cost. Switching to immutable objects solves these problems, but brings new ones.
+  - Mutable objects make it hard to keep track of changes in an application.
+    - _-- hmm so I'm thinking rxjs reactivity also helps mitigate this aspect of the problem with mutability as well_.
+  - Primitives types like strings and numbers are immutable.
+  - You can freeze JavaScript objects and array to make them immutable, but a better option would be to use libraries like Immutable.js or Mori.
+    - _-- hmm if i were to go this direction, I'd want to implement once myself first, so that I could better appreciate & better-understand what such significant libraries were doing_
+      - _-- which is a bit concerning, for my delivery timelines... as I want to keep productivity high and not invest substantial amounts of time into learning new systems unnecessarily... there's value in growth, there's value in my SPIKED knowledge-seeking right now, but in terms of lasting impact to my implementation? hmm.._ 
+    - _........ (stopped reading earlier than intended) ........ (but i need to stop)...._
+
+
+
+  `<offtopic-ddd>`
+  Domain Driven Design
+  - https://www.youtube.com/watch?v=NNFJREcalc0 -- @ 1:11 ish... 
+    - @ 6:00 tactical vs strategic... 
+    - so he describes tactical design tools, which are my traditional tools de jour ("practical design tools")... exe / jar / zip... objects/classes... OOP... design patterns... modules... project...
+    - and then compares this against "strategic design tools"... which is clearly wholly different
+    - "strategic design tools are _the most important tools you can have_, and if you can grab those it'll really make you a good software architect or developer or manager."
+    - "everyone is 'experienced-enough' will always give more importance to 'strategic design tools'".
+    - "It's not the customer's job to know what they want - Steve Jobs"
+
+
+  tactical vs strategic
+  - https://www.youtube.com/watch?time_continue=16&v=64gwUSLYWN4 
+    - strategy 
+      - future (longer term)
+      - risk
+      - important
+      - a journey
+      - preparing and planning
+      - a purpose
+    - tactics 
+      - now (in the moment)
+      - narrow perspective
+      - a task
+      - reaction
+      - caution
+      - urgent
+
+
+  strategic design
+  - https://www.youtube.com/watch?v=Evers5npkmE 
+    - @ 7:45 - ubiquitous language
+    - @ 9:30 - bounded context ...... explains context map @ 11:40
+    - @ ~12:00 - "there's a saying: if your 'core sub-domain' is **not the best part** of your architecture, your architecture is not yet complete."
+      - "what that means is: don't try to be best at everything" -- Agree.
+      - is `architecture` (noun) ==? to `API`? ... 
+      - problem-space vs. solution-space....
+
+
+
+  problem-space vs. solution-space
+  - https://www.mindtheproduct.com/2017/07/the-playbook-for-achieving-product-market-fit/
+    - ... super cool, and... super pivot...
+
+  `</offtopic-ddd>`
+
+
+
+
+
+
+**designing model good**
+- at this point, I'm forced to consider what my success criteria will be for a "good model design".  the reason being of course, I do not wish to spend many more hours/days reading into best practices, while losing out on progressing my app _TODAY_.  while the idea in my research has been firmly set that "mutability is difficult to detect change" (and probably leads to state management 'nightmares'(?)...), I can't really stress too much this early yet, since I'm still learning best tactics for model design. Trying to be perfect on this first go isn't going to go well. Life experiences have taught me sufficiently that it's better for me to _fail fast_ in this circumstance, pick one approach that's _sufficiently lightweight for me to understand and implement in a timely fashion_, and once built, re-evaluate. **I need to make some kind of implementation for my brain to effectively think if it's good or not**... _Perfectionism in this case would slow me down significantly into very unproductive timelines._ So I won't allow it. 
+- I'm probably going to use an observable model, to continue practicing that particular design. Though I'm uncertain how to design that at this exact moment, I'll need to think a bit.
+
+Alternatively, I'm beginning to think that by the _nature_ of JavaScript **not** supporting references, it would be common convention that developers _create an identifier key_ to do string comparisons to determine identity of an object. While I've been resisting this notion earlier, it was supported by believing that object references were sharable -- clearly a Java/C# concept I brought into JavaScript, incorrectly. So which systems need unique identifiers, and why? 
+
+Cue Cards need unique identifiers -- at least while the application is running, and not while persisting to offline. 
+I think I will need to sophisticate my design a wee bit here. Right now I have simply `{ q: qqq, a: aaa } objects` that I directly load as **the definitive `CueCard` object**. However, by adding an identifier field { id: iii, ..., ... } then I can now create services that are dependent on tracking subsets of those questions that are being tested.... ......... which still upsets me, for unclear reasons. I think I'm just being biased against adding unique identifiers, so at every step of the way to adding more support, I'm putting up halting barriers to increase the justifcation cost. 
+
+If I add identifiers, I would **need** to serialize them. Serializing will work between sessions when the app is shut down. It seems like I should refactor my edit/add/delete code to rely on the identifiers instead of the matching field string.... although the question is why bother? **Since I'm moving towards `BehaviorSubjects`** which emit the values upon any changes, which includes emitting the entire array for changes to cueCards[], or just emitting the singular cueCardActive when that changes, _I don't see any need for any identifiers at this level_. This is because **all my interactions were through _that singular service_**, but now I'm moving towards multiple services interacting with different copies of different states of these objects. I **could** make _the new services_ **subscribe to** the existing `cue card loader service`, but now I am become worried about **overly coupling**. Is it normal for services to depend on other services in angular? 
+
+
+- https://medium.com/@balramchavan/best-practices-building-angular-services-using-facade-design-pattern-for-complex-systems-d8c516cb95eb
+  - I might want to use a facade to bind serveral services together.
+  - it's _might_ be okay to have multiple services be inter-dependent (i'm inferring / guessing)
+
+random
+- https://stackoverflow.com/questions/42378410/are-angular2s-services-supposed-to-be-stateless -- "Services are not supposed to be stateless. They often are, but it's not required." 
+
+
+Right now I'm struggling a little bit trying to figure out how to divide the responsibilities, and well define them. I'm currently holding onto a class : leitner-system service, and another class: quiz.component. With the [single responsibility principle](https://en.wikipedia.org/wiki/Single_responsibility_principle) in mind, so far I've separated the highly visual aspect of the quiz into being a component, and the highly model-related data set of managing cue card progression into a data-centric leitner system service. What I'm debating now is whether a _third_ class should be spun off for _choosing the group name_ to _originally create the first group_...... i'm leaning towards yes, via _another component_, as I expect this to be a low-model, high-visual thing. maybe "goal-manager.component.ts"... or study manager?... ~~theme manager?~~ ... topic manager?... "study topic Manager"... eh that last on works enough...
+
+when to use containers angular 
+- i think i should put "study topic manager component" and "topics component" into their container...
+- eh later.
+
+does typescript support static?
+- https://stackoverflow.com/questions/18554683/typescript-access-static-methods-within-classes-the-same-or-another-ones -- yup
+
+
+should i use protected with a nested inner class to limit access to StudiableTopic???
+- https://stackoverflow.com/questions/36843357/typescript-difference-between-private-and-protected-variables 
+  - I mean, I **can**. not sure yet if **should**.
+
+declaring nested objects type-safe in typescript shorthand
+
+
+adding meta data to arbitrary javascript objects
+- https://stackoverflow.com/questions/11740925/is-there-some-way-to-add-meta-data-to-javascript-objects -- ha, neat!
+
+typecast in typescript
+- https://stackoverflow.com/questions/13204759/typescript-or-javascript-type-casting
+
+
+typecast array typescript
+- https://stackoverflow.com/questions/39649994/how-to-cast-to-array-in-typescript-2/39650191 -- maybe use the .map method...
+
+
+linq typescript
+- http://www.garethrepton.com/TypeScript-equivalents-for-DotNet-Linq-functions/
+
+
+~~loop linq result until none left~~
+while linq query
+- https://docs.microsoft.com/en-us/dotnet/api/system.linq.enumerable.takewhile?view=netframework-4.8
+  - uses .TakeWhile.. cool
+
+takewhile equivalent in typescript
+- https://decembersoft.com/posts/typescript-vs-csharp-linq/#takewhile -- `while (i < users.length && predicate(users[i++]));` ... adapt this.
+
+
+iteratively check object array if has property
+
+javascript lambda return subset matching predicate 
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/filter
+
+
+javascript dynamic filter array of objects
+
+while loop filter javascript 
+
+(when to use `filter`, `reduce`...)
+- https://medium.com/@JeffLombardJr/understanding-foreach-map-filter-and-find-in-javascript-f91da93b9f2c
+
+(`every`)
+- https://medium.com/@JeffLombardJr/when-and-why-to-use-the-every-array-method-in-javascript-29ff42a40522
+
+  `<found-later>`
+  javascript map predicate
+  - https://stackoverflow.com/questions/48707227/how-to-filter-a-javascript-map
+    - **ES6 iterables have no problems when an entry is deleted inside a loop.**
+  `</found-later>`
+
+orig = [ {}, {}, {} ... ]
+copy = orig
+while ( copy.filter(!isPass) ) {
+  // ask ... wait..??
+  // copy reduce.
+}
+
+
+//pred
+isPass(qcc: QuizCueCard) : boolean {
+  return qcc.pass === true;
+}
+
+
+mutating array while iterating javascript (i know this is 'bad', i'm trying to recall why/how to deal with it again)
+- https://stackoverflow.com/questions/12482961/is-it-possible-to-change-values-of-the-array-when-doing-foreach-in-javascript -- uh yes??
+  - answer 2:
+    - var arr = ["one","two","three"];
+    - Because arr is an array of Strings, it's an array of primitive objects, which means they are stored by value.
+    - So for your code above, this means that each time the forEach() iterates, part is equal to the same value as arr[index], **but not the same object.**
+    - vs
+    - var arr = [{ num : "one" }, { num : "two"}, { num : "three"}];
+    - Now if array arr was an array of **reference types**, the code will work because reference types store a memory location of an object instead of the actual object.
+  - https://stackoverflow.com/a/38266781/1277651
+    - **".map() Keep original array" vs ".forEach() Modify original array"** 
+      - this! 
+
+can i use map to repeatedly invoke some action, like a while loop, until some "done" condition happens?
+
+async map javascript
+- https://flaviocopes.com/javascript-async-await-array-map/
+
+
+async javascript 
+- https://javascript.info/async-await
+
+process a list iteratively multiple times until consumed javascript
+
+javascript get first element of array that matches
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+
+
+~~javascript find predicate function~~
+(predicates in javascript)
+- https://codepen.io/Universalist/post/predicates-in-javascript
+
+
+javascript find inner object
+- https://stackoverflow.com/a/17378616/1277651 ... 
+  - 2nd answer: ~~was hopeful until I saw it used underscore. No extra unnecessary libraries!~~
+  - 4th answer: `console.log(arr.find(x => x !== Math.pow(x, 2)))` - this lambda i can work with... `x => x blah` reads as **any x such that**
+
+
+nested find javascript 
+
+
+find lambda nested javascript 
+- https://stackoverflow.com/questions/45114497/javascript-coding-style-for-nested-lambda-expression
+  - this guy uses `.forEach` instead of `.find`... hmm... 
+
+
+find javascript linq equivalent
+- https://stackoverflow.com/questions/18936774/javascript-equivalent-to-c-sharp-linq-select
+  - this guy uses `where()` + `firstOrDefault()` combo. 
+
+  - try using map, okay
+  - https://stackoverflow.com/a/18936797
+
+
+map find nest javascript 
+
+map find nest javascript lambda
+- https://stackoverflow.com/questions/48707227/how-to-filter-a-javascript-map
+  - `const reports = Object.values(reportArray).filter(report=> report.user._id === userId);`
+
+
+javascript first ~~or default~~ array 
+- https://stackoverflow.com/questions/28476629/equivalent-to-linqs-enumberable-firstpredicate
+  - use `.find()`
+
+javascript `.reduce()`
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce
+  - `[ { x: 22 }, { x: 42 } ].map( el => el.x ).reduce( maxCallback2, -Infinity );`
+
+
+
+`<task-fontawesome>`
+font-awesome some icons not working
+- https://fontawesome.com/icons?d=gallery&c=emoji&m=free
+  - found under search free
+
+- https://fontawesome.com/icons/grin-squint?style=regular
+  - didn't say pro under 2 of 3 icons, i'd picked the non-pro one `<i class="far fa-grin-squint"></i>`.
+  - saw inside my `node_modules/font-awesome` to see not matching class.
+
+- https://stackoverflow.com/questions/51208521/should-i-use-fontawesome-free-or-angular-fontawesome#comment93749935_51209075 
+  - far is pro only, great.
+  - grr? i'm confused at this conflicting presentation.
+  - ok so fas looks maybe ok? but not far? ... 
+
+
+new icons in font awesome 5
+- https://blog.fontawesome.com/font-awesome-5-1-409-new-icons-more-4c1e407fae49
+  - immediately looks exactly like the one icon i was trying to use. so the **pacakge** i'm using is **also** out of date. so just update to the **font-awesome-free** and i should be fine.
+  - well, i get some broken icons appearing when i import the updated paths...
+
+
+https://stackoverflow.com/questions/52455614/install-font-awesome-5-with-npm
+
+font awesome showing as squares
+
+https://stackoverflow.com/questions/26867795/font-awesome-is-not-showing-icon
+- The fa prefix has been deprecated in version 5. The new default is the fas solid style and the fab style for brands.
+
+https://stackoverflow.com/questions/52376720/how-to-make-font-awesome-5-work-with-webpack
+
+https://stackoverflow.com/questions/51208521/should-i-use-fontawesome-free-or-angular-fontawesome
+- this implies cannot use `fas` or `far` but not accepted, not highly upvoted.
+
+
+https://fontawesome.com/how-to-use/on-the-web/using-with/angular
+- Font Awesome now has an official Angular component that’s available for all who want to easily use our icons in projects.
+
+https://github.com/MurhafSousli/ngx-sharebuttons/issues/286
+- In version 6.x the icons must be loaded manually, read more on Icons Guide ....... what?
+
+https://murhafsousli.github.io/ngx-sharebuttons/#/icons
+- what?
+
+https://www.npmjs.com/package/@fortawesome/angular-fontawesome
+- just actually do follow the guide, ok, geeze. so impatient i jump around without reading.
+- works now.
+
+`</task-fontawesome>`
+
+
+angular emit event to parent component
