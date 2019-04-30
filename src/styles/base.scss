@@ -8,8 +8,23 @@ $tertiary-card-background: #a30000;
 $list-font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
 $list-font-size: 1.1em;
 //font-size: 14px; font-style: normal; font-variant: normal; font-weight: 700; line-height: 15.4px;"
+
+
+$card-width-px: 400px;
+$card-height-px: 200px;
+$card-padding-px: 20px;
+
+$card-width-with-padding-px: calc( #{$card-width-px} + #{$card-padding-px} + #{$card-padding-px} );
+$card-height-with-padding-px: calc( #{$card-height-px} + #{$card-padding-px} + #{$card-padding-px} );
+
+
+//***********************************
+// variables related to card in box
+//***********************************
+
 $card-in-box-width-px: 200px;
 $card-in-box-height-px: 100px;
+
 
 $magic-number-left-offset-px: 53px;
 //using `left: $magic-number-left-offset-px` appears to put exactly lined up at inside edge ... I *can't* explain why yet!

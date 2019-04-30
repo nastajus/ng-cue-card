@@ -8,3 +8,9 @@
     font-family: $list-font-family;
     font-size: 5em;
 }
+
+$extra: 50px;
+
+.quiz-wrapper {
+    height: calc( #{$card-height-with-padding-px} + #{$extra} );
+}

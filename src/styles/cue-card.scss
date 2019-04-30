@@ -31,13 +31,12 @@ input {
   perspective: 800px;
   display: flex;
   justify-content: center;
-  // left: $magic-number-left-offset-px;
 }
 
 .tp-card {
   position: relative;
-  width: 400px;
-  height: 200px;
+  width: $card-width-with-padding-px;
+  height: $card-height-with-padding-px;
   transform-style: preserve-3d;
   transition: transform 1s;
 
@@ -45,14 +44,13 @@ input {
     @extend .tp-card;
     width: $card-in-box-width-px;
     height: $card-in-box-height-px;
-    // left: $magic-number-left-offset-px;
-    //however, using left here inside the inner-nested div was causing other problems with "center-detection", so it's being moved up to the parent div class instead.
   }
 }
 
 .tp-card__side {
   width: 100%;
   height: 100%;
+  //padding: $card-padding-px;
   position: absolute;
   backface-visibility: hidden;
   color: $primary-font-color;

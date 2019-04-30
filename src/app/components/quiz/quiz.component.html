@@ -1,28 +1,16 @@
 <p>
   quiz works!
 </p>
-<!-- <fa name="cog" animation="spin"></fa> -->
 
-  <!-- 
-_ <i class="fab fa-grin-squint"></i> _ - <i class="fab fa-check"></i> - ^ <i class="fab fa-accessible-icon"></i> ^
-  <fa-icon [icon]="faCoffee"></fa-icon>
-  <fa-icon [icon]="faGrinSquint"></fa-icon> 
-  <fa-icon [icon]="['fas', 'coffee']"></fa-icon>
-  <fa-icon [icon]="['fas', 'laugh-beam']"></fa-icon>
-  -->
-
-<div>
-  <!-- <app-cue-card *ngIf="quizzingCard" [cueCard]="quizzingCard" (onBackShown)="fn($event)"></app-cue-card> -->
-  <!-- <app-cue-card *ngIf="quizzingCard" [cueCard]="quizzingCard" (onBackShown)="fn()"></app-cue-card> -->
+<div style="quiz-wrapper">
   <app-cue-card *ngIf="quizzingCard" [cueCard]="quizzingCard" (onBackShown)="showButtons = true"></app-cue-card>
-  <div *ngIf="!quizzingCard" class="tp-card">
-    <div class="congratulations-tp-card__side">
-      <fa-icon [icon]="['fas', 'grin-squint']"></fa-icon>
+  <div class="tp-wrapper">
+    <div *ngIf="!quizzingCard" class="tp-card">
+      <div class="congratulations-tp-card__side">
+        <fa-icon [icon]="['fas', 'grin-squint']"></fa-icon>
+      </div>
     </div>
   </div>
-  <!-- <div (backShown)=""> -->
-  <!-- <div *ngIf="backShown"> -->
-  <!-- <div (backShown)="fn($ev)" *ngIf="showButtons"> -->
   <div *ngIf="showButtons">
     <button (click)="nahForgot(quizzingCard)" style="background: #ff4040">nah, try again</button>
     <button (click)="yahRecalled(quizzingCard)" style="background: #40ff40">yup, onwards!</button>
