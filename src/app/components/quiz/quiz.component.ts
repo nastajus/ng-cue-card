@@ -14,7 +14,8 @@ export class QuizComponent implements OnInit {
   quizzingCard: QuizzingCueCard;
   quizzingRemains: QuizzingCueCard[];
 
-  showButtons: boolean = false;
+  //private _showButtons: boolean = false;
+  hasSeenBack: boolean = false; 
   cardsLeft: number;
 
   constructor(stm: StudyTopicManagerService) {
@@ -32,28 +33,37 @@ export class QuizComponent implements OnInit {
     let nonAttempted = this.quizzingRemains.filter(qcc => !qcc.attempted)
     this.cardsLeft = this.quizzingRemains.length;
 
-    if (nonAttempted) {
+    if (nonAttempted.length > 0) {
       this.quizzingCard = this.quizzingRemains.find(qcc => !qcc.attempted);
     }
-    else if (this.quizzingRemains) {
-      this.quizzingCard = this.quizzingRemains[Math.floor(Math.random() * this.quizzingRemains.length - 1)];
+    else if (this.quizzingRemains.length > 0) {
+      let index = Math.floor(Math.random() * this.quizzingRemains.length);
+      this.quizzingCard = this.quizzingRemains[ index ];
+      console.log(index, this.quizzingCard);
     }
     else {
       this.quizzingCard = null;
     }
+
+    //reset
+    this.hasSeenBack = false;
   }
 
   yahRecalled(qcc: QuizzingCueCard) {
     qcc.recall = QuizStatus.pass;
     this.pickQuizCard(this.quizzingRemains);
-    this.showButtons = false;
     //slide out, show to front
   }
 
+  //at some point, enough clicks here somehow stops the "auto-flip" happening.
   nahForgot(qcc: QuizzingCueCard) {
     qcc.recall = QuizStatus.fail;
     qcc.attempted = true;
     this.pickQuizCard(this.quizzingRemains);
+  }
+
+  showButtons($event) {
+    this.hasSeenBack = $event;
   }
 }
 

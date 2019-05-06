@@ -32,6 +32,31 @@ export default
       "compiledValue": "1.1em"
     },
     {
+      "name": "$card-width-px",
+      "value": "400px",
+      "compiledValue": "400px"
+    },
+    {
+      "name": "$card-height-px",
+      "value": "200px",
+      "compiledValue": "200px"
+    },
+    {
+      "name": "$card-padding-px",
+      "value": "20px",
+      "compiledValue": "20px"
+    },
+    {
+      "name": "$card-width-with-padding-px",
+      "value": "calc( #{$card-width-px} + #{$card-padding-px} + #{$card-padding-px} )",
+      "compiledValue": "calc( 400px + 20px + 20px)"
+    },
+    {
+      "name": "$card-height-with-padding-px",
+      "value": "calc( #{$card-height-px} + #{$card-padding-px} + #{$card-padding-px} )",
+      "compiledValue": "calc( 200px + 20px + 20px)"
+    },
+    {
       "name": "$card-in-box-width-px",
       "value": "200px",
       "compiledValue": "200px"

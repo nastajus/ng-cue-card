@@ -2,8 +2,9 @@
   quiz works!
 </p>
 
-<div style="quiz-wrapper">
-  <app-cue-card *ngIf="quizzingCard" [cueCard]="quizzingCard" (onBackShown)="showButtons = true"></app-cue-card>
+<div class="quiz-wrapper">
+  <app-cue-card *ngIf="quizzingCard" [cueCard]="quizzingCard" (onBackShown)="showButtons($event)"></app-cue-card>
+  {{yo}}
   <div class="tp-wrapper">
     <div *ngIf="!quizzingCard" class="tp-card">
       <div class="congratulations-tp-card__side">
@@ -11,11 +12,11 @@
       </div>
     </div>
   </div>
-  <div *ngIf="showButtons">
+  <div *ngIf="hasSeenBack">
     <button (click)="nahForgot(quizzingCard)" style="background: #ff4040">nah, try again</button>
     <button (click)="yahRecalled(quizzingCard)" style="background: #40ff40">yup, onwards!</button>
   </div>
-  <div *ngIf="!showButtons">
+  <div *ngIf="!hasSeenBack">
       try to recall ↑ then flip ↻ <br/>
       (cards left: {{cardsLeft}})
   </div>

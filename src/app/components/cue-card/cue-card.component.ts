@@ -1,9 +1,9 @@
-import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, ViewChild, ElementRef, ViewChildren, QueryList, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CueCard } from 'src/app/models/cue-card';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
 import sassExport from 'src/app/generated/styles/base';
-import { Subscription, fromEvent, Subject } from 'rxjs';
+import { Subscription, fromEvent } from 'rxjs';
 //import 'rxjs/add/operator/takeUntil';
 
 
@@ -14,15 +14,17 @@ import { Subscription, fromEvent, Subject } from 'rxjs';
   // animations: CueCardAnimations
   animations: [
     trigger('flipState', [
-      state('active', style({
-        transform: 'rotateY(179.9deg)'
-      })),
-      state('inactive', style({
+      state('flip-front', style({
         transform: 'rotateY(0)'
       })),
-      transition('active => inactive', animate('500ms ease-out')),
-      transition('inactive => active', animate('500ms ease-in'))
-    ])  
+      state('flip-back', style({
+        transform: 'rotateY(180deg)'
+      })),
+      transition('flip-front => flip-back', animate('500ms ease-in')), //firefox bug, rotates twice... sigh.
+
+      //this transition "jumps" during mid-animation to an earlier point, unclear cause ...
+      //transition('back => front', animate('500ms ease-in')) 
+    ])
   ]
 })
 export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
@@ -35,7 +37,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   private _colorPrimary: string;
   private _colorSecondary: string;
 
-  flip: string = 'inactive';
+  flip: string = 'flip-front';
 
   @Input() cueCard: CueCard
 
@@ -44,6 +46,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
   @Input() ccId: string;
 
+  //to indicate back was *ever* shown to parent even once during a card instance lifetime.
   private _backShown = false;
   @Output() onBackShown: EventEmitter<boolean> = new EventEmitter();
 
@@ -54,11 +57,10 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   }
 
   ngOnChanges() {
-    //reset toggle... yuck... is there a better design?? when reading this whole component, it'll be messier looking than is desirable.
-    //ugly AND BUGGY... yeesh
+    
     if (this._backShown) {
-      this._backShown = false;
-      this.toggleFlip();  
+      // this.toggleFlip();   //this causes some weird state too... 
+      this.resetFlip();
     }
   }
 
@@ -92,12 +94,15 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   }
 
   toggleFlip() {
-    this.flip = (this.flip == 'inactive') ? 'active' : 'inactive';
+    this.flip = (this.flip == 'flip-front') ? 'flip-back' : 'flip-front';
+    this._backShown = !this._backShown;
+    this.onBackShown.emit(this._backShown);
+  }
 
-    //only need to know once in the lifetime of a card
-    if (this._backShown) { return; }
-    this.onBackShown.emit(true);
-    this._backShown = true;
+  resetFlip() {
+    this.flip = 'flip-front';
+    this._backShown = false;
+    this.onBackShown.emit(this._backShown);
   }
 
   //TODO: test performance on low-power devices, ugly jittering jumps visible console was logging, but gone without.
