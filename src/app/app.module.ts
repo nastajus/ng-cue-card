@@ -19,6 +19,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 // import entire icon styles. But be careful! Whatever you import may end up bloating your final bundle with icons you're not using.
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
+import { YoComponent } from './components/yo/yo.component';
 //import { fab } from '@fortawesome/free-brands-svg-icons';
 library.add(fas, far);
 
@@ -32,7 +33,8 @@ library.add(fas, far);
     CueCardShoeBoxComponent,
     TestComponent,
     QuizComponent,
-    StudyTopicComponent
+    StudyTopicComponent,
+    YoComponent
   ],
   imports: [
     BrowserModule,

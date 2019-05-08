@@ -816,3 +816,47 @@ https://www.npmjs.com/package/@fortawesome/angular-fontawesome
 
 
 angular emit event to parent component
+
+
+after some pondering, i'm searching now for:
+component destruction not triggering animation angular
+- https://github.com/angular/angular/issues/10520
+  - which raises the prospect that animation might be able to execute due to a "too-fast" scenario. hmm
+  - it talks about 'host binding'... what is this?
+  - https://www.youtube.com/watch?v=qD9eB4oprPI --- "learn how to respond to [output events] that occur on the [host element] {the _directive_ is attached to}
+    - ok so... parent / child == host / attached??
+      - so suppose that's the case, then... quiz is parent, cue card is child... does this mean host is quiz? ... do i even have a quiz-based event occuring? yes, i do. the button "ya" is. but then how is this different from existing angular animations? it doesn't seem to be. well, hold onto that question, and keep watching.
+      - this video MAY NOT MATCH my needs, since it's using *directives*. Are components==directives??? 
+        - ok so i google "directive angular"
+          - https://angular.io/guide/attribute-directives
+          - in here i see @HostListener is used in a directive, and it is defined preceding a typcial function name, like `@HostListener mouseEnter()`... and the chain of syntax that lets it work is that inside this function it retrieves / accesses whatever value is passed into the directive in the parent app.... so we got 
+            - `<app> <p [appHighlight]="color">Highlight me!</p> </app>`... so this allows the parent to pass in color to the child...
+            - and then the directive named with selector appHighlight also have a matching @Input('appHighlight') **identically named**, but internally to the class it's renamed inside as something more specific as @Input binds to that class' own variable: highlightColor.
+            - and so ya... i'd say... that @HostListener('mouseenter') is applying the "parent" so to speak... because it clearly is IN ANOTHER CLASS, yet is APPLYING to the parent!
+            - i'm just uncertain how @HostListener may or may not apply **outside the directive concept**.
+  - is a directive the same as, or a type of component? can i generally consider them as mostly equivalent or not? 
+    - what is a directive angular
+    - https://blog.angular-university.io/angular-components-and-directives-for-beginners/
+    - ok, short story: looks like a directive is more of an attribute inside a tag, but a component IS THE TAG. in terms of syntactic equivalence.
+    - so, no, not the same...
+    - but... HostListener might work the same regardless across both these.
+      - https://stackoverflow.com/questions/47654635/angular-hostlistener-event-from-child-component-to-parent-component
+      - this looks promising, seems to indicate it does in fact work between parent-child component relationships. read more still.
+
+component destruction not triggering animation angular
+- https://stackoverflow.com/questions/51118182/leave-animation-not-working-in-angular-6-component
+  - not sure how `:host { display: block; }` is supposed to help... and i may be in a contradictory situation since i already have `display: flex` working... hmmm. in any event, i tried putting both that directly in .scss file (not sure what invokes it), and `style="display: block"` into a parent div and directly in that app-cue-card component, no change. I think the class overrode it? i dunno really.
+
+
+display: block angular animation why
+  - incidentally, found zIndex: `style({ zIndex: 100 })` for true state and `style({ zIndex: 0 })` for false state. Didn't get this working previously.
+  - seems irrelevent, not focusing on this.
+
+
+decided to build test component in simplest scenario from scratch, to better figure out what's going on
+
+animate on destruction angular
+- https://github.com/angular/angular/issues/15798#issuecomment-305934289
+  - this looks like **it might be the** answer.
+    - animateChild() is needed only if you have :leave animations in a child component and the parent is removed from the DOM.... 
+

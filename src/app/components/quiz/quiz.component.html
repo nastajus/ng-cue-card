@@ -2,9 +2,9 @@
   quiz works!
 </p>
 
-<div class="quiz-wrapper">
+<div class="quiz-wrapper"> <!-- style="display: block"-->
   <app-cue-card *ngIf="quizzingCard" [cueCard]="quizzingCard" (onBackShown)="showButtons($event)"></app-cue-card>
-  {{yo}}
+  qc={{quizzingCard}}
   <div class="tp-wrapper">
     <div *ngIf="!quizzingCard" class="tp-card">
       <div class="congratulations-tp-card__side">

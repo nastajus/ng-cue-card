@@ -24,6 +24,15 @@ import { Subscription, fromEvent } from 'rxjs';
 
       //this transition "jumps" during mid-animation to an earlier point, unclear cause ...
       //transition('back => front', animate('500ms ease-in')) 
+    ]),
+    trigger('yo', [
+      transition('void => *', [
+        style({ transform: 'translateX(-100%)'}), 
+        animate('1s')
+      ]),
+      transition('* => void', [
+        animate('1s', style({ transform: 'translateX(100%)'}))
+      ])
     ])
   ]
 })
@@ -73,24 +82,24 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     this._elemKid = this._elem.querySelector('.tp-card__front');
 
     //possibly causes my 2x call error to ngOnDestory?
-    this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { 
+    // this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { 
 
-      //change height
-      let distance = this.calculateDistance(this._elem, e.pageX, e.pageY);
-      this.lerpChangeCardHeight(distance, this._elem);
+    //   //change height
+    //   let distance = this.calculateDistance(this._elem, e.pageX, e.pageY);
+    //   this.lerpChangeCardHeight(distance, this._elem);
 
-      //change color
-      this.lerpChangeCardColor(distance, this._elemKid);
-    })
+    //   //change color
+    //   this.lerpChangeCardColor(distance, this._elemKid);
+    // })
   }
 
   ngOnDestroy() {
     //TODO remove this ugly hack -- it's ugly because it buries an unknown problem, and will lead to more problems later.
-    if (!this._mouseSubscription) { 
-      console.warn(`attempting to destroy cue card despite it already destroying successfully earlier... hiding error related to second unnecessary attempt to unsubscribe:  ${this._mouseSubscription}... `);
-      return;
-    }
-    this._mouseSubscription.unsubscribe();
+    // if (!this._mouseSubscription) { 
+    //   console.warn(`attempting to destroy cue card despite it already destroying successfully earlier... hiding error related to second unnecessary attempt to unsubscribe:  ${this._mouseSubscription}... `);
+    //   return;
+    // }
+    // this._mouseSubscription.unsubscribe();
   }
 
   toggleFlip() {
