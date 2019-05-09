@@ -1,4 +1,5 @@
 <!-- so i know animation trigger 'yo' has been registered... -->
-<p style="background: greenyellow" (click)="destroyMe()" [@yo] @flyInOut>
+<!-- @flyInOut -->
+<p style="background: greenyellow" (click)="destroyMe()" [@yo] *ngIf="vis">
   yo works!
 </p>

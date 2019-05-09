@@ -26,8 +26,9 @@ import { Subscription, fromEvent } from 'rxjs';
       //transition('back => front', animate('500ms ease-in')) 
     ]),
     trigger('yo', [
-      transition('void => *', [
-        style({ transform: 'translateX(-100%)'}), 
+      //transition('void => *', [
+      transition(':enter', [
+          style({ transform: 'translateX(-100%)'}), 
         animate('1s')
       ]),
       transition('* => void', [

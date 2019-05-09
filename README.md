@@ -860,3 +860,54 @@ animate on destruction angular
   - this looks like **it might be the** answer.
     - animateChild() is needed only if you have :leave animations in a child component and the parent is removed from the DOM.... 
 
+- https://stackblitz.com/edit/angular-animatechild?file=app%2Fapp.component.html
+  - ooh ok there's lots to learn from this example
+    - ooh interesting... `(someAnimation.done)="expression"` ...!  i can bind to sub-animation events, neat!
+    - https://alligator.io/angular/animation-callbacks/
+  - parent animation and child animation, this is interesting nesting i hadn't considered before. mainly due to the barrier i have getting a single destroy animation to work
+  - also, i get how the `query` operator works now too, which i resisted learning before, due to so many things appearing at once when i first started reading animations. i previously got overwhelmed trying to absorb too quickly too many callback functions. i tried understanding too much how they all combine.
+  - and why do we need `animateChild()`? as i've read elsewhere earlier in the above github issue, a _parent animation_ will override any _child animation_, unless explicitly called. 
+    - so i've also defined what is meant by parent / child in the context of animations... somewhat.
+      - now I wonder whether ............................ nvm forgot. left cafe in a hurry.
+
+
+
+  
+
+https://medium.com/@tanya/angular4-animated-route-transitions-b5b9667cd67c
+- "You could use transition(':enter', []) or transition(':leave', []) to target the “component added” or “component removed” state changes specifically, but that would not allow you to run the fade-out and fade-in animations in series."
+  - hmm, interesting. so this person uses an outer `transition( '* => *',` followed by inner `query(':enter')` and inner `query(:leave)` to chain in series. neat. Not what i need. 
+
+https://stackoverflow.com/questions/51589893/angular-5-animation-how-to-work-with-leave-transition-while-the-component-is-r
+  - this person's answer seems like exactly what i'm thinking, but i hate to have to use it. gotta be a better answer than that ugly workaround out there.
+
+
+https://angular.io/api/animations/AnimationPlayer
+- uhh.. do i need? not sure yet. seems like a lower-level of control. i'd rather read online to use this, before experimenting with using it, since i'm biased against going too low-level unnecessarily.
+
+
+https://stackoverflow.com/questions/46388831/ngif-does-not-react-to-boolean-change
+- this talks about an uncaught error. ... hmm... but i commented that possibility out... hmm..
+
+
+https://stackoverflow.com/questions/36417931/angular-2-ngif-and-css-transition-animation
+- finally somebody says use hidden instead of destroy. my god.
+  - so i'm going back to the source material wording now, to explain this tardy answer... https://angular.io/guide/transition-and-triggers
+    - here under the first `* => void`, this part is quoted, emphasis mine: "A transition of * => void applies when the element **leaves a view**, regardless of what state it was in before it left."
+      - when i read this... my mind made assumptions... i'm upset.
+      - wait, what!!! "Note: For our purposes, an element entering or leaving a view is equivalent to being inserted or removed from the DOM."
+        - whaaaat!!! does this even mean.... "Is Equivalent to"... the wording i'm understanding from the stackoverflow post is that DELETING FROM THE DOM DOES NOT TRIGGER THIS ANIMATION... but the wording in the documents gives me the impression deleting from the DOM DOES trigger....!!!
+        - wait this stackoverflow answer is circa 2016........................... yeesh! doesn't seem necessarily applicable anymore.
+        - **i shouldn't have to use hidden!!!!**
+        - the next heavily upvoted answer has an animationTriggerName consisting of both INandOUT.!! 
+- **this is so freaking weird!!!**
+  - ok so i got it working... in a peculiar way... i mean maybe it's not, but it is... 
+  - i got it working with *ngIf="someBoolean" _INSIDE_ the component!... but it has it won't work directly at the _PARENT LEVEL_ where i put *ngIf="cueCardCanExist".... 
+  - okay, maybe this isn't weird. maybe this is just the problem of wrong-level-of-thinking.
+  - so, in other words, i was expecting an animation to trigger inside a component, when something EXTERNAL TO THE COMPONENT MADE IT STOP EXISTING. 
+  - so, it was _MY THINKING_ THAT WAS WRONG.
+  - but, if i am to accept this, then my manner of proof is the Augury plugin. And, that, well, STILL SHOWS THE COMPONENT EXISTS... **BUT** it's NO LONGER IN THE DOM!!!.... so i'm forced to conclude that AUGURY doesn't update it.... ..... .......................................................
+    - i'm practically certain that Angular keeps references to all objects, and just because i start using an *ngIf to filter out the ones that an object's boolean is set to false, doesn't mean that it disposes of those objects.
+    - **essentially the root of my problem for the longest time was my initial assumed design that simply going: `<app-cue-card cueCard=THISCARD></app-cue-card>` was a _GOOD_ design when in fact it was a _BAD DESIGN!!!_**
+      - was it bad? i dunno. i feel like the parent controlling the reference by _simply making the component CEASE TO EXIST by merely passing in NOTHING / NULL_ was a **great** design...
+      - but since this approach clearly **DOESN'T WORK WITH ANIMATIONS i'll be forced to use a boolean instead.**
