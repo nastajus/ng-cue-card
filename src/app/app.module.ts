@@ -21,7 +21,6 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { YoComponent } from './components/yo/yo.component';
 import { FadeComponent } from './components/fade/fade.component';
-import { SlideComponent } from './components/slide/slide.component';
 //import { fab } from '@fortawesome/free-brands-svg-icons';
 library.add(fas, far);
 
@@ -37,8 +36,7 @@ library.add(fas, far);
     QuizComponent,
     StudyTopicComponent,
     YoComponent,
-    FadeComponent,
-    SlideComponent
+    FadeComponent
   ],
   imports: [
     BrowserModule,

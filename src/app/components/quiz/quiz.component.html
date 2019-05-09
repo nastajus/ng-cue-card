@@ -2,9 +2,30 @@
   quiz works!
 </p>
 
-<div class="quiz-wrapper"> <!-- style="display: block"-->
-  <app-cue-card *ngIf="quizzingCard" [cueCard]="quizzingCard" (onBackShown)="showButtons($event)"></app-cue-card>
-  qc={{quizzingCard}}
+<div class="quiz-wrapper"> 
+
+    <div *ngIf="hasSeenBack">
+      <button (click)="nahForgot(quizzingCard)" style="background: #ff4040">nah, try again</button>
+      <button (click)="yahRecalled(quizzingCard)" style="background: #40ff40">yup, onwards!</button>
+    </div>
+
+  <!-- semi-eureka! discovered in fact that animations do applyi to NORMAL elements but NOT to angular child components. -->
+  <app-yo [@fadeInOut]  *ngIf="quizzingCard"></app-yo>
+  <div [@fadeInOut]  *ngIf="quizzingCard"> test </div>
+
+
+  <div [@fadeInOut] *ngIf="quizzingCard" >
+    THIS WORKS
+    <app-cue-card [cueCard]="quizzingCard" (onBackShown)="showButtons($event)" ></app-cue-card>
+  </div>
+
+  THIS DOES NOT WORK
+  <app-cue-card  [@fadeInOut] *ngIf="quizzingCard" [cueCard]="quizzingCard" (onBackShown)="showButtons($event)" >
+  </app-cue-card>
+
+  I HATE YOU ANGULAR
+
+  qc={{quizzingCard}}<br>
   <div class="tp-wrapper">
     <div *ngIf="!quizzingCard" class="tp-card">
       <div class="congratulations-tp-card__side">
@@ -12,10 +33,7 @@
       </div>
     </div>
   </div>
-  <div *ngIf="hasSeenBack">
-    <button (click)="nahForgot(quizzingCard)" style="background: #ff4040">nah, try again</button>
-    <button (click)="yahRecalled(quizzingCard)" style="background: #40ff40">yup, onwards!</button>
-  </div>
+
   <div *ngIf="!hasSeenBack">
       try to recall ↑ then flip ↻ <br/>
       (cards left: {{cardsLeft}})

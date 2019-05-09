@@ -21,6 +21,7 @@ export class CueCard {
 export class QuizzingCueCard extends CueCard {
     recall: QuizStatus;
     attempted: boolean;
+    //visible: boolean;// = true; //doesn't auto initialize when casting 
 }
 
 export enum QuizStatus { fail, pass }
@@ -59,5 +60,6 @@ export class Studiable {
     constructor(st: StudyTopic, cc?: CueCard[]) {
         this.studyTopic = st;
         this.quizCueCards = <QuizzingCueCard[]>cc;
+        //this.quizCueCards.map( x => x.visible = true );
     }
 }

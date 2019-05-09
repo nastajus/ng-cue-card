@@ -911,3 +911,96 @@ https://stackoverflow.com/questions/36417931/angular-2-ngif-and-css-transition-a
     - **essentially the root of my problem for the longest time was my initial assumed design that simply going: `<app-cue-card cueCard=THISCARD></app-cue-card>` was a _GOOD_ design when in fact it was a _BAD DESIGN!!!_**
       - was it bad? i dunno. i feel like the parent controlling the reference by _simply making the component CEASE TO EXIST by merely passing in NOTHING / NULL_ was a **great** design...
       - but since this approach clearly **DOESN'T WORK WITH ANIMATIONS i'll be forced to use a boolean instead.**
+
+  - am still upset though.
+  - i still think i should be able to trigger an animation upon a component no longer existing.
+  - but it's probably no longer advantagious to keep pursuing, and instead i should just redo my design already to use a boolean. 
+
+
+self destruct component angular
+https://stackoverflow.com/questions/39764546/can-component-invoke-a-self-destroy-event
+
+this says how life cycle events are raised relating to *ngIf
+https://stackoverflow.com/questions/45855673/angular2-destroy-current-component-completely
+
+in attempting to compare these: nativeElement.remove vs *ngIf
+found a nice balanced perspective of weighing hiding vs deleting:
+https://stackoverflow.com/questions/51317666/when-should-i-use-ngif-over-hidden-property-and-vice-versa
+
+
+
+**so i can say the very least, there's times when it makes the most sense to each hide or delete.**
+And with such balanced thoughts in mind, I suppose I might want to keep the singular cc component alive, trigger sliding animations while switching versions of ccs, and finally terminate the cc component entirely when the last one was reached, but first i have to use a new boolean to trigger it's animation, and then i have to choose one of two destruction methods: nativeElement.remove() vs *ngIf="qc". so i'm going to re-consult #2 link above again.
+
+i mean, okay, so, it's wrecked (de-instantiated, triggers ngDestroy), and then suppose i let users study another session in browser right after (let's say the artificially advance the date). well, then, the mild performance hit of re-instantiating that component then is ... FINE. it's GOOD. it's ... OKAY. there's nothing wrong with that. 
+
+
+ok so this logic isn't working as I intended
+typescript casting default values
+
+```
+class A_elsewhere:
+  constructor(cc?: CueCard[]) {
+      this.quizCueCards = <QuizzingCueCard[]>cc;
+  }
+
+class QuizzingCueCard extends CueCard {
+      visible: boolean = true;
+  }
+```
+
+thought this would auto populate... not sure that's the case... i mean, clearly it doesn't work...
+- https://stackoverflow.com/questions/5802762/javascript-set-all-values-of-an-array
+  - i can use .fill in ts nowadays probably safely, it's 2-3 years after that post, and it's in typescript, which i'm assuming handles all the polyfills... blah. 
+  - then i realized .fill() doesn't permit attribute additions, it completely clobbers the entire contents. `.map( x => x.visible = true);` was the way to go!
+
+okay... as fun as switching to .visible is... **it makes absolutely no difference whatsover**, i have feature pariety still. Animations are the same still. 
+
+**i'm beginning to think my usage of a single cue card app instance is what's killing me here.**
+
+**as i keep passing in updated references of which cue card to use, i'm never actually destructing the cue card components between card model instances!!!**
+
+this is the real problem!!!
+so... i need to create and destroy new cue card component instances as i go!!!! 
+this is the solution!!!
+stop updating the variable instance of a single cue card!!!
+wow -- what an amazing oversight!!! 
+took waaaay toooo loooong to figure out!
+
+
+well, okay, but... then.... if i still use ngIf in the parent quiz component to manage the different card component instances, then i think i need to promote the animation logic outside of card and into quiz... since that's my goal right now, to animate the damn card at the end of it's life... so even though i have card instantiation animation triggering successfully in the card, i would want to move that up to the quiz level as well probably is what i'm thinking, to keep similar logic grouped together.
+
+
+**semi-eureka! discovered in fact that animations do applyi to NORMAL elements but NOT to angular child components.**
+- and the rabbit hole deepens, but also, more clearly defines itself.
+- it's clear now that the destructing doesn't happen... i wonder if it's because animations are defined on ... one of the children? the cue card specifically... somehow holding up the others???
+  - removing the `[@flipState]` had no impact
+  - removing the entire `animations`... callback tree had no impact neither.
+
+
+am i back to square one? i'm uncertain.
+- https://github.com/angular/angular/issues/15753
+  - slighly different points being made here.
+  - well, i suppose it's time i try `query` and `animateChild`
+
+
+how to use query animateChild
+- https://www.youtube.com/watch?v=3o31QIC8Mw0
+  - ok so already ... there's a parent-dom and child-dom relationship that dictates a hierarchy of which animation triggers work. right away the guy's saying how the child (dom) animation is blocked when there exists a parent (dom animation declaration). okay. but. that's. not. even. my problem. ugh
+  - and yet i'm pursuing this animateChild nonsense. grumble.
+
+
+animate child... hmm... no? ugh... but... why...... grumble... because i'm having conflicing interpretations of what is a parent and child. 
+- one interpretation is dom nesting of any 2+ tag sets where each have different trigger name bindings, like `<div [@foo]>... <div [@bar]> BAR </div> ... </div>`... hmmm.
+- another interpretation is that any child component doesn't have animations triggers for some unknown reasons... which... seems to be more my issue...
+
+
+animations not working on components on native elements angular 
+cannot animate components angular
+- https://angular.io/api/animations/animateChild == Executes a queried inner animation element within an animation sequence.
+  - works with a queried element... so i need ot use with query... okay.
+- https://angular.io/api/animations/query  == Finds one or more inner elements within the current element that is being animated within a sequence. Use with animate().
+  - so i can use this to "find" ... okay.
+
+
+but my fundamental approach of trying to get this animation to execute on the parent level... still bothers me it doesn't work... but maybe this is the ONLY way to make it work in angular? i can at least try to see if it works at all, no harm in that at least.

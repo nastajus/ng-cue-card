@@ -19,6 +19,19 @@ import { HostBinding, ViewChild } from '@angular/core';
         //animate(500, style({opacity:0}))
       ])
     ]),
+    trigger('childTrigger', [
+      transition('void => *', [
+        //query('h1', style({ opacity: 0 })),
+        style({opacity:0, transform: 'translateX(0)'}), //style only for transition transition (after transiton it removes)
+        animate(500, style({opacity:1, transform: 'translateX(100%)'})) // the new state of the transition(after transiton it removes)
+
+        
+      ]),
+      transition('* => void', [
+        animate(500, style({opacity:0})), // the new state of the transition(after transiton it removes)
+    
+      ])
+    ])
     // trigger('flyInOut', [
     //   transition(':enter', [
     //     style({transform: 'translateX(-100%)'}),

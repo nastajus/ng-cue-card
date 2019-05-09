@@ -11,28 +11,19 @@ import { Subscription, fromEvent } from 'rxjs';
   selector: 'app-cue-card',
   templateUrl: './cue-card.component.html',
   styleUrls: ['./cue-card.component.scss'],
-  // animations: CueCardAnimations
-  animations: [
-    trigger('flipState', [
-      state('flip-front', style({
-        transform: 'rotateY(0)'
-      })),
-      state('flip-back', style({
-        transform: 'rotateY(180deg)'
-      })),
-      transition('flip-front => flip-back', animate('500ms ease-in')), //firefox bug, rotates twice... sigh.
+  animations:
+  [
+    trigger('childTrigger', [
+      transition('void => *', [
+        //query('h1', style({ opacity: 0 })),
+        style({opacity:0, transform: 'translateX(0)'}), //style only for transition transition (after transiton it removes)
+        animate(500, style({opacity:1, transform: 'translateX(100%)'})) // the new state of the transition(after transiton it removes)
 
-      //this transition "jumps" during mid-animation to an earlier point, unclear cause ...
-      //transition('back => front', animate('500ms ease-in')) 
-    ]),
-    trigger('yo', [
-      //transition('void => *', [
-      transition(':enter', [
-          style({ transform: 'translateX(-100%)'}), 
-        animate('1s')
+        
       ]),
       transition('* => void', [
-        animate('1s', style({ transform: 'translateX(100%)'}))
+        animate(500, style({opacity:0})), // the new state of the transition(after transiton it removes)
+    
       ])
     ])
   ]
