@@ -1004,3 +1004,45 @@ cannot animate components angular
 
 
 but my fundamental approach of trying to get this animation to execute on the parent level... still bothers me it doesn't work... but maybe this is the ONLY way to make it work in angular? i can at least try to see if it works at all, no harm in that at least.
+
+
+
+how to destroy component angular
+- https://malcoded.com/posts/angular-dynamic-components/    
+  //const componentFactory = this.componentFactoryResolver.resolveComponentFactory(DialogComponent);
+  //  const componentRef = componentFactory.create(this.injector);
+  //this.appRef.attachView(componentRef.hostView)
+  //this.appRef.detachView(this.dialogComponentRef.hostView);
+
+ugh. nvm.
+
+
+is emit(null) bad practice ?
+- https://softwareengineering.stackexchange.com/questions/120355/is-it-better-to-return-null-or-empty-values-from-functions-methods-where-the-ret
+  - lots of good thoughts.
+  - nothing matters.
+  - just do it.
+
+
+
+angular animate 1 transition only
+angular single animation transition
+  - ok this seems annoying to me. there seems to be a default expectation of needing a 'pair' of animations baked into the assumptions of how everything works.  this is kind of annoying, as I prefer to always do things the "simplest" way first. And adding extra (perceived) "boilerplate" unnecessary code to fabricate a "useless" state is abhorent and unclean. So, I have to either get over it, or figure out the google search terms that reveal the stackoverflow post that tells me what the convention for my problem is. 
+
+
+
+wrote this: `[@slider]="hasRecalled ? 'nextCard' : ''"`
+got this error: **Parser Error: Binding expression cannot contain chained expression at the end of the expression**
+discovered it's a bad practice: https://stackoverflow.com/questions/43117917/angular-2-bindings-cannot-contain-assignments
+okay.
+
+
+
+angular animate doesn't persist
+- https://github.com/angular/angular/issues/16919
+  - hmm, open issue, from 2018... but it's too big a topic to have been unresolved so long. this can't be the right conclusion on my issue (z-index (and opacity) isn't persisting past animation...).
+
+angular animate doesn't stay
+  - https://stackoverflow.com/questions/52000815/animation-doesnt-keep-final-state-switches-back-to-original-state
+
+  

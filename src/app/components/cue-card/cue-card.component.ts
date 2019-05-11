@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter, ElementRef } from '@angular/core';
 import { CueCard } from 'src/app/models/cue-card';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
@@ -7,24 +7,38 @@ import { Subscription, fromEvent } from 'rxjs';
 //import 'rxjs/add/operator/takeUntil';
 
 
+
 @Component({
   selector: 'app-cue-card',
   templateUrl: './cue-card.component.html',
   styleUrls: ['./cue-card.component.scss'],
   animations:
   [
-    trigger('childTrigger', [
-      transition('void => *', [
-        //query('h1', style({ opacity: 0 })),
-        style({opacity:0, transform: 'translateX(0)'}), //style only for transition transition (after transiton it removes)
-        animate(500, style({opacity:1, transform: 'translateX(100%)'})) // the new state of the transition(after transiton it removes)
+    trigger('slider', [
+      
+      // state('*', style({ opacity: 1 }) ),
+      
+      // transition('void => *', animate(0)), // <-- This is the relevant bit
+      //transition('void => *', [
 
-        
-      ]),
-      transition('* => void', [
-        animate(500, style({opacity:0})), // the new state of the transition(after transiton it removes)
-    
+      // transition('* => newCard', [
+      //   animate('0.5s', style({ transform: 'translateX(-660px)' })),
+      //   //animate('0.5s', style({ 'z-index': '-1', opacity: 0.5 })),
+      //   animate('0.5s', style({ transform: 'translateX(0)' })),
+      // ])
+
+      //this state needs to exist, and to have it's name reused in the transition, for it to persist beyond animation.
+      state('newCard', 
+        style({ 'z-index': '-1' })
+      ),
+      transition('* => newCard', [
+        animate('0.5s', style({ transform: 'translateX(-660px)' })),
+        //animate('0.5s', style({ 'z-index': '-1', opacity: 0.5 })),
+        style({ 'z-index': '-1' }),
+        animate('0.5s', style({ transform: 'translateX(0)' })),
+        //okay, now i know that reusing transition names / state names causes any style set defined inside to persist, after animation ends!
       ])
+
     ])
   ]
 })
@@ -47,11 +61,16 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
   @Input() ccId: string;
 
+  private _hasRecalled: boolean = false;
+  set hasRecalled(val: boolean) {
+    this._hasRecalled = val; 
+  };
+
   //to indicate back was *ever* shown to parent even once during a card instance lifetime.
   private _backShown = false;
   @Output() onBackShown: EventEmitter<boolean> = new EventEmitter();
 
-  constructor() { }
+  constructor(private elementRef: ElementRef) { }
 
   ngOnInit() { 
     if (!this.cueCard) { throw new Error("No CueCard passed in! Cannot initialize CueCard component!"); }
@@ -105,6 +124,22 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     this._backShown = false;
     this.onBackShown.emit(this._backShown);
   }
+
+  slideAndHide() {
+    //console.log('this._hasRecalled : ' + this._hasRecalled)
+    return this._hasRecalled ? 'newCard' : '';
+  }
+
+
+
+  @Output() animChange = new EventEmitter();
+
+  //presumably i need this, as *ngIf in the parent isn't good enough ....... or wait... i can use this emit... and then i *CAN* USE the parent's own *ngIf="some expre!"
+  doneAnim() {
+    this.animChange.emit(null);
+  }
+  //destroy() {
+    //this.elementRef.nativeElement.remove();
 
   //TODO: test performance on low-power devices, ugly jittering jumps visible console was logging, but gone without.
   //TODO: consider refactor. it's upsetting i need to use a mixof global variable + mix with parameter variables...  try to see if this can be rewritten more 'reactively'(?) later??? (not sure this solves it)

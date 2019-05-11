@@ -6,25 +6,16 @@
 
     <div *ngIf="hasSeenBack">
       <button (click)="nahForgot(quizzingCard)" style="background: #ff4040">nah, try again</button>
-      <button (click)="yahRecalled(quizzingCard)" style="background: #40ff40">yup, onwards!</button>
+      <button (click)="yahRecalled(quizzingCard);" style="background: #40ff40">yup, onwards!</button>
+      <!-- cc.hasRecalled = true;  -->
     </div>
 
-  <!-- semi-eureka! discovered in fact that animations do applyi to NORMAL elements but NOT to angular child components. -->
-  <app-yo [@fadeInOut]  *ngIf="quizzingCard"></app-yo>
-  <div [@fadeInOut]  *ngIf="quizzingCard"> test </div>
+  <div *ngIf="!slideAnimDone"> test </div>
 
-
-  <div [@fadeInOut] *ngIf="quizzingCard" >
-    THIS WORKS
-    <app-cue-card [cueCard]="quizzingCard" (onBackShown)="showButtons($event)" ></app-cue-card>
+  slideAnimDone={{slideAnimDone}}
+  <div *ngIf="!slideAnimDone">
+    <app-cue-card [cueCard]="quizzingCard" (onBackShown)="showButtons($event)" #cc></app-cue-card>
   </div>
-
-  THIS DOES NOT WORK
-  <app-cue-card  [@fadeInOut] *ngIf="quizzingCard" [cueCard]="quizzingCard" (onBackShown)="showButtons($event)" >
-  </app-cue-card>
-
-  I HATE YOU ANGULAR
-
   qc={{quizzingCard}}<br>
   <div class="tp-wrapper">
     <div *ngIf="!quizzingCard" class="tp-card">

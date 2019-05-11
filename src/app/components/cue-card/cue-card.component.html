@@ -1,4 +1,4 @@
-<div class="tp-wrapper" [@childTrigger]>
+<div class="tp-wrapper" [@slider]="slideAndHide()">  <!--   [@slider]="'newCard'"    "slideAndHide()"  "destroy()" -->
   <button (click)="toggleFlip()">pretend flip</button> 
   <div [ngClass]="shoeBox ? 'tp-card--in-box' : 'tp-card'" > <!-- (click)="toggleFlip()" [@flipState]="flip" -->
     <div [ngClass]="shoeBox ? 'tp-card__side--in-box' : 'tp-card__side'" class="tp-card__front">

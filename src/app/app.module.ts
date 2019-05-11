@@ -14,14 +14,12 @@ import { TestComponent } from './components/test/test.component';
 import { QuizComponent } from './components/quiz/quiz.component';
 import { StudyTopicComponent } from './components/study-topic/study-topic.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
 
 // import entire icon styles. But be careful! Whatever you import may end up bloating your final bundle with icons you're not using.
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
-import { YoComponent } from './components/yo/yo.component';
-import { FadeComponent } from './components/fade/fade.component';
 //import { fab } from '@fortawesome/free-brands-svg-icons';
+import { library } from '@fortawesome/fontawesome-svg-core';
 library.add(fas, far);
 
 @NgModule({
@@ -34,9 +32,7 @@ library.add(fas, far);
     CueCardShoeBoxComponent,
     TestComponent,
     QuizComponent,
-    StudyTopicComponent,
-    YoComponent,
-    FadeComponent
+    StudyTopicComponent
   ],
   imports: [
     BrowserModule,
