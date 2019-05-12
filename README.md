@@ -1046,3 +1046,8 @@ angular animate doesn't stay
   - https://stackoverflow.com/questions/52000815/animation-doesnt-keep-final-state-switches-back-to-original-state
 
   
+
+~~how to delete old component angular~~
+_how to delete old component instance angular_
+- https://stackoverflow.com/questions/44939878/dynamically-adding-and-removing-components-in-angular
+  - ok.

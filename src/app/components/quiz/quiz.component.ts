@@ -84,8 +84,13 @@ export class QuizComponent implements OnInit {
   }
 
   onSlideUnderDone() {
-    //this.slideAnimDone = true;
+    this.slideAnimDone = true; //ok so.. this correclty hides (destroys?) the 0th card... per my logic in .html... 
     this.setAsPrimaryCard();
+    // here i am, holding my dick , waiting for the angular lifecycle to kill off cc#0, in it's html logic with ngIf... and... then i "reset to false" and nothing happens.
+    //this.slideAnimDone = false;
+    //so how about i delete the app-cue-card manually
+    this.cueCardComp.destroy();
+    this.slideAnimDone = false;
   }
 
   setAsPrimaryCard() {

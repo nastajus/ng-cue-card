@@ -12,13 +12,16 @@
 
   <div *ngIf="!slideAnimDone"> test </div>
 
-  slideAnimDone={{slideAnimDone}}
-  <div *ngIf="!slideAnimDone">
+  
+  <div *ngIf="!slideAnimDone && quizzingCard[0]" style="background: indigo">
+    [0]
     <app-cue-card [cueCard]="quizzingCard[0]" (onBackShown)="showButtons($event)" #cc (isUnderneathOtherCard)="onSlideUnderDone()"></app-cue-card>
   </div>
-  <div *ngIf="quizzingCard[1]">
+  <div *ngIf="quizzingCard[1]" style="background: hotpink">
+    [1]
     <app-cue-card [cueCard]="quizzingCard[1]"></app-cue-card>
   </div>
+  slideAnimDone={{slideAnimDone}}<br>
   qc[0]={{quizzingCard[0]}}<br>
   qc[1]={{quizzingCard[1]}}<br>
   qc.l = {{quizzingCard.length}}<br>

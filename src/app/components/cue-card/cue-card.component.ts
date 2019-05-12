@@ -23,7 +23,9 @@ import { Subscription, fromEvent } from 'rxjs';
         animate('0.5s', style({ transform: 'translateX(-660px)' })),
         style({ 'z-index': '-1' }),
         animate('0.5s', style({ transform: 'translateX(0)' })),
-        //okay, now i know that reusing transition names / state names causes any style set defined inside to persist, after animation ends!
+        //reusing transition names / state names causes any style set defined inside to persist, after animation ends! 
+        //(is that weird? maybe my desire to not use 'state()' and just use 'transition()' only is weird.)
+        //but since the card is immediately deleted, there's only a tiny chance of it appearing. so i'll leave state() anyways.
       ])
 
     ])
@@ -131,9 +133,11 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
       this.isUnderneathOtherCard.emit(true);
     }
   }
-  //destroy() {
-    //this.elementRef.nativeElement.remove();
 
+  destroy() {
+    this.elementRef.nativeElement.remove();
+  }
+  
   //TODO: test performance on low-power devices, ugly jittering jumps visible console was logging, but gone without.
   //TODO: consider refactor. it's upsetting i need to use a mixof global variable + mix with parameter variables...  try to see if this can be rewritten more 'reactively'(?) later??? (not sure this solves it)
   lerpChangeCardHeight(distance: number, elem: HTMLElement): number {
