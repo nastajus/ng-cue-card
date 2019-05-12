@@ -15,25 +15,12 @@ import { Subscription, fromEvent } from 'rxjs';
   animations:
   [
     trigger('slider', [
-      
-      // state('*', style({ opacity: 1 }) ),
-      
-      // transition('void => *', animate(0)), // <-- This is the relevant bit
-      //transition('void => *', [
-
-      // transition('* => newCard', [
-      //   animate('0.5s', style({ transform: 'translateX(-660px)' })),
-      //   //animate('0.5s', style({ 'z-index': '-1', opacity: 0.5 })),
-      //   animate('0.5s', style({ transform: 'translateX(0)' })),
-      // ])
-
       //this state needs to exist, and to have it's name reused in the transition, for it to persist beyond animation.
       state('newCard', 
         style({ 'z-index': '-1' })
       ),
       transition('* => newCard', [
         animate('0.5s', style({ transform: 'translateX(-660px)' })),
-        //animate('0.5s', style({ 'z-index': '-1', opacity: 0.5 })),
         style({ 'z-index': '-1' }),
         animate('0.5s', style({ transform: 'translateX(0)' })),
         //okay, now i know that reusing transition names / state names causes any style set defined inside to persist, after animation ends!
@@ -132,11 +119,17 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
 
 
-  @Output() animChange = new EventEmitter();
+  @Output() isUnderneathOtherCard = new EventEmitter<boolean>();
+
+  // foo() {
+  //   this.isUnderneathOtherCard = true;
+  // }
 
   //presumably i need this, as *ngIf in the parent isn't good enough ....... or wait... i can use this emit... and then i *CAN* USE the parent's own *ngIf="some expre!"
-  doneAnim() {
-    this.animChange.emit(null);
+  doneAnim($event) {
+    if ($event.toState == "newCard") {
+      this.isUnderneathOtherCard.emit(true);
+    }
   }
   //destroy() {
     //this.elementRef.nativeElement.remove();

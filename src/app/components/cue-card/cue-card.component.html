@@ -1,6 +1,6 @@
-<div class="tp-wrapper" [@slider]="slideAndHide()">  <!--   [@slider]="'newCard'"    "slideAndHide()"  "destroy()" -->
+<div class="tp-wrapper" [@slider]="slideAndHide()" (@slider.done)="doneAnim($event)">
   <button (click)="toggleFlip()">pretend flip</button> 
-  <div [ngClass]="shoeBox ? 'tp-card--in-box' : 'tp-card'" > <!-- (click)="toggleFlip()" [@flipState]="flip" -->
+  <div [ngClass]="shoeBox ? 'tp-card--in-box' : 'tp-card'" >
     <div [ngClass]="shoeBox ? 'tp-card__side--in-box' : 'tp-card__side'" class="tp-card__front">
       <span class="title">Question:</span><br/>
       <span>{{cueCard.question}}</span>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { StudyTopicManagerService } from 'src/app/services/study-topic-manager.service';
 import { QuizzingCueCard, QuizStatus, CueCard } from 'src/app/models/cue-card';
 import { CueCardComponent } from '../cue-card/cue-card.component';
@@ -11,16 +11,17 @@ import { CueCardComponent } from '../cue-card/cue-card.component';
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.scss']
 })
-export class QuizComponent implements OnInit, AfterViewInit {
+export class QuizComponent implements OnInit {
 
-  quizzingCard: QuizzingCueCard;
+  quizzingCard: QuizzingCueCard[] = [];
+  //quizzingCard2: QuizzingCueCard;
   quizzingRemains: QuizzingCueCard[];
 
   //private _showButtons: boolean = false;
   hasSeenBack: boolean = false; 
   cardsLeft: number;
 
- // @Input() slideAnimDone: 
+  slideAnimDone: boolean = false;
 
   constructor(stm: StudyTopicManagerService) {
     this.pickQuizCard(stm.studiableActive.quizCueCards); //test .. well.. expect since 'pass-by-val' then it'll be a copy... as all functions in javascript are...or wait, 
@@ -29,24 +30,10 @@ export class QuizComponent implements OnInit, AfterViewInit {
   ngOnInit() {
   }
 
-  slideAnimDone = false;
-  // foo() {
-  //   this.slideAnimDone = true
-  // }
-
   @ViewChild(CueCardComponent)
   private cueCardComp: CueCardComponent;
 
   hasRecalled;
- 
-  ngAfterViewInit() {
-        // Redefine `seconds()` to get from the `CountdownTimerComponent.seconds` ...
-    // but wait a tick first to avoid one-time devMode
-    // unidirectional-data-flow-violation error
-    //setTimeout(() => this.seconds = () => this.timerComponent.seconds, 0);
-    setTimeout(() => this.hasRecalled = () => this.cueCardComp.hasRecalled , 0);
-
-  }
   
   pickQuizCard(quizCueCards: QuizzingCueCard[]) {
     //filter out cards successfully recalled
@@ -57,11 +44,11 @@ export class QuizComponent implements OnInit, AfterViewInit {
     this.cardsLeft = this.quizzingRemains.length;
 
     if (nonAttempted.length > 0) {
-      this.quizzingCard = this.quizzingRemains.find(qcc => !qcc.attempted);
+      this.quizzingCard.push(this.quizzingRemains.find(qcc => !qcc.attempted));
     }
     else if (this.quizzingRemains.length > 0) {
       let index = Math.floor(Math.random() * this.quizzingRemains.length);
-      this.quizzingCard = this.quizzingRemains[ index ];
+      this.quizzingCard.push(this.quizzingRemains[ index ]);
       console.log(index, this.quizzingCard);
     }
     else {
@@ -80,7 +67,9 @@ export class QuizComponent implements OnInit, AfterViewInit {
     qcc.recall = QuizStatus.pass;
     this.pickQuizCard(this.quizzingRemains);
     //slide out, show to front
+    
     this.cueCardComp.hasRecalled = true;
+    //if (this.quizzingCard) 
   }
 
   //at some point, enough clicks here somehow stops the "auto-flip" happening.
@@ -93,6 +82,17 @@ export class QuizComponent implements OnInit, AfterViewInit {
   showButtons($event) {
     this.hasSeenBack = $event;
   }
+
+  onSlideUnderDone() {
+    //this.slideAnimDone = true;
+    this.setAsPrimaryCard();
+  }
+
+  setAsPrimaryCard() {
+    this.quizzingCard[0] = this.quizzingCard[1];
+    this.quizzingCard.splice(-1, 1);
+  }
+
 }
 
 //most advanced stage of visibility progression, hence named "seen" 

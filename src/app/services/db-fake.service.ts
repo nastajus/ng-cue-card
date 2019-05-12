@@ -28,8 +28,8 @@ export class DbFakeService {
       //yet still factually verifiable externally
       new CueCard("Super Mario Bros is for what platform?", "Nintendo"),
       new CueCard("The first female protagonist in video games is named ____ ?", "Samus"),
-      // new CueCard("The code to unlock 30 bonus lives in Contra III is?", "up down up down left right left right a b"),
-      // new CueCard("The Super Famicom was released in what year?") //no idea---deliberately no answer.
+      new CueCard("The code to unlock 30 bonus lives in Contra III is?", "up down up down left right left right a b"),
+      new CueCard("The Super Famicom was released in what year?") //no idea---deliberately no answer.
     ];
 
     this._topics = [ 
