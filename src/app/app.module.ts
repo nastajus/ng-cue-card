@@ -42,6 +42,7 @@ library.add(fas, far);
     FontAwesomeModule
   ],
   providers: [DbFakeService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [CueCardComponent]
 })
 export class AppModule { }

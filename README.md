@@ -1051,3 +1051,149 @@ angular animate doesn't stay
 _how to delete old component instance angular_
 - https://stackoverflow.com/questions/44939878/dynamically-adding-and-removing-components-in-angular
   - ok.
+
+- AppComponent.html:5 ERROR Error: No component factory found for . Did you add it to @NgModule.entryComponents?
+  - https://stackoverflow.com/questions/46990389/angular-4-no-component-factory-found-did-you-add-it-to-ngmodule-entrycomponent
+  - ok.
+
+
+AppComponent.html:5 ERROR TypeError: Cannot read property 'createComponent' of undefined
+viewchild not working
+  - https://stackoverflow.com/questions/34947154/angular-2-viewchild-annotation-returns-undefined
+    - ok.
+
+
+ERROR Error: ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: 'ngClass: undefined'. Current value: 'ngClass: tp-card'. It seems like the view has been created after its parent and its children have been dirty checked. Has it been created in a change detection hook ?
+- hmm.
+  - https://blog.angularindepth.com/everything-you-need-to-know-about-the-expressionchangedafterithasbeencheckederror-error-e3fd9ce7dbb4
+    - wordy.
+  - https://www.youtube.com/watch?v=l3jZDGOZBEs
+    - better
+    - ~"we want to make sure we are pushing data one way, from the component (class) into the template (view)... only".
+    - "we want to make sure that building the view does not trigger further modifications of the model"
+  - ok, i get it.
+    - "the model" refers to anything changed in the internal angular state of my own components, which is affected from the templates with [square] syntax. 
+    - and i have three [ngClass] throwing this error, and one [@animationTriggerName] throwing this as well.
+
+https://github.com/angular/angular/issues/18748
+  - https://stackblitz.com/edit/angular-yhazlu?file=src/app/hello.component.ts
+    - this gives an example how to solve 3 of 4 errors, for classes. great.
+
+
+  as i suspected, solving [@animationTriggerName] issue is more complicated / difficult to google.
+  animation trigger binding angular
+- https://stackoverflow.com/questions/43384107/update-hostbinding-angular-4-animation
+    - https://github.com/claytonF/NG4-route-anim/tree/master/src/app
+      - ok so this sample code solution, stated to solve their problem, uses @HostBinding, which I haven't understood just yet. learn more about that.
+        - @HostBinding 
+          - "not use the renderer"... hmm.
+            - renderer vs renderer2 ... https://angular.io/api/core/Renderer2 ... hmm.
+              - wait a minute... do i need to review binding...? ... yeas???
+              - https://www.youtube.com/watch?v=Rpn7yzjg9qw
+                - i mean... this example uses Directives... I DON'T NEED directives, and am unsure I can even APPLY directives-based-lesson to my situation here... 
+          - ugh.
+          - don't need?
+          - this is for the purpose of binding to an existing attribute in the dom... (and I'm presuming an angular-attribute is equally valid)... but my own issue is that the binding itself is problematic... and trying to use this would add layers of woeful wrongness ontop of this...
+       - https://www.youtube.com/watch?v=ZfIc1_oj7uM
+         - incidentally, i also found this, and it seems to really help clear up some things, so i'll give it a shot.
+           - eh, ok. i liked the intro picture. that's enough... data binding vs event binding. okie dokie...
+
+
+i'm wondering if i can just re-write my `[@slider]="slideAndHide()"` to not assign to anything... and just use `[@slider]` alone?
+- uhhhhhhhh noooooooooo?
+  - triggering the animation is VERY dependent on the runtime state in that function call. so i must do `[@blah]=foo`... but
+  - maybe there's a way to trigger an animation without this "template binding"... 
+ 
+- "trigger animation dynamically angular"
+  - `[@animationTrigger]="animationState"` per [here](https://blog.angularindepth.com/total-guide-to-dynamic-angular-animations-that-can-be-toggled-at-runtime-be5bb6778a0a)...
+  - hmm...
+
+- "trigger animation without template syntax angular"
+  - [super interesting](https://stackoverflow.com/questions/47122833/animating-with-variables-angular-4)... but doesn't seem really relevant... [another parameter example](https://stackoverflow.com/questions/52019480/angular-animations-add-parameters-to-template-trigger)
+  - https://stackoverflow.com/questions/40375258/can-you-move-your-animations-to-an-external-file-in-angular2
+    - wait what?! i don't need square brackets!??!?!
+      - welp, not the way i'm trying to use them, got the error: "Assigning animation triggers via @prop="exp" attributes with an expression is invalid. Use property bindings (e.g. [@prop]="exp") or use an attribute without a value (e.g. @prop) instead. Angular"
+        -sigh.
+    - but wait!! there's more!! 
+      - apparently i can do this!! : `host: { '[@fadeInAnimation]': '' }` 
+        - what's host? 
+          - https://www.youtube.com/watch?v=obnQPjd94sY
+          - ok so just allows a kind of parent god object in the dom to refer to... cool... so that example works for CSS... can i use for my needs?... i mean this syntax appears to say i can...! try it...!
+            - ok, same result, still throws exception. that's fine.
+
+- i'll try `undefined` instead being returned of `''`, so it won't be considered a mismatch anymore!
+  - aauuggghh!! sooo close...
+  - and yet, as suspected, this didn't work... sigh..
+  - "ExpressionChangedAfterItHasBeenCheckedError: Expression has changed after it was checked. Previous value: `'@slider: undefined'`. Current value: `'@slider: undefined'`. It seems like the view has been created after its parent and its children have been dirty checked. Has it been created in a change detection hook ?"
+    - ok, so, instead, how about some kind of "change detection hook" then... i've seen methods `ngChanges` or something... maybe it makes sense there? but i still need to "bind" this animation to have some state...
+    - sigh...
+    - well... it was a spectucularly insightful idea... but, nope.
+    - even tried 'undefined' on a hunch having just seen some angular bugs fixed that used to accept 'false' but not false... anyways... 
+  
+  - angular trigger animation programmatically 
+    - https://stackoverflow.com/questions/46165023/angular-4-programmatic-animation
+      - ok this looks promising... oh, wait... no...
+      - that example just omits the template binding... so it's still necessary... so it still fails.
+
+
+- angular binding animations programmatically
+  - sigh...
+
+  
+angular states programmatically
+- https://stackoverflow.com/questions/39877186/how-to-apply-animation-state-changes-in-angular-2
+  - Instead of a timeout, i use a CanDeactivate Guard
+    - hmm... yuck? yes? yeeesh?
+
+
+
+~~componentFactoryResolver change trigger name~~
+
+componentFactoryResolver modify template
+- https://stackoverflow.com/questions/44272519/dynamically-changing-the-template-for-an-angular-4-components
+  - "You cannot set a template for a component factory after it was created."
+    - welp, there goes that idea...
+
+It seems like the view has been created after its parent and its children have been dirty checked. Has it been created in a change detection hook ?
+- maybe focus on this... 
+  - https://stackoverflow.com/questions/42387348/angular2-dynamic-content-loading-throws-expression-changed-exception
+    - oh, error is gone... 
+
+
+angular createcomponent pass data
+- getting my own error thrown, this is good... keep going... no cue card passed in, makes sense...
+  - https://stackoverflow.com/questions/37487977/passing-input-while-creating-angular-2-component-dynamically-using-componentreso
+    - this SEEMED promising... except it's NOT WORKING...
+
+
+bind events dynamic component angular 
+- https://stackoverflow.com/questions/40046906/add-event-binding-to-dynamically-created-components
+  - ok so there's a distinction, of sorts, between native event bindings, and angular event bindings... hmm... 
+  - in my case, i have two custom @Output / EventEmitter / "angular-level" event bindings... 
+  - sooooooo.... i can use .camelCase to refer to my own event emitters.... well, i *did* write them in *convention* of camel case! so... ya, i can refer to my own variables.
+  - try it.
+  - seems okay, more UI appeared... i think it's working... keep going
+
+
+~~template variables assign dynamically~~
+add hashtag variable dynamically angular
+- https://stackoverflow.com/questions/47934197/angular-4-setting-the-local-variable-dynamically
+  - hmm... 
+
+
+and, of course, not working, the remove code...
+`ERROR TypeError: Right-hand side of 'instanceof' is not callable`
+- https://stackoverflow.com/questions/43502288/right-hand-side-of-instanceof-is-not-callable
+  - ok, so, the stackoverflow code i found ... is wrong.. for this part only... ?
+  - NOPE!
+  - MY ADAPTIONS were wrong! ... I had changed that function's original signature to `Type<any>` to  `Type<CueCardComponent>)`, while instanceof instead requires `instance of CueCardComponent` ... so... ya... more hard-coding... as i figure stuff out...
+    - ok so this works.
+    - it correctly removes..
+
+
+so, now it removes immediately. okay
+now back to making the animation trigger.. 
+why isn't the animation triggering? 
+
+ok so... 
+`this.components[0].hasRecalled = true;` isn't working, because it's the wrong type. ... type `any` i guess... it needs to be of type `CueCardComponent`, I think...

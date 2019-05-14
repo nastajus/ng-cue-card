@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter, ElementRef } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { CueCard } from 'src/app/models/cue-card';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
@@ -16,9 +16,10 @@ import { Subscription, fromEvent } from 'rxjs';
   [
     trigger('slider', [
       //this state needs to exist, and to have it's name reused in the transition, for it to persist beyond animation.
-      state('newCard', 
-        style({ 'z-index': '-1' })
-      ),
+      //which may be okay to not exist after all, because i'm going to be deleting immediately anyways.
+      // state('newCard', 
+      //   style({ 'z-index': '-1' })
+      // ),
       transition('* => newCard', [
         animate('0.5s', style({ transform: 'translateX(-660px)' })),
         style({ 'z-index': '-1' }),
@@ -29,7 +30,8 @@ import { Subscription, fromEvent } from 'rxjs';
       ])
 
     ])
-  ]
+  ],
+  //host: { '[@slider]':"slideAndHide()" }
 })
 export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
@@ -50,7 +52,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
   @Input() ccId: string;
 
-  private _hasRecalled: boolean = false;
+  _hasRecalled: boolean = false;
   set hasRecalled(val: boolean) {
     this._hasRecalled = val; 
   };
@@ -116,7 +118,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
   slideAndHide() {
     //console.log('this._hasRecalled : ' + this._hasRecalled)
-    return this._hasRecalled ? 'newCard' : '';
+    return this._hasRecalled ? 'newCard' : undefined;
   }
 
 
@@ -137,7 +139,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   destroy() {
     this.elementRef.nativeElement.remove();
   }
-  
+
   //TODO: test performance on low-power devices, ugly jittering jumps visible console was logging, but gone without.
   //TODO: consider refactor. it's upsetting i need to use a mixof global variable + mix with parameter variables...  try to see if this can be rewritten more 'reactively'(?) later??? (not sure this solves it)
   lerpChangeCardHeight(distance: number, elem: HTMLElement): number {
