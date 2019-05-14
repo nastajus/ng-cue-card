@@ -7,31 +7,13 @@
   <div>
     container
     <!-- Use ng-template to ensure that the generated components end up in the right place -->
-    <ng-template #container>
-
-    </ng-template>
+    <ng-template #container></ng-template>
   </div>
   <div *ngIf="hasSeenBack">
     <button (click)="nahForgot(quizzingCard[0])" style="background: #ff4040">nah, try again</button>
     <button (click)="yahRecalled(quizzingCard[0]);" style="background: #40ff40">yup, onwards!</button>
     <!-- cc.hasRecalled = true;  -->
   </div>
-
-  <div *ngIf="!slideAnimDone"> test </div>
-  
-  <!-- <div *ngIf="!slideAnimDone && quizzingCard[0]" style="background: indigo">
-    [0]
-    <app-cue-card [cueCard]="quizzingCard[0]" (onBackShown)="showButtons($event)" #cc (isUnderneathOtherCard)="onSlideUnderDone()"></app-cue-card>
-  </div>
-  <div *ngIf="quizzingCard[1]" style="background: hotpink">
-    [1]
-    <app-cue-card [cueCard]="quizzingCard[1]"></app-cue-card>
-  </div> -->
-
-  <!-- slideAnimDone={{slideAnimDone}}<br>
-  qc[0]={{quizzingCard[0]}}<br>
-  qc[1]={{quizzingCard[1]}}<br>
-  qc.l = {{quizzingCard.length}}<br> -->
   
   <div class="tp-wrapper">
     <div *ngIf="!quizzingCard" class="tp-card">

@@ -14,7 +14,6 @@ import { CueCardComponent } from '../cue-card/cue-card.component';
 export class QuizComponent implements OnInit {
 
   quizzingCard: QuizzingCueCard[] = [];
-  //quizzingCard2: QuizzingCueCard;
   quizzingRemains: QuizzingCueCard[];
 
   //private _showButtons: boolean = false;
@@ -30,6 +29,7 @@ export class QuizComponent implements OnInit {
   // Expose class so that it can be used in the template
   cueCardComponent = CueCardComponent;
 
+  hasRecalled;
 
   constructor(stm: StudyTopicManagerService, private componentFactoryResolver: ComponentFactoryResolver) {
     this.pickQuizCard(stm.studiableActive.quizCueCards); //test .. well.. expect since 'pass-by-val' then it'll be a copy... as all functions in javascript are...or wait, 
@@ -41,21 +41,9 @@ export class QuizComponent implements OnInit {
   ngAfterViewInit() {
     this.addComponent(this.cueCardComponent, this.quizzingCard[0] );
 
-    // vscode unable to detect this error here. qC was an array, and i wasn't using it correctly. sigh.
-    // this.components[0].instance.cueCard = this.quizzingCard;
-
-    //works great
-    //this.components[0].instance.isUnderneathOtherCard.subscribe(_evt => this.onSlideUnderDone() );
-
-    //vscode unable to detect this error here... it was another dumb logic error on my part...
-    //this.components[0].instance.showButtons.subscribe(_evt => this.showButtons(_evt) );
-
     //this eliminates the issue with `ExpressionChangedAfterItHasBeenCheckedError`... 
     this.components[0].changeDetectorRef.detectChanges();
-
   }
-
-
   
   @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
 
@@ -64,19 +52,14 @@ export class QuizComponent implements OnInit {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(componentClass);
     let component = this.container.createComponent(componentFactory);
 
-    // vscode did detect this error and i fixed it.
-    //component.instance.cueCard = this.quizzingCard;
-    //component.instance.cueCard = this.quizzingCard[0];
     component.instance.cueCard = qcc;
 
     // vscode better understands types here, so these event binds stay here, to protect me from me.
     component.instance.isUnderneathOtherCard.subscribe(_evt => this.onSlideUnderDone() );
     component.instance.onBackShown.subscribe(_evt => this.showButtons(_evt) ); //guess.
 
-
     // Push the component so that we can keep track of which components are created
     this.components.push(component);
-
   }
 
 
@@ -92,15 +75,7 @@ export class QuizComponent implements OnInit {
     }
   }
 
-
-  @ViewChild(CueCardComponent)
-  private cueCardComp: CueCardComponent;
-
-  hasRecalled;
   
-  //originally this design was simpler... but okay... it MUST be more complex... to achieve my requirements... 
-  // in order to successfully convert my `quizzingCard.push`s to `component.instance.cueCard = quizzingCard`... i think i need to REMOVE THE QUIZZING CARD ARRAY and MIGRATE THAT ARRAY LOGIC to a component array instead... but, wait... hmm... no... because for a brief period of time, both quizzing card instances will need to exist... so, i'll need both arrays actually... hmm... great.
-  // i think what's getting me stuck is trying to imagine what will break ... maybe just go break it instead... 
   pickQuizCard(quizCueCards: QuizzingCueCard[]) {
     //filter out cards successfully recalled
     this.quizzingRemains = quizCueCards.filter(qcc => qcc.recall !== QuizStatus.pass);
@@ -132,29 +107,14 @@ export class QuizComponent implements OnInit {
   yahRecalled(qcc: QuizzingCueCard) {
     qcc.recall = QuizStatus.pass;
     this.pickQuizCard(this.quizzingRemains);
-    //slide out, show to front
     
-
-    //this.cueCardComp.hasRecalled = true;
-    //this.components[0].hasRecalled = true;
+    //slide out, show to front
     this.components[0].instance.hasRecalled = true;
-    //let component = this.components[0] as CueCardComponent;
-    //component.hasRecalled = true;
-
 
     //so, in v1, the template reacted automatically to more quizCards... now I have to manually .push another creation onto components[]
     if (this.quizzingCard) {
       this.addComponent(this.cueCardComponent, this.quizzingCard.slice(-1)[0]); //slice(-1)[0] gets last element.
     }
-
-    //too soon here. wrong place logically.
-    //this.removeComponent(this.components[0])
-
-    //if (this.quizzingCard) 
-
-    //this.addComponent(this.cueCardComponent);
-    //get last one... which can only be the 0th instance
-    //this.components.slice(-1)[0].instance.cueCard = this.quizzingCard;
   }
 
   //at some point, enough clicks here somehow stops the "auto-flip" happening.
@@ -173,10 +133,6 @@ export class QuizComponent implements OnInit {
     if (this.quizzingCard) {
       this.setAsPrimaryCard();
     }
-    // here i am, holding my dick , waiting for the angular lifecycle to kill off cc#0, in it's html logic with ngIf... and... then i "reset to false" and nothing happens.
-    //this.slideAnimDone = false;
-    //so how about i delete the app-cue-card manually
-    //this.cueCardComp.destroy();
     this.removeComponent(this.components[0])
     this.slideAnimDone = false;
   }
@@ -185,9 +141,4 @@ export class QuizComponent implements OnInit {
     this.quizzingCard[0] = this.quizzingCard[1];
     this.quizzingCard.splice(-1, 1);
   }
-
 }
-
-//most advanced stage of visibility progression, hence named "seen" 
-//enum SideSeen { /*None,*/ Front, FrontAndBack }
-//enum ShowCountButtons { Count, Buttons }
