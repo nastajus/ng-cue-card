@@ -1,6 +1,6 @@
-import { Component, OnInit, Input, ViewChild, ComponentFactoryResolver, Type, ViewContainerRef, ComponentRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, Type, ViewContainerRef, ComponentRef } from '@angular/core';
 import { StudyTopicManagerService } from 'src/app/services/study-topic-manager.service';
-import { QuizzingCueCard, QuizStatus, CueCard } from 'src/app/models/cue-card';
+import { QuizzingCueCard, QuizStatus } from 'src/app/models/cue-card';
 import { CueCardComponent } from '../cue-card/cue-card.component';
 
 
@@ -23,6 +23,7 @@ export class QuizComponent implements OnInit {
 
   // Keep track of list of generated components for removal purposes
   components = [];
+  //TODO: put correct type here, that is compatible with other expressions, so VSCode's F12 can succeed to go to definition on: `components[0].instance.hasRecalled`.
   //components: CueCardComponent[] = [];  //i tried, caused more errors... leaving untyped ... for now...
   //components: ComponentRef<CueCardComponent>[] = []; //well...this succeeded in addComp(), but failed in removeComp()...
 
@@ -52,15 +53,14 @@ export class QuizComponent implements OnInit {
     component.instance.cueCard = qcc;
 
     // vscode better understands types here, so these event binds stay here, to protect me from me.
-    component.instance.isDoneAnim.subscribe(_evt => this.onSlideUnderDone() );
-    component.instance.onBackShown.subscribe(_evt => this.showButtons(_evt) ); //guessed correctly that this param is right.
+    component.instance.isDoneAnim.subscribe(_evt => this.onDoneAnimSlide() );
+    component.instance.onBackShown.subscribe(_evt => this.showButtons(_evt) );
 
     // Push the component so that we can keep track of which components are created
     this.components.push(component);
   }
 
 
-  //omg this is horribly returning the FIRST component.... by accident... and... it's accidentally CORRECT. OMG. BC that's how .find works!
   removeFirstComponent() {
     // Find the first component
     const component = this.components.find((component) => component.instance instanceof CueCardComponent);
@@ -106,13 +106,15 @@ export class QuizComponent implements OnInit {
     qcc.recall = QuizStatus.pass;
     this.pickQuizCard(this.quizzableRemains);
     
-    //trigger animation: slide out and back under.
-    this.components[0].instance.hasRecalled = true;
-
-    //so, in v1, the template reacted automatically to more quizCards... now I have to manually .push another creation onto components[]
     //any quizzing cards left
     if (this.quizzingCards) {
+      //trigger animation: slide right off screen
+      this.components[0].instance.hasRecalled = true;
       this.addComponent(this.quizzingCards.slice(-1)[0]); //slice(-1)[0] gets last element.
+    }
+    else {
+      //go immediately to normal "onDoneAnimSlide" scenario, since this time we're skipping that anyways.
+      this.onDoneAnimSlide();
     }
   }
 
@@ -121,13 +123,21 @@ export class QuizComponent implements OnInit {
     qcc.recall = QuizStatus.fail;
     qcc.attempted = true;
     this.pickQuizCard(this.quizzableRemains);
+
+    //trigger animation: slide left and back under 'pile'.
+    this.components[0].instance.hasRecalled = false;
+
+    //any quizzing cards left
+    if (this.quizzingCards) {
+      this.addComponent(this.quizzingCards.slice(-1)[0]); //slice(-1)[0] gets last element.
+    }
   }
 
   showButtons($event) {
     this.hasSeenBack = $event;
   }
 
-  onSlideUnderDone() {
+  onDoneAnimSlide() {
     this.slideAnimDone = true;
 
     if (this.quizzingCards) {

@@ -17,21 +17,25 @@ import { Subscription, fromEvent } from 'rxjs';
     trigger('slider', [
       //this state needs to exist, and to have it's name reused in the transition, for it to persist beyond animation.
       //which may be okay to not exist after all, because i'm going to be deleting immediately anyways.
-      // state('newCard', 
+      // state('slideLeftToUnder', 
       //   style({ 'z-index': '-1' })
       // ),
-      transition('* => newCard', [
+      transition('* => slideLeftToUnder', [
         animate('0.5s', style({ transform: 'translateX(-660px)' })),
         style({ 'z-index': '-1' }),
         animate('0.5s', style({ transform: 'translateX(0)' })),
         //reusing transition names / state names causes any style set defined inside to persist, after animation ends! 
         //(is that weird? maybe my desire to not use 'state()' and just use 'transition()' only is weird.)
         //but since the card is immediately deleted, there's only a tiny chance of it appearing. so i'll leave state() anyways.
+      ]),
+
+      transition('* => slideRightToOffscreen', [
+        animate('0.5s', style({ transform: 'translateX(+1200px)' })),
       ])
 
     ])
   ],
-  //host: { '[@slider]':"slideAndHide()" }
+  //host: { '[@slider]':"slideLeftToUnder()" }
 })
 export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
@@ -52,7 +56,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
   @Input() ccId: string;
 
-  _hasRecalled: boolean = false;
+  _hasRecalled: boolean | null = null;
   set hasRecalled(val: boolean) {
     this._hasRecalled = val; 
   };
@@ -116,9 +120,12 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     this.onBackShown.emit(this._backShown);
   }
 
-  slideAndHide() {
-    //console.log('this._hasRecalled : ' + this._hasRecalled)
-    return this._hasRecalled ? 'newCard' : undefined;
+  //slideLeftToUnder
+  pickAnim() {
+    //return this._hasRecalled ? 'slideLeftToUnder' : undefined;
+    if (this._hasRecalled) { return 'slideRightToOffscreen' }
+    if (this._hasRecalled == false) { return 'slideLeftToUnder' }
+    return undefined;
   }
 
 
@@ -128,11 +135,21 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   //presumably i need this, as *ngIf in the parent isn't good enough ....... or wait... i can use this emit... and then i *CAN* USE the parent's own *ngIf="some expre!"
   //doneAnimGoUnderDeck($event) {
   //doneAnimGoOffScreen($event) {
+
   doneAnim($event) {
-    if ($event.toState == "newCard") {
+    //if ($event.toState == "slideLeftToUnder") {
+    //if ($event.toState == "slideLeftToUnder" || $event.toState == "slideRightToOffscreen") {
+    if ($event.toState) {
       this.isDoneAnim.emit(true);
     }
   }
+
+  //oh boy. right now my interface from `quiz-c` to `c-c-c` is by anim state names... which is annoying for wanting to skip an animation on last success.
+  //so... yea... my solution is *another* encapsulated method *in* ccc: `skipAnim()` that just immediately is called ... from `q` to here, then goes back to `q`?
+  //AAAAAAAANNNNNNNNND .... nvm! bypassed entirely! handled internally within QUIZ Comp direclty, AS IT SHOULD BE!
+  // skipAnim() {
+  //   this.isDoneAnim.emit(true);
+  // }
 
   destroy() {
     this.elementRef.nativeElement.remove();

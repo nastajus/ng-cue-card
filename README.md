@@ -1031,7 +1031,7 @@ angular single animation transition
 
 
 
-wrote this: `[@slider]="hasRecalled ? 'nextCard' : ''"`
+wrote this: `[@slider]="hasRecalled ? 'pickAnim' : ''"`   ~~slide~~   ~~slideLeftToUnder~~ **pickAnim**
 got this error: **Parser Error: Binding expression cannot contain chained expression at the end of the expression**
 discovered it's a bad practice: https://stackoverflow.com/questions/43117917/angular-2-bindings-cannot-contain-assignments
 okay.
@@ -1099,7 +1099,7 @@ https://github.com/angular/angular/issues/18748
            - eh, ok. i liked the intro picture. that's enough... data binding vs event binding. okie dokie...
 
 
-i'm wondering if i can just re-write my `[@slider]="slideAndHide()"` to not assign to anything... and just use `[@slider]` alone?
+i'm wondering if i can just re-write my `[@slider]="pickAnim()"` to not assign to anything... and just use `[@slider]` alone?
 - uhhhhhhhh noooooooooo?
   - triggering the animation is VERY dependent on the runtime state in that function call. so i must do `[@blah]=foo`... but
   - maybe there's a way to trigger an animation without this "template binding"... 
