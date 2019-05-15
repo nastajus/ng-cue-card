@@ -32,7 +32,19 @@ import { Subscription, fromEvent } from 'rxjs';
       transition('* => slideRightToOffscreen', [
         animate('0.5s', style({ transform: 'translateX(+1200px)' })),
       ])
+    ]),
 
+    trigger('flipState', [
+      state('flip-front', style({
+        transform: 'rotateY(0)'
+      })),
+      state('flip-back', style({
+        transform: 'rotateY(180deg)'
+      })),
+      transition('flip-front => flip-back', animate('500ms ease-in')), //firefox bug, rotates twice... sigh.
+
+      //this transition "jumps" during mid-animation to an earlier point, unclear cause ...
+      //transition('back => front', animate('500ms ease-in'))
     ])
   ],
   //host: { '[@slider]':"slideLeftToUnder()" }

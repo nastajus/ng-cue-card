@@ -141,14 +141,14 @@ export class QuizComponent implements OnInit {
     this.slideAnimDone = true;
 
     if (this.quizzingCards) {
-      this.setAsPrimaryCard();
+      this.setSecondCardAsPrimary();
     }
 
     this.removeFirstComponent();
     this.slideAnimDone = false;
   }
 
-  setAsPrimaryCard() {
+  setSecondCardAsPrimary() {
     this.quizzingCards[0] = this.quizzingCards[1];
     this.quizzingCards.splice(-1, 1);
   }
