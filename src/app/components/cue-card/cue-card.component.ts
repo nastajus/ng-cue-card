@@ -34,7 +34,7 @@ import { Subscription, fromEvent } from 'rxjs';
       ])
     ]),
 
-    trigger('flipState', [
+    trigger('flipper', [
       state('flip-front', style({
         transform: 'rotateY(0)'
       })),
@@ -59,7 +59,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   private _colorPrimary: string;
   private _colorSecondary: string;
 
-  flip: string = 'flip-front';
+  flipState: string = 'flip-front';
 
   @Input() cueCard: CueCard
 
@@ -76,8 +76,9 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   //to indicate back was *ever* shown to parent even once during a card instance lifetime.
   private _backShown = false;
   @Output() onBackShown: EventEmitter<boolean> = new EventEmitter();
+  @Output() isDoneAnim: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private elementRef: ElementRef) { }
+  constructor() { }
 
   ngOnInit() { 
     if (!this.cueCard) { throw new Error("No CueCard passed in! Cannot initialize CueCard component!"); }
@@ -99,7 +100,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     this._colorSecondary = this.getCssObject('$secondary-card-background').compiledValue;
     this._elemKid = this._elem.querySelector('.tp-card__front');
 
-    //possibly causes my 2x call error to ngOnDestory?
+    //possibly causes my 2x call error to ngOnDestroy?
     // this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { 
 
     //   //change height
@@ -121,13 +122,13 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   }
 
   toggleFlip() {
-    this.flip = (this.flip == 'flip-front') ? 'flip-back' : 'flip-front';
+    this.flipState = (this.flipState == 'flip-front') ? 'flip-back' : 'flip-front';
     this._backShown = !this._backShown;
     this.onBackShown.emit(this._backShown);
   }
 
   resetFlip() {
-    this.flip = 'flip-front';
+    this.flipState = 'flip-front';
     this._backShown = false;
     this.onBackShown.emit(this._backShown);
   }
@@ -139,10 +140,6 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     if (this._hasRecalled == false) { return 'slideLeftToUnder' }
     return undefined;
   }
-
-
-
-  @Output() isDoneAnim = new EventEmitter<boolean>();
 
   //presumably i need this, as *ngIf in the parent isn't good enough ....... or wait... i can use this emit... and then i *CAN* USE the parent's own *ngIf="some expre!"
   //doneAnimGoUnderDeck($event) {
@@ -163,9 +160,9 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   //   this.isDoneAnim.emit(true);
   // }
 
-  destroy() {
-    this.elementRef.nativeElement.remove();
-  }
+  // destroy() {
+  //   this.elementRef.nativeElement.remove();
+  // }
 
   //TODO: test performance on low-power devices, ugly jittering jumps visible console was logging, but gone without.
   //TODO: consider refactor. it's upsetting i need to use a mixof global variable + mix with parameter variables...  try to see if this can be rewritten more 'reactively'(?) later??? (not sure this solves it)
@@ -173,7 +170,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     let cardHeightChange = this.lerp(0, 30, distance < 100 ? 30 / distance : 0);
     let styleAttribute = elem.getAttribute('style').split('translateY')[0];
     elem.setAttribute('style', `${styleAttribute} translateY(-${cardHeightChange}px)`);
-    return cardHeightChange;    
+    return cardHeightChange;
   }
 
   lerpChangeCardColor(distance: number, elem: HTMLElement) {
@@ -181,7 +178,6 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     let lerpedHexValue = this.lerpColor(`0x${this._colorPrimary.split('#').pop()}`, `0x${this._colorSecondary.split('#').pop()}`, lerpAmount);
     let rgbaArray = [ lerpedHexValue.r, lerpedHexValue.g, lerpedHexValue.b, 1];
     elem.setAttribute('style', `background-color: rgba(${rgbaArray})`);
-
   }
   
   calculateDistance(elem: HTMLElement, mouseX: number, mouseY: number) {

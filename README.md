@@ -367,7 +367,7 @@ viewchildren changes.subscribe not working
 
 `<bug-destroy-called-2x>`
 
-why is ngOnDestory called twice when deleting cards? second time causes error...
+why is ngOnDestroy called twice when deleting cards? second time causes error...
 - https://stackoverflow.com/questions/40468267/angular-2-does-ngondestroy-get-called-on-refresh-or-just-when-navigate-away-fr -- shouldn't happen... grumble...
 - https://stackoverflow.com/questions/53978845/subject-subscription-is-triggered-twice-when-i-call-next-once-in-angular-app -- hmm so it's quite possibly related to my usage of .next! ... ok... 
   
@@ -1197,3 +1197,46 @@ why isn't the animation triggering?
 
 ok so... 
 `this.components[0].hasRecalled = true;` isn't working, because it's the wrong type. ... type `any` i guess... it needs to be of type `CueCardComponent`, I think...
+
+
+learned what **piercing CSS** is. cool.
+- https://www.google.com/search?q=piercing+CSS&rlz=1C1CHBF_enCA794CA794&oq=piercing+CSS&aqs=chrome..69i57&sourceid=chrome&ie=UTF-8
+
+
+apply style to dynamic component angular 
+- https://stackoverflow.com/questions/48947007/how-to-add-styles-to-dynamically-created-component-angular-5
+
+
+how to flow relative after absolute css
+- https://stackoverflow.com/questions/8928755/how-to-position-div-within-document-flow-after-absolute-div-nested-within-relati
+  - so, height, ok.
+
+
+modify style of template reference angular 
+- https://stackoverflow.com/questions/38944725/how-to-get-dom-element-in-angular-2
+  - so i was doing this... and my code threw an error, that it
+    - "ERROR TypeError: Cannot read property 'style' of undefined"
+      - when I was doing: `this.cc_container.nativeElement.style.height = this._cueCardHeight` ... 
+      - sigh.
+    -"nativeElement undefined"
+      - https://stackoverflow.com/questions/39908967/how-to-get-reference-of-the-component-associated-with-elementref-in-angular-2/39909203#39909203
+        - need `{ read: ElementRef }`
+        - actually, nevermind. I was using `ViewChildren` accidentally, needed `ViewChild` instead.
+
+
+
+  - ok so i'm still getting up to speed with the different ways... 
+  - so there's an old Renderer which is being deprecated or is already...
+  - and there's a new Renderer2 which is to be used instead...
+    -AND APPARENTLY THIS: 
+      - "set style viewchild Actually using ElementRef is just fine. Also using ElementRef.nativeElement with Renderer2 is fine. What is discouraged is accessing properties of ElementRef.nativeElement.xxx directly."
+      - sigh. 
+      - okay.
+      
+
+
+center absolutely positioned element
+...
+  hmm, or, maybe not. I'd skipt this... by doing flex instead
+    ...
+

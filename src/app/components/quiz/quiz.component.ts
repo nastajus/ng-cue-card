@@ -1,13 +1,14 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver, Type, ViewContainerRef, ComponentRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, Type, ViewContainerRef, ComponentRef, ViewChildren, ElementRef } from '@angular/core';
 import { StudyTopicManagerService } from 'src/app/services/study-topic-manager.service';
 import { QuizzingCueCard, QuizStatus } from 'src/app/models/cue-card';
 import { CueCardComponent } from '../cue-card/cue-card.component';
+import sassExport from 'src/app/generated/styles/base';
 
 
 // Responsible for administering a session's test of this set of cue cards, as it progresses through the leitner-system.
 // does not track multiple attempts in a single session, deliberately to mirror website design at `ncase.me/remember`, but also to be forgiving to learners.
 // Additionally, carefully controls the apperance of new cards at specific timings of animation.
-  @Component({
+@Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
   styleUrls: ['./quiz.component.scss']
@@ -29,6 +30,13 @@ export class QuizComponent implements OnInit {
 
 
   @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
+
+  //this is supposed to be "cleaner"... yeesh. 
+  //@ViewChildren('cc_container') cc_container: QueryList<any>;
+  //@ViewChildren('cc_container') cc_container: ElementRef;
+  //@ViewChild('cc_container', { read: ElementRef }) cc_container: ElementRef;
+  @ViewChild('cc_container') cc_container: ElementRef;
+  _cueCardHeight = this.getCssObject('$card-height-with-padding-px').compiledValue;
 
   constructor(stm: StudyTopicManagerService, private componentFactoryResolver: ComponentFactoryResolver) {
     this.pickQuizCard(stm.studiableActive.quizCueCards); //test .. well.. expect since 'pass-by-val' then it'll be a copy... as all functions in javascript are...or wait, 
@@ -55,6 +63,12 @@ export class QuizComponent implements OnInit {
     // vscode better understands types here, so these event binds stay here, to protect me from me.
     component.instance.isDoneAnim.subscribe(_evt => this.onDoneAnimSlide() );
     component.instance.onBackShown.subscribe(_evt => this.showButtons(_evt) );
+
+    //this parent component only needs to apply style="position: absolute" onto the entire `c-c-c` only, but leave `position: relative` as default for other usages.
+    //which is further complicated by needing to now specify the "height: ~222px" or the following buttons will now collapse under.
+    //god, this code spaghetti is horrible. i'd *RATHER* put that style *HERE* than in `quiz.comp.html` !!!
+    component.location.nativeElement.style.position = "absolute";
+    this.cc_container.nativeElement.style.height = this._cueCardHeight;
 
     // Push the component so that we can keep track of which components are created
     this.components.push(component);
@@ -152,4 +166,12 @@ export class QuizComponent implements OnInit {
     this.quizzingCards[0] = this.quizzingCards[1];
     this.quizzingCards.splice(-1, 1);
   }
+
+  //TODO: put in utils class or something
+  getCssObject(cssPropertyName: string) : { name: string, value: string, compiledValue: string } {
+    var result = sassExport.variables.find(obj => {
+      return obj.name === cssPropertyName;
+    })
+    return result;
+  } 
 }
