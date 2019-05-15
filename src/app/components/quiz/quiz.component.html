@@ -10,21 +10,27 @@
     <ng-template #container></ng-template>
   </div>
   <div *ngIf="hasSeenBack">
-    <button (click)="nahForgot(quizzingCard[0])" style="background: #ff4040">nah, try again</button>
-    <button (click)="yahRecalled(quizzingCard[0]);" style="background: #40ff40">yup, onwards!</button>
+    <button (click)="nahForgot(quizzingCards[0])" style="background: #ff4040">nah, try again</button>
+    <button (click)="yahRecalled(quizzingCards[0]);" style="background: #40ff40">yup, onwards!</button>
     <!-- cc.hasRecalled = true;  -->
   </div>
   
   <div class="tp-wrapper">
-    <div *ngIf="!quizzingCard" class="tp-card">
+    <div *ngIf="!quizzingCards" class="tp-card">
       <div class="congratulations-tp-card__side">
         <fa-icon [icon]="['fas', 'grin-squint']"></fa-icon>
       </div>
     </div>
   </div>
 
-  <div *ngIf="!hasSeenBack">
-      try to recall ↑ then flip ↻ <br/>
-      (cards left: {{cardsLeft}})
-  </div>
+  <ng-container *ngIf="!hasSeenBack">
+    <div *ngIf="quizzableRemains.length > 0">
+        try to recall ↑ then flip ↻ <br/>
+        (cards left: {{quizzableRemains.length}})
+    </div>
+    <div *ngIf="quizzableRemains.length == 0">
+        done for now! <!-- keep scrolling  -->
+        <!-- ↓ -->
+    </div>
+  </ng-container>
 </div>

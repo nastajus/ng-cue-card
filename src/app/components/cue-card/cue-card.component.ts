@@ -123,16 +123,14 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
 
 
-  @Output() isUnderneathOtherCard = new EventEmitter<boolean>();
-
-  // foo() {
-  //   this.isUnderneathOtherCard = true;
-  // }
+  @Output() isDoneAnim = new EventEmitter<boolean>();
 
   //presumably i need this, as *ngIf in the parent isn't good enough ....... or wait... i can use this emit... and then i *CAN* USE the parent's own *ngIf="some expre!"
+  //doneAnimGoUnderDeck($event) {
+  //doneAnimGoOffScreen($event) {
   doneAnim($event) {
     if ($event.toState == "newCard") {
-      this.isUnderneathOtherCard.emit(true);
+      this.isDoneAnim.emit(true);
     }
   }
 
