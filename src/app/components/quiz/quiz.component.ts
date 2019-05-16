@@ -36,7 +36,7 @@ export class QuizComponent implements OnInit {
   //@ViewChildren('cc_container') cc_container: ElementRef;
   //@ViewChild('cc_container', { read: ElementRef }) cc_container: ElementRef;
   @ViewChild('cc_container') cc_container: ElementRef;
-  _cueCardHeight = this.getCssObject('$card-height-with-padding-px').compiledValue;
+  cueCardHeight = this.getCssObject('$card-height-with-padding-px').compiledValue;
 
   constructor(stm: StudyTopicManagerService, private componentFactoryResolver: ComponentFactoryResolver) {
     this.pickQuizCard(stm.studiableActive.quizCueCards); //test .. well.. expect since 'pass-by-val' then it'll be a copy... as all functions in javascript are...or wait, 
@@ -64,11 +64,33 @@ export class QuizComponent implements OnInit {
     component.instance.isDoneAnim.subscribe(_evt => this.onDoneAnimSlide() );
     component.instance.onBackShown.subscribe(_evt => this.showButtons(_evt) );
 
+    //****************************************************************************************************************************************************************/
+    //HERE BE DRAGONS, BEWARE
     //this parent component only needs to apply style="position: absolute" onto the entire `c-c-c` only, but leave `position: relative` as default for other usages.
-    //which is further complicated by needing to now specify the "height: ~222px" or the following buttons will now collapse under.
+    //which is further complicated by needing to now specify the height or the following buttons will now collapse under.
     //god, this code spaghetti is horrible. i'd *RATHER* put that style *HERE* than in `quiz.comp.html` !!!
+    //but now it's getting worse, I *also* have to keep putting *more* "style" code here with my above justiciation, which I'm increasingly hating.
+    //grumble
+    //i'm uncertain a best practice in this situation...
+    //all options suck, but i'm *trying* to enforce a *good* standard, which still seems I'm failing...
+    //yet despite all my reservations, perhaps more important than all my design qualms is the GETTING THINGS DONE MENTALITY.
+    //i'd rather *push* myself to GET THIS DONE into a viable MINIMUM VIABLE PRODUCT, instead of spending *excessive* time wrangling with *best* practice here.
+    //"it works", "it's fine", just note it as a TODO for now, keep working towards MVP instead.
+    //END
+    //----------------------------------------------------------------------------------------------------------------------------------------------------------------/
+
+    //TODO: make better design for maintainability (unclear separation of concerns, now breaking more separations, normally styles in templates, and 'logic' in classes)
+    //necessary to prevent overlapping second-instantiated `c-c-c`
     component.location.nativeElement.style.position = "absolute";
-    this.cc_container.nativeElement.style.height = this._cueCardHeight;
+
+    //necessary bc of above postiion: absolute, to keep flow relative after this.
+    this.cc_container.nativeElement.style.height = this.cueCardHeight;
+
+    //necessary bc of above position: absolute, to center horizontally.
+    component.location.nativeElement.style.left = 0;
+    component.location.nativeElement.style.right = 0;
+    component.location.nativeElement.style.margin = "auto";
+    //****************************************************************************************************************************************************************/
 
     // Push the component so that we can keep track of which components are created
     this.components.push(component);
@@ -127,6 +149,10 @@ export class QuizComponent implements OnInit {
       this.addComponent(this.quizzingCards.slice(-1)[0]); //slice(-1)[0] gets last element.
     }
     else {
+      //OMG i hate this design, no separation of concerns... UGH. and this is my *compromise* attempt to save that still!!
+      //thank god, i don't need to spill out these bad design to other areas, AT LEAST it's contained to ONE area above!!!!
+      this.cc_container.nativeElement.style.height = 0;
+
       //go immediately to normal "onDoneAnimSlide" scenario, since this time we're skipping that anyways.
       this.onDoneAnimSlide();
     }

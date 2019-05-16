@@ -1240,3 +1240,51 @@ center absolutely positioned element
   hmm, or, maybe not. I'd skipt this... by doing flex instead
     ...
 
+
+position absolute vs relative default
+- realize i need a better understanding of the interplay between `relative` and `absolute` and whatever the defaults are, since now i'm having an issue with more than two instances, but instead it's approaching a many-to-many problem, and the only solution is to **actually understand the underlying system of rules**
+  - https://stackoverflow.com/questions/4457790/difference-between-style-positionabsolute-and-style-positionrelative
+  - http://alistapart.com/article/css-positioning-101/
+    - ahh, now, this is juicy.
+    - "Unlike the static and relative values, an absolutely positioned element is removed from the normal flow."
+      - and this is why I put `height: 222px` in, it helps reassert some normal flow...
+    - ok, i figured it out
+      - i hard-coded first to prove it.
+      - it's the relationship between parental hierarchies AND the styles applied to them that was essential to this problem.
+      - specifically i had already solved the issue in one instance, but hadn't in the other, until now
+      - the first instance i solved this was 
+        - the parent `<div #cc_container>` had these properties
+          - `style="position: static; height: 222px"` -- where position: static was default (and i was ignoring subsequently in second instance)
+        - the child `<ng-template #container></ng-template>` had these properties
+          - `style="position: absolute"` -- where the CHILD had the static class
+      - where i went wrong was, the second instance, i wasn't replicating this hierarchy correctly. i was re-implementing naively / incorrectly this.
+      - the second instance, i solved this the same way just now. 
+      - woot.
+      - all inspired by reading that article for a few minutes. it ~~pointed out~~ emphasized sufficiently for me the **hierchy of elements is just as important to positioning as the styles applied to them.** 
+        - and i was ignoring this.
+        - despite successfully applying this in my solution yesterday.
+        - because i wasn't focused on that at the time, i had just wanted that "over with"
+          - good thing i know when to slow down and analyze something i don't understand.
+          - good job. 
+          - first i rapidly prototyped with what i didn't understand, as quickly as i could, with minimal understanding
+          - then when the problem became _clearly too big_ i realized i _DID_ need to _IMPROVE_ my understanding
+            - yay!
+            - now clean it all up.
+            - and nvm
+            - i made some mistake...
+            - keep trying... see what i did wrong...
+            - ok, i see what i did.
+            - i had it working in the FINAL state, WITH REMOVING HEIGHT at that state as well
+            - but then i saw it NOT WORKING ON THE INITIAL state...
+            - ok...
+            - yuck
+            - i can do better.
+            - the problem here is, that the element above continues to exist... and... it still holds it's own height...
+            - well, i suppose i can reset that element's height to 0...
+            - oh wait, i do...
+            - so the "real" issue here is... the height i currently have hard-coded on the second instance is the problem
+            - it's what's pushing it all down too much in the initial phase.
+            - hmm
+            - so... only enable that then.
+            - yeesh.
+            - solved. i moved the *ngIf up one level. works beautifully.

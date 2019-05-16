@@ -4,28 +4,32 @@
 
 <div class="quiz-wrapper"> 
 
-  <div #cc_container> <!-- style="height: 222px" -->
+  <div #cc_container> <!-- style="position: static; height: 222px" -->
     container ......................
     <!-- Use ng-template to ensure that the generated components end up in the right place -->
-    <ng-template #container></ng-template>
+    <ng-template #container></ng-template> <!-- style="position: absolute" -->
   </div>
 
-  <div *ngIf="hasSeenBack">  
-    <!-- style="position: clear" ... tried this, no effect. Needed to set height in the above-absolutely-positioned element's style instead -->
+  <div *ngIf="hasSeenBack">  <!-- style="position: static" -->
     <button (click)="nahForgot(quizzingCards[0])" style="background: #ff4040">nah, try again</button>
     <button (click)="yahRecalled(quizzingCards[0]);" style="background: #40ff40">yup, onwards!</button>
     <!-- cc.hasRecalled = true;  -->
   </div>
   
-  <div class="tp-wrapper" style="position: absolute;">
-    <div *ngIf="!quizzingCards" class="tp-card">
+  <!-- style="position: absolute; left: 0; right: 0; margin: auto; ">  -->
+  <!-- [ngStyle]="{ position: absolute; left: 0; right: 0; margin: auto; }"> -->
+  <!-- [ngStyle]="{ 'position': 'absolute'; 'left': '0'; 'right': '0'; 'margin': 'auto'; }"> --> <!-- HERE BE DRAGONS -->
+
+  <div class="tp-wrapper" 
+      [ngStyle]="{ 'height': cueCardHeight }" *ngIf="!quizzingCards">  <!-- style="position: static; height: 222px" -->
+    <div class="tp-card" [ngStyle]="{'position': 'absolute', 'left': '0', 'right': '0', 'margin': 'auto' }"> <!-- style="position: absolute" -->
       <div class="congratulations-tp-card__side">
         <fa-icon [icon]="['fas', 'grin-squint']"></fa-icon>
       </div>
     </div>
   </div>
 
-  <ng-container *ngIf="!hasSeenBack">
+  <ng-container *ngIf="!hasSeenBack">  <!-- style="position: static" -->
     <div *ngIf="quizzableRemains.length > 0">
         try to recall ↑ then flip ↻ <br/>
         (cards left: {{quizzableRemains.length}})
