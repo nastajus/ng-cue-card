@@ -1291,3 +1291,143 @@ position absolute vs relative default
 
 user agent stylesheet
 - welp. hmm. buttons. okay.
+
+z-index on wrong abstraction level / dom-level. 
+- great............ yeesh
+- now i have to rethink my animation.
+- in terms of **positioning**, cue card component is the *right* place to do the translateX.
+- but in terms of **z-index**, cue card component is the *wrong* place to do that.
+- sooo... **i'm forced to move these translations back to quiz component**. 
+  - okay.
+  - which, makes me need to redo my design how the sequence progresses through it's stages
+    - creation of new
+    - movement in 2 sub-stages of old
+    - deletion of old
+  - ...
+  - first, let's just move the code. then i'll worry about what broke.
+
+
+~~dynamic components bind animation~~
+...
+modify dynamic components animation angular
+- after a few poor results from searching google, i am finding something promising.
+- https://netbasal.com/animate-dynamic-components-in-angular-10681438bdd4
+  - ok so i had to skip 99% of the article, but at the very end they talk about an angular sample code
+  - https://stackblitz.com/edit/angular-dynamically-creating-components-animations-ng
+    - which i think means i would make an abstraction component / wrapper component to accomplish this? maybe? hmm... maybe not... not sure yet.
+    - which i think is a wrong inferrence after all
+    - and i've decided this isn't applicable to my goals after all.
+    - so, more searching.
+
+animate dynamic components angular site:stackoverflow.com
+- https://stackoverflow.com/questions/38873224/angular2-dynamic-component-loading-with-animation
+  - ok so use renderer with the component reference instead
+  - and rather, use renderer2, since it supplanted renderer already.
+  - ok. try this.
+  - i'll need to google a bit more.
+  - https://github.com/angular/angular/issues/15294 -- similar example, they use .play() on an AnimationBuilder object, which is built using `someElement` as a param. okay, great... but... this is exactly what i need. but it's close.
+
+browsing all options under [tags angular animations](https://stackoverflow.com/tags/angular-animations/hot?filter=all)
+- https://stackoverflow.com/questions/38975808/adding-an-angular-animation-to-a-host-element/38975967#38975967
+  - hmm.
+
+host vs hostbinding animation
+- hmm...
+- going to try `@HostBinding`. doesn't seem `host` would work
+
+  @HostBinding('@myTransition') get myTransition() {
+    return '';
+  }
+
+think.
+the precise level i want to animate is the key detail here.
+i still believe i need to "add" an animation to a _dynamic component_... but seem unable to find code to allow that, but also unable to find posts to deny it as well. i probably am not using the right keywords in my searches, or am too impatient in my searches. 
+
+
+again more hints make me think i should be using this:
+https://github.com/angular/angular/issues/22117
+
+	@HostListener('@animate.done', ['$event'])
+	animationDone(event: AnimationEvent) {
+		// Do something
+  }
+
+hmm...
+why use hostlistener?
+- https://dzone.com/articles/what-are-hostbinding-and-hostlistener-in-angular
+  - hmm. 
+  - "In Angular, the @HostListener() function decorator allows you to handle events of the host element in the directive class."
+    - ok... 
+    - so maybe i can actually leave the animation right back in the child cue card component after all, and, put a hostlistener in there, to bind to a custom event (specifically a slider...event??)... is `[@triggerName]` an event? no... `(foo)="bar()"` is an event binding... `[foo]="bar()` ~~looks more like a~~ _would normally be a **property binding**_... however, in the special case of `[@foo]=bar()`... i'm unsure... 
+      - "direction of movement, so to speak, is:
+      -  `(foo)="bar()"`  -- left-side event triggers, invoking right-side method.
+      -  `[foo]="bar()` -- right-side populates left-side
+      -  `[@foo]=bar()` -- right-side populates left-side state... it's just a little special
+         -  both the above two [square bracket] scenarios are _constantly listening to any changes "in the model" that might happen in the class_.
+         -  so ... if this is the case...  and i've already modifed VARIABLES previously... it follows this syntax may work:
+            - so instead of this:
+               - `component.instance.cueCard = qcc;`
+             - this may work:
+               - `component.instance.cueCard = bar();` / = pickAnim()......
+               - `component.instance.slider = bar();` / = pickAnim().................???? hmm... doubtful... also... wrong level of abstraction, again.
+               - nvm.
+
+
+
+
+~~hostlistener custom event~~
+
+animate entire component angular 
+- https://stackoverflow.com/questions/47051287/angular-4-animate-component-selector
+  - wait, waht.
+
+
+
+decided to start dealing with the errors directly
+this was the offending line:
+`<ng-template #container [@slider]="pickAnim()" (@slider.done)="doneAnim($event)"></ng-template>`
+
+seemed entirely due the fact i'm using `<ng-template>` and my pointless insistence of combining that with an animation binding. stop it. change to div.
+<div #container [@slider]="myTransition1()" (@slider.done)="myTransition2($event)"></div>
+
+ok, this is better already. both syntax error gone, and only 1 of 2 logic errors upon running. not bad.
+
+ok so, i'm 90% of the way there
+i have this much firing, which is very good
+`<div #container [@slider]="myTransition1()" (@slider.done)="myTransition2($event)"></div>`
+and it is correctly affecting the state of the correct cue card component.
+so that's very good.
+so, then, why isn't my animation animating then? 
+- so, the doneAnim isn't firing. ok. 
+  - but then actual animation isn't animting, so same question.
+    - am i binding incorrectly?
+      - I changed the name to be deliberately broken, to `@sliderr`, and it **does** complain.
+        - "ERROR Error: The provided animation trigger "sliderr" has not been registered!"
+        - so i know that's not it. 
+        - the quiz component has CLEARLY found and matched my animation, as defined. 
+
+
+
+and i'm back to thinking, it is, in fact, the wrong place to attach the animation
+while i've eliminated the syntax error, i realize, again, this is a logic error on my part.
+this is only the _REFERENCE DIV_... this is just where I _ANCHOR_ my INSERTED CONTENT.
+it is on each achored instance i need to attach this.
+
+what on god's green earth am i supposed to do here.
+
+attach animation programmatic component
+- https://stackoverflow.com/questions/42033882/programmatically-add-remove-component-with-animation-in-angular
+  - why the hell would **I** need a "navigation using Router"????? this doesn't make sense to me. I have **ZERO** navigating going on.
+    - it's talking about "child routes"
+    - i think this guy has ~~hard on~~ _inappropriate fascination_ driving him to give mis-applied advice here. sigh. even the commenter's like "wut".
+
+interesting and irrelevent
+- https://stackoverflow.com/questions/39463360/how-do-you-create-reusable-animations-in-angular-2
+  - wait, maybe this what i need:
+  - // attach the fade in animation to the host (root) element of this component 
+    - `host: { '[@fadeInAnimation]': '' }`
+    - ok, promising
+    - i generated the error by just adding the 'host', without the transition defined.
+      - "ERROR Error: The provided animation trigger "slider" has not been registered!"
+        - good.
+    - 

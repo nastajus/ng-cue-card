@@ -5,7 +5,8 @@
 <div class="quiz-wrapper"> 
 
   <div #cc_container [ngStyle]="{ height: quizzableRemains.length > 0 ? cueCardHeight : 0 }">
-    <ng-template #container></ng-template>
+    <!-- <ng-template #container [@slider]="pickAnim()" (@slider.done)="doneAnim($event)"></ng-template> -->
+    <div #container></div>
   </div>
 
   <div *ngIf="hasSeenBack" style="text-align: center; margin-top: 20px;">

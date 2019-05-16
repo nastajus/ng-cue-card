@@ -1,8 +1,9 @@
-import { Component, OnInit, ViewChild, ComponentFactoryResolver, Type, ViewContainerRef, ComponentRef, ViewChildren, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ComponentFactoryResolver, Type, ViewContainerRef, ComponentRef, ViewChildren, ElementRef, HostBinding } from '@angular/core';
 import { StudyTopicManagerService } from 'src/app/services/study-topic-manager.service';
 import { QuizzingCueCard, QuizStatus } from 'src/app/models/cue-card';
 import { CueCardComponent } from '../cue-card/cue-card.component';
 import sassExport from 'src/app/generated/styles/base';
+import { trigger, state, style, transition, animate, AnimationBuilder } from '@angular/animations';
 
 
 // Responsible for administering a session's test of this set of cue cards, as it progresses through the leitner-system.
@@ -11,14 +12,14 @@ import sassExport from 'src/app/generated/styles/base';
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.scss']
+  styleUrls: ['./quiz.component.scss'],
 })
 export class QuizComponent implements OnInit {
 
   quizzingCards: QuizzingCueCard[] = [];
   quizzableRemains: QuizzingCueCard[];
 
-  hasSeenBack: boolean = false; 
+  hasSeenBack: boolean = false;
   hasRecalled: boolean = false;
   slideAnimDone: boolean = false;
 
@@ -29,7 +30,7 @@ export class QuizComponent implements OnInit {
   //components: ComponentRef<CueCardComponent>[] = []; //well...this succeeded in addComp(), but failed in removeComp()...
 
 
-  @ViewChild('container', {read: ViewContainerRef}) container: ViewContainerRef;
+  @ViewChild('container', { read: ViewContainerRef }) container: ViewContainerRef;
 
   //this is supposed to be "cleaner"... yeesh. 
   //@ViewChildren('cc_container') cc_container: QueryList<any>;
@@ -38,22 +39,48 @@ export class QuizComponent implements OnInit {
   @ViewChild('cc_container') cc_container: ElementRef;
   cueCardHeight = this.getCssObject('$card-height-with-padding-px').compiledValue;
 
-  constructor(stm: StudyTopicManagerService, private componentFactoryResolver: ComponentFactoryResolver) {
+
+  // @HostBinding('@myTransition') get myTransition() {
+  //   return '';
+  // }
+
+  // @HostBinding('@slider') get myTransition() {
+  //   //return '';
+  //   if (this.components.length > 0) {
+  //     return this.components[0].instance.pickAnim();
+  //   }
+  // }
+
+  //sigh. this should not work. it is *entirely* seperate from the `components`. nothing there knows this exists.
+
+  // myTransition1() {
+  //   if (this.components.length > 0) {
+  //     return this.components[0].instance.pickAnim();
+  //   }
+  // }
+  // myTransition2() {
+  //   if (this.components.length > 0) {
+  //     return this.components[0].instance.doneAnim();
+  //   }
+  // }
+
+
+  constructor(stm: StudyTopicManagerService, private componentFactoryResolver: ComponentFactoryResolver, private _builder: AnimationBuilder) {
     //TODO: decide which "cleaner" coding style I prefer better -- A) passing always by parameter, or B) referencing class vars inside fns? 
     //since the 'pass-by-val' nature of javascript *means* params are always *true* copies... as all functional params in javascript are...
-    this.pickQuizCard(stm.studiableActive.quizCueCards); 
+    this.pickQuizCard(stm.studiableActive.quizCueCards);
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit() {
-    this.addComponent(this.quizzingCards[0] );
+    this.addComponent(this.quizzingCards[0]);
 
     //this eliminates the issue with `ExpressionChangedAfterItHasBeenCheckedError`... 
     this.components[0].changeDetectorRef.detectChanges();
   }
-  
+
   addComponent(qcc: QuizzingCueCard) {
     // Create component dynamically inside the ng-template
     const componentClass: Type<CueCardComponent> = CueCardComponent;
@@ -63,8 +90,28 @@ export class QuizComponent implements OnInit {
     component.instance.cueCard = qcc;
 
     // vscode better understands types here, so these event binds stay here, to protect me from me.
-    component.instance.isDoneAnim.subscribe(_evt => this.onDoneAnimSlide() );
-    component.instance.onBackShown.subscribe(_evt => this.showButtons(_evt) );
+    component.instance.isDoneAnim.subscribe(_evt => 
+      { 
+        //but this part gets invoked for every card... so now i have to filter here instead... okay
+        return this.onDoneAnimSlide() 
+      } );
+    component.instance.onBackShown.subscribe(_evt => 
+      { 
+        return this.showButtons(_evt) 
+      } );
+
+    //[@slider]="pickAnim()" (@slider.done)="doneAnim($event)"
+    //i need to migrate this functionality here. these animations need to occur at the top dom element, which is this one.
+    // formerly the above subscribes were accomplished with this syntax in templates:  `(onBackShown)="showButtons($event)"`
+    //can i do the equivalent with [@nameTrigger] -> function call, with subscribe? try it... 
+    //i can try it... but i doubt it... it shouldn't work... [@blah] !== (blah).
+    //(blah) was backed by an  @Output and EventEmitter
+    //[@blah] is backed by ???????????????????????????? but probably is different.
+
+
+
+
+    //component.instance.isDoneAnim.subscribe(_evt => this.onDoneAnimSlide());
 
     //the template `quiz.component.html` contains additional stylings that are significantly affected by this "absolute" property
 
@@ -93,11 +140,11 @@ export class QuizComponent implements OnInit {
     }
   }
 
-  
+
   pickQuizCard(quizCueCards: QuizzingCueCard[]) {
     //filter out cards successfully recalled
     this.quizzableRemains = quizCueCards.filter(qcc => qcc.recall !== QuizStatus.pass);
-    
+
     //serve all non-attempted once in order, then serve any remaining un-passed in random order.
     let nonAttempted = this.quizzableRemains.filter(qcc => !qcc.attempted)
 
@@ -106,7 +153,7 @@ export class QuizComponent implements OnInit {
     }
     else if (this.quizzableRemains.length > 0) {
       let index = Math.floor(Math.random() * this.quizzableRemains.length);
-      this.quizzingCards.push(this.quizzableRemains[ index ]);
+      this.quizzingCards.push(this.quizzableRemains[index]);
       console.log(index, this.quizzingCards);
     }
     else {
@@ -125,7 +172,7 @@ export class QuizComponent implements OnInit {
   yahRecalled(qcc: QuizzingCueCard) {
     qcc.recall = QuizStatus.pass;
     this.pickQuizCard(this.quizzableRemains);
-    
+
     //any quizzing cards left
     if (this.quizzingCards) {
       //trigger animation: slide right off screen
@@ -174,10 +221,10 @@ export class QuizComponent implements OnInit {
   }
 
   //TODO: put in utils class or something
-  getCssObject(cssPropertyName: string) : { name: string, value: string, compiledValue: string } {
+  getCssObject(cssPropertyName: string): { name: string, value: string, compiledValue: string } {
     var result = sassExport.variables.find(obj => {
       return obj.name === cssPropertyName;
     })
     return result;
-  } 
+  }
 }

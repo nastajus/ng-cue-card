@@ -14,13 +14,27 @@ import { Subscription, fromEvent } from 'rxjs';
   styleUrls: ['./cue-card.component.scss'],
   animations:
   [
+    trigger('flipper', [
+      state('flip-front', style({
+        transform: 'rotateY(0)'
+      })),
+      state('flip-back', style({
+        transform: 'rotateY(180deg)'
+      })),
+      transition('flip-front => flip-back', animate('500ms ease-in')), //firefox bug, rotates twice... sigh.
+
+      //this transition "jumps" during mid-animation to an earlier point, unclear cause ...
+      //transition('back => front', animate('500ms ease-in'))
+    ]),
+
     trigger('slider', [
       //this state needs to exist, and to have it's name reused in the transition, for it to persist beyond animation.
       //which may be okay to not exist after all, because i'm going to be deleting immediately anyways.
       // state('slideLeftToUnder', 
-      //   style({ 'z-index': '-1' })
+      //   style({ 'z-index': '-1' }) //, transform: 'translateX(-660px)' })
       // ),
       transition('* => slideLeftToUnder', [
+        style({ 'z-index': '1' }),
         animate('0.5s', style({ transform: 'translateX(-660px)' })),
         style({ 'z-index': '-1' }),
         animate('0.5s', style({ transform: 'translateX(0)' })),
@@ -33,21 +47,8 @@ import { Subscription, fromEvent } from 'rxjs';
         animate('0.5s', style({ transform: 'translateX(+1200px)' })),
       ])
     ]),
-
-    trigger('flipper', [
-      state('flip-front', style({
-        transform: 'rotateY(0)'
-      })),
-      state('flip-back', style({
-        transform: 'rotateY(180deg)'
-      })),
-      transition('flip-front => flip-back', animate('500ms ease-in')), //firefox bug, rotates twice... sigh.
-
-      //this transition "jumps" during mid-animation to an earlier point, unclear cause ...
-      //transition('back => front', animate('500ms ease-in'))
-    ])
   ],
-  //host: { '[@slider]':"slideLeftToUnder()" }
+  host: { '[@slider]': "this.pickAnim()", '(@slider.done)': "this.doneAnim($event)" }
 })
 export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDestroy {
 
@@ -71,12 +72,14 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   _hasRecalled: boolean | null = null;
   set hasRecalled(val: boolean) {
     this._hasRecalled = val; 
+    console.log(this._hasRecalled)
   };
 
   //to indicate back was *ever* shown to parent even once during a card instance lifetime.
   private _backShown = false;
   @Output() onBackShown: EventEmitter<boolean> = new EventEmitter();
-  @Output() isDoneAnim: EventEmitter<boolean> = new EventEmitter<boolean>();
+  //@Output() isDoneAnim: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() isDoneAnim: EventEmitter<CueCardComponent> = new EventEmitter<CueCardComponent>();
 
   constructor() { }
 
@@ -135,7 +138,6 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
   //slideLeftToUnder
   pickAnim() {
-    //return this._hasRecalled ? 'slideLeftToUnder' : undefined;
     if (this._hasRecalled) { return 'slideRightToOffscreen' }
     if (this._hasRecalled == false) { return 'slideLeftToUnder' }
     return undefined;
@@ -148,8 +150,13 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   doneAnim($event) {
     //if ($event.toState == "slideLeftToUnder") {
     //if ($event.toState == "slideLeftToUnder" || $event.toState == "slideRightToOffscreen") {
-    if ($event.toState) {
-      this.isDoneAnim.emit(true);
+      console.log($event.toState);
+    //if ($event && $event.toState) {
+    if ($event && ($event.toState == "slideLeftToUnder" || $event.toState == "slideRightToOffscreen")) {
+      //this is no longer sufficient accuracy...
+      //this.isDoneAnim.emit(true);
+      this.isDoneAnim.emit(this);
+      //well, shoot, this line only gets called once. okay.
     }
   }
 
