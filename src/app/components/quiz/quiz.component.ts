@@ -84,7 +84,11 @@ export class QuizComponent implements OnInit {
     component.location.nativeElement.style.position = "absolute";
 
     //necessary bc of above postiion: absolute, to keep flow relative after this.
-    this.cc_container.nativeElement.style.height = this.cueCardHeight;
+    //and now I'm pushing this out to the template.
+    //cuz, no thanks, this is now too complex to reason about in this file. 
+    //i'm pushing as much as possible to the template.
+    //that's it, it's over.
+    //this.cc_container.nativeElement.style.height = this.cueCardHeight;
 
     //necessary bc of above position: absolute, to center horizontally.
     component.location.nativeElement.style.left = 0;
@@ -150,8 +154,8 @@ export class QuizComponent implements OnInit {
     }
     else {
       //OMG i hate this design, no separation of concerns... UGH. and this is my *compromise* attempt to save that still!!
-      //thank god, i don't need to spill out these bad design to other areas, AT LEAST it's contained to ONE area above!!!!
-      this.cc_container.nativeElement.style.height = 0;
+      //it's over, pushing this to the template.
+      //this.cc_container.nativeElement.style.height = 0;
 
       //go immediately to normal "onDoneAnimSlide" scenario, since this time we're skipping that anyways.
       this.onDoneAnimSlide();
