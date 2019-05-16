@@ -2,34 +2,27 @@
   quiz works!
 </p>
 
-<!-- 
-  CODED COMMENTS LEFT DELIBERATELY AS HINTS TO MYSELF, AS SOME FRONT-END DEV ISN'T MY SPECIALTY, like complex positioning 
-  IN PRODUCTION I WOULD NOT DO THIS. 
--->
-
 <div class="quiz-wrapper"> 
 
   <div #cc_container [ngStyle]="{ height: quizzableRemains.length > 0 ? cueCardHeight : 0 }">
-    container ......................
-    <!-- Use ng-template to ensure that the generated components end up in the right place -->
-    <ng-template #container></ng-template> <!-- style="position: absolute" -->
+    <ng-template #container></ng-template>
   </div>
 
-  <div *ngIf="hasSeenBack">  <!-- style="position: static" -->
+  <div *ngIf="hasSeenBack" style="text-align: center; margin-top: 20px;">
     <button (click)="nahForgot(quizzingCards[0])" style="background: #ff4040">nah, try again</button>
     <button (click)="yahRecalled(quizzingCards[0]);" style="background: #40ff40">yup, onwards!</button>
   </div>
   
   <div class="tp-wrapper" 
-      [ngStyle]="{ height: cueCardHeight }" *ngIf="!quizzingCards">  <!-- style="position: static; height: 222px" -->
-    <div class="tp-card" [ngStyle]="{'position': 'absolute', 'left': '0', 'right': '0', 'margin': 'auto' }"> <!-- style="position: absolute" -->
+      [ngStyle]="{ height: cueCardHeight }" *ngIf="!quizzingCards">
+    <div class="tp-card" [ngStyle]="{'position': 'absolute', 'left': '0', 'right': '0', 'margin': 'auto' }">
       <div class="congratulations-tp-card__side">
         <fa-icon [icon]="['fas', 'grin-squint']"></fa-icon>
       </div>
     </div>
   </div>
 
-  <ng-container *ngIf="!hasSeenBack">  <!-- style="position: static" -->
+  <div *ngIf="!hasSeenBack" style="text-align: center; margin-top: 20px;">
     <div *ngIf="quizzableRemains.length > 0">
         try to recall ↑ then flip ↻ <br/>
         (cards left: {{quizzableRemains.length}})
@@ -38,5 +31,5 @@
         done for now! <!-- keep scrolling  -->
         <!-- ↓ -->
     </div>
-  </ng-container>
+  </div>
 </div>
