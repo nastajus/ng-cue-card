@@ -3,7 +3,6 @@ import { StudyTopicManagerService } from 'src/app/services/study-topic-manager.s
 import { QuizzingCueCard, QuizStatus } from 'src/app/models/cue-card';
 import { CueCardComponent } from '../cue-card/cue-card.component';
 import sassExport from 'src/app/generated/styles/base';
-import { trigger, state, style, transition, animate, AnimationBuilder } from '@angular/animations';
 
 
 // Responsible for administering a session's test of this set of cue cards, as it progresses through the leitner-system.
@@ -12,7 +11,7 @@ import { trigger, state, style, transition, animate, AnimationBuilder } from '@a
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
-  styleUrls: ['./quiz.component.scss'],
+  styleUrls: ['./quiz.component.scss']
 })
 export class QuizComponent implements OnInit {
 
@@ -39,8 +38,7 @@ export class QuizComponent implements OnInit {
   @ViewChild('cc_container') cc_container: ElementRef;
   cueCardHeight = this.getCssObject('$card-height-with-padding-px').compiledValue;
   
-
-  constructor(stm: StudyTopicManagerService, private componentFactoryResolver: ComponentFactoryResolver, private _builder: AnimationBuilder) {
+  constructor(stm: StudyTopicManagerService, private componentFactoryResolver: ComponentFactoryResolver) {
     //TODO: decide which "cleaner" coding style I prefer better -- A) passing always by parameter, or B) referencing class vars inside fns? 
     //since the 'pass-by-val' nature of javascript *means* params are always *true* copies... as all functional params in javascript are...
     this.pickQuizCard(stm.studiableActive.quizCueCards);
@@ -109,7 +107,6 @@ export class QuizComponent implements OnInit {
     else if (this.quizzableRemains.length > 0) {
       let index = Math.floor(Math.random() * this.quizzableRemains.length);
       this.quizzingCards.push(this.quizzableRemains[index]);
-      console.log(index, this.quizzingCards);
     }
     else {
       //no cards left to quiz anymore

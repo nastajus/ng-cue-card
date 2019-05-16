@@ -5,7 +5,7 @@ import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.
 import sassExport from 'src/app/generated/styles/base';
 import { Subscription, fromEvent } from 'rxjs';
 //import 'rxjs/add/operator/takeUntil';
-
+import * as reduceCSSCalc from 'node_modules/reduce-css-calc';
 
 
 @Component({
@@ -35,7 +35,9 @@ import { Subscription, fromEvent } from 'rxjs';
       // ),
       transition('* => slideLeftToUnder', [
         style({ 'z-index': '1' }),
-        animate('0.5s', style({ transform: 'translateX(-660px)' })),
+        //WARNING: this usage occasionally causes @Component to appear broken in VSCODE... but app still works... ever since calling `export function`.
+        //probably a *SECOND* good reason to push `slideDistance` into a `base.scss` variable instead, after clean code.
+        animate('0.5s', style({ transform: `translateX(-${slideDistance()}px)` })), 
         style({ 'z-index': '-1' }),
         animate('0.5s', style({ transform: 'translateX(0)' })),
         //reusing transition names / state names causes any style set defined inside to persist, after animation ends! 
@@ -72,7 +74,6 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   _hasRecalled: boolean | null = null;
   set hasRecalled(val: boolean) {
     this._hasRecalled = val; 
-    console.log(this._hasRecalled)
   };
 
   //to indicate back was *ever* shown to parent even once during a card instance lifetime.
@@ -87,7 +88,6 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   }
 
   ngOnChanges() {
-    
     if (this._backShown) {
       // this.toggleFlip();   //this causes some weird state too... 
       this.resetFlip();
@@ -98,8 +98,8 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     if (this.ccId === undefined) { return; }
 
     this._elem = document.getElementById(this.ccId);
-    this._colorPrimary = this.getCssObject('$primary-card-background').compiledValue;
-    this._colorSecondary = this.getCssObject('$secondary-card-background').compiledValue;
+    this._colorPrimary = getCssObject('$primary-card-background').compiledValue;
+    this._colorSecondary = getCssObject('$secondary-card-background').compiledValue;
     this._elemKid = this._elem.querySelector('.tp-card__front');
 
     //possibly causes my 2x call error to ngOnDestroy?
@@ -155,17 +155,6 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     }
   }
 
-  //oh boy. right now my interface from `quiz-c` to `c-c-c` is by anim state names... which is annoying for wanting to skip an animation on last success.
-  //so... yea... my solution is *another* encapsulated method *in* ccc: `skipAnim()` that just immediately is called ... from `q` to here, then goes back to `q`?
-  //AAAAAAAANNNNNNNNND .... nvm! bypassed entirely! handled internally within QUIZ Comp direclty, AS IT SHOULD BE!
-  // skipAnim() {
-  //   this.isDoneAnim.emit(true);
-  // }
-
-  // destroy() {
-  //   this.elementRef.nativeElement.remove();
-  // }
-
   //TODO: test performance on low-power devices, ugly jittering jumps visible console was logging, but gone without.
   //TODO: consider refactor. it's upsetting i need to use a mixof global variable + mix with parameter variables...  try to see if this can be rewritten more 'reactively'(?) later??? (not sure this solves it)
   lerpChangeCardHeight(distance: number, elem: HTMLElement): number {
@@ -200,14 +189,6 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     amount = amount > 1 ? 1 : amount;
     return value1 + (value2 - value1) * amount;
   };
-
-  //TODO: put in utils class or something
-  getCssObject(cssPropertyName: string) : { name: string, value: string, compiledValue: string } {
-    var result = sassExport.variables.find(obj => {
-      return obj.name === cssPropertyName;
-    })
-    return result;
-  } 
 
 
   // returns under 255 for each field, except when amount > 1, worst example is 33.33333333333333 returns  [1357, 13, 1013, 1]
@@ -248,4 +229,16 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   };
 }
 
+
+//TODO: put in utils class or something
+export function getCssObject(cssPropertyName: string) : { name: string, value: string, compiledValue: string } {
+  var result = sassExport.variables.find(obj => {
+    return obj.name === cssPropertyName;
+  })
+  return result;
+} 
+
+export function slideDistance() : number { 
+  return parseInt(reduceCSSCalc(`calc(${getCssObject('$card-width-with-padding-px').compiledValue} + 100px`), 10);
+}
 
