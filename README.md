@@ -1430,4 +1430,12 @@ interesting and irrelevent
     - i generated the error by just adding the 'host', without the transition defined.
       - "ERROR Error: The provided animation trigger "slider" has not been registered!"
         - good.
-    - 
+        - this works.
+
+then after attaching `{ '(@slider.done)="animDone()" }`, it was deleting both.. 
+- and i didn't realize why for a while, cuz as a doofus, i missed disabling it in it's original location.
+- ok so... my real issue was... i was calling onAnimDone twice... this "new" way, and the "old" way...
+- so i'm removing the old way. 
+- done.
+
+

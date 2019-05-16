@@ -38,32 +38,7 @@ export class QuizComponent implements OnInit {
   //@ViewChild('cc_container', { read: ElementRef }) cc_container: ElementRef;
   @ViewChild('cc_container') cc_container: ElementRef;
   cueCardHeight = this.getCssObject('$card-height-with-padding-px').compiledValue;
-
-
-  // @HostBinding('@myTransition') get myTransition() {
-  //   return '';
-  // }
-
-  // @HostBinding('@slider') get myTransition() {
-  //   //return '';
-  //   if (this.components.length > 0) {
-  //     return this.components[0].instance.pickAnim();
-  //   }
-  // }
-
-  //sigh. this should not work. it is *entirely* seperate from the `components`. nothing there knows this exists.
-
-  // myTransition1() {
-  //   if (this.components.length > 0) {
-  //     return this.components[0].instance.pickAnim();
-  //   }
-  // }
-  // myTransition2() {
-  //   if (this.components.length > 0) {
-  //     return this.components[0].instance.doneAnim();
-  //   }
-  // }
-
+  
 
   constructor(stm: StudyTopicManagerService, private componentFactoryResolver: ComponentFactoryResolver, private _builder: AnimationBuilder) {
     //TODO: decide which "cleaner" coding style I prefer better -- A) passing always by parameter, or B) referencing class vars inside fns? 
@@ -90,28 +65,8 @@ export class QuizComponent implements OnInit {
     component.instance.cueCard = qcc;
 
     // vscode better understands types here, so these event binds stay here, to protect me from me.
-    component.instance.isDoneAnim.subscribe(_evt => 
-      { 
-        //but this part gets invoked for every card... so now i have to filter here instead... okay
-        return this.onDoneAnimSlide() 
-      } );
-    component.instance.onBackShown.subscribe(_evt => 
-      { 
-        return this.showButtons(_evt) 
-      } );
-
-    //[@slider]="pickAnim()" (@slider.done)="doneAnim($event)"
-    //i need to migrate this functionality here. these animations need to occur at the top dom element, which is this one.
-    // formerly the above subscribes were accomplished with this syntax in templates:  `(onBackShown)="showButtons($event)"`
-    //can i do the equivalent with [@nameTrigger] -> function call, with subscribe? try it... 
-    //i can try it... but i doubt it... it shouldn't work... [@blah] !== (blah).
-    //(blah) was backed by an  @Output and EventEmitter
-    //[@blah] is backed by ???????????????????????????? but probably is different.
-
-
-
-
-    //component.instance.isDoneAnim.subscribe(_evt => this.onDoneAnimSlide());
+    component.instance.isDoneAnim.subscribe(_evt => this.onDoneAnimSlide() );
+    component.instance.onBackShown.subscribe(_evt => this.showButtons(_evt) );
 
     //the template `quiz.component.html` contains additional stylings that are significantly affected by this "absolute" property
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CueCard } from 'src/app/models/cue-card';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
@@ -78,8 +78,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   //to indicate back was *ever* shown to parent even once during a card instance lifetime.
   private _backShown = false;
   @Output() onBackShown: EventEmitter<boolean> = new EventEmitter();
-  //@Output() isDoneAnim: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() isDoneAnim: EventEmitter<CueCardComponent> = new EventEmitter<CueCardComponent>();
+  @Output() isDoneAnim: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -150,13 +149,9 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   doneAnim($event) {
     //if ($event.toState == "slideLeftToUnder") {
     //if ($event.toState == "slideLeftToUnder" || $event.toState == "slideRightToOffscreen") {
-      console.log($event.toState);
     //if ($event && $event.toState) {
     if ($event && ($event.toState == "slideLeftToUnder" || $event.toState == "slideRightToOffscreen")) {
-      //this is no longer sufficient accuracy...
-      //this.isDoneAnim.emit(true);
-      this.isDoneAnim.emit(this);
-      //well, shoot, this line only gets called once. okay.
+      this.isDoneAnim.emit(true);
     }
   }
 
