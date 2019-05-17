@@ -57,6 +57,11 @@ export default
       "compiledValue": "calc( 200px + 20px + 20px)"
     },
     {
+      "name": "$card-slide-distance-px",
+      "value": "calc( #{$card-width-with-padding-px} + 100px)",
+      "compiledValue": "calc( calc( 400px + 20px + 20px) + 100px)"
+    },
+    {
       "name": "$card-in-box-width-px",
       "value": "200px",
       "compiledValue": "200px"

@@ -22,11 +22,11 @@ export class QuizComponent implements OnInit {
   hasRecalled: boolean = false;
   slideAnimDone: boolean = false;
 
-  // Keep track of list of generated components for removal purposes
-  components = [];
-  //TODO: put correct type here, that is compatible with other expressions, so VSCode's F12 can succeed to go to definition on: `components[0].instance.hasRecalled`.
-  //components: CueCardComponent[] = [];  //i tried, caused more errors... leaving untyped ... for now...
-  //components: ComponentRef<CueCardComponent>[] = []; //well...this succeeded in addComp(), but failed in removeComp()...
+  // Keep track of list of generated _components for removal purposes
+  _components = [];
+  //TODO: put correct type here, that is compatible with other expressions, so VSCode's F12 can succeed to go to definition on: `_components[0].instance.hasRecalled`.
+  //_components: CueCardComponent[] = [];  //i tried, caused more errors... leaving untyped ... for now...
+  //_components: ComponentRef<CueCardComponent>[] = []; //well...this succeeded in addComp(), but failed in removeComp()...
 
 
   @ViewChild('container', { read: ViewContainerRef }) container: ViewContainerRef;
@@ -51,7 +51,7 @@ export class QuizComponent implements OnInit {
     this.addComponent(this.quizzingCards[0]);
 
     //this eliminates the issue with `ExpressionChangedAfterItHasBeenCheckedError`... 
-    this.components[0].changeDetectorRef.detectChanges();
+    this._components[0].changeDetectorRef.detectChanges();
   }
 
   addComponent(qcc: QuizzingCueCard) {
@@ -76,20 +76,20 @@ export class QuizComponent implements OnInit {
     component.location.nativeElement.style.right = 0;
     component.location.nativeElement.style.margin = "auto";
 
-    // Push the component so that we can keep track of which components are created
-    this.components.push(component);
+    // Push the component so that we can keep track of which _components are created
+    this._components.push(component);
   }
 
 
   removeFirstComponent() {
     // Find the first component
-    const component = this.components.find((component) => component.instance instanceof CueCardComponent);
-    const componentIndex = this.components.indexOf(component);
+    const component = this._components.find((component) => component.instance instanceof CueCardComponent);
+    const componentIndex = this._components.indexOf(component);
 
     if (componentIndex !== -1) {
       // Remove component from both view and array
       this.container.remove(this.container.indexOf(component));
-      this.components.splice(componentIndex, 1);
+      this._components.splice(componentIndex, 1);
     }
   }
 
@@ -111,9 +111,6 @@ export class QuizComponent implements OnInit {
     else {
       //no cards left to quiz anymore
       this.quizzingCards = null;
-
-      //this.quizzingCard = new QuizzingCueCard();
-      //this.quizzingCard.visible = false;
     }
 
     //reset
@@ -128,8 +125,8 @@ export class QuizComponent implements OnInit {
     //any quizzing cards left
     if (this.quizzingCards) {
       //trigger animation: slide right off screen
-      this.components[0].instance.hasRecalled = true;
-      this.addComponent(this.quizzingCards.slice(-1)[0]); //slice(-1)[0] gets last element.
+      this._components[0].instance.hasRecalled = true;
+      this.addComponent(this.quizzingCards.slice(-1)[0]); //gets last element.
     }
     else {
       //go immediately to normal "onDoneAnimSlide" scenario, since this time we're skipping that anyways.
@@ -144,11 +141,10 @@ export class QuizComponent implements OnInit {
     this.pickQuizCard(this.quizzableRemains);
 
     //trigger animation: slide left and back under 'pile'.
-    this.components[0].instance.hasRecalled = false;
+    this._components[0].instance.hasRecalled = false;
 
-    //any quizzing cards left
     if (this.quizzingCards) {
-      this.addComponent(this.quizzingCards.slice(-1)[0]); //slice(-1)[0] gets last element.
+      this.addComponent(this.quizzingCards.slice(-1)[0]); //gets last element.
     }
   }
 

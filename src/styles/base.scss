@@ -17,6 +17,8 @@ $card-padding-px: 20px;
 $card-width-with-padding-px: calc( #{$card-width-px} + #{$card-padding-px} + #{$card-padding-px} );
 $card-height-with-padding-px: calc( #{$card-height-px} + #{$card-padding-px} + #{$card-padding-px} );
 
+$card-slide-distance-px: calc( #{$card-width-with-padding-px} + 100px);
+
 
 //***********************************
 // variables related to card in box
