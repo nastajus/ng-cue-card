@@ -1239,6 +1239,11 @@ center absolutely positioned element
 ...
   hmm, or, maybe not. I'd skipt this... by doing flex instead
     ...
+  - https://stackoverflow.com/questions/43919067/make-flex-items-overlap
+  - "Any overlapping would have to come from negative margins, absolute positioning, CSS Grid Layout, JavaScript or something else. The z-index property may also need to play a role."
+    - nvm, dangit. 
+
+
 
 
 position absolute vs relative default
