@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit, ViewChild, QueryList, ViewChildren } from '@angular/core';
+import { Component, OnInit, AfterViewInit, AfterViewChecked, QueryList, ViewChildren } from '@angular/core';
 import { CueCardLoaderService } from 'src/app/services/cue-card-loader.service';
 import sassExport from 'src/app/generated/styles/base';
 import * as reduceCSSCalc from 'node_modules/reduce-css-calc';
@@ -9,7 +9,7 @@ import { CueCard } from 'src/app/models/cue-card';
   templateUrl: './cue-card-shoe-box.component.html',
   styleUrls: ['./cue-card-shoe-box.component.scss']
 })
-export class CueCardShoeBoxComponent implements OnInit, AfterViewInit {
+export class CueCardShoeBoxComponent implements OnInit, AfterViewInit, AfterViewChecked {
 
   @ViewChildren('cc') cc: QueryList<any>;
 
@@ -22,7 +22,7 @@ export class CueCardShoeBoxComponent implements OnInit, AfterViewInit {
       (cueCards: CueCard[]) => {
         this.rebalanceBoxCardPositions(cueCards);
       }
-    );
+    );  
 
     // //first call has *no* changes *yet*, so call directly first time.
     // this.rebalanceBoxCardPositions(this.ccLoaderService.cueCards$);
@@ -32,6 +32,10 @@ export class CueCardShoeBoxComponent implements OnInit, AfterViewInit {
     //   this.rebalanceBoxCardPositions(this.ccLoaderService.cueCards);
     // })
   }
+
+  ngAfterViewChecked() {
+    console.log("yo");
+  };
 
   rebalanceBoxCardPositions(cueCards: CueCard[]) {
     // 1) composing by offsets is fun
@@ -55,6 +59,7 @@ export class CueCardShoeBoxComponent implements OnInit, AfterViewInit {
     var cardOffsetToCenterZ: number = (boxHeight - cardHeight) / 2; 
     var magicNumberLeftOffsetX: number = parseInt(this.getCssObject('$magic-number-left-offset-px', sassExport).compiledValue, 10);
     
+    //this is firing before the view updates... hmm.
     for(var i = 0; i < cueCards.length; i++) {
       var cardPosition = boxLength / cueCards.length * (i + 1);
       var boxLerpData = this.lerpCardInBox(boxFront, boxBack, cardPosition);

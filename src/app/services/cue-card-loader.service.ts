@@ -13,7 +13,7 @@ export class CueCardLoaderService {
 
   private _cueCards: CueCard[] = [];
   cueCardsSource: BehaviorSubject<CueCard[]> = new BehaviorSubject<CueCard[]>(this._cueCards); //for now, choosing to emit ENTIRE ARRAY... even if that's too much data when get above exists.
-  cueCards$ = this.cueCardsSource.asObservable(); 
+  cueCards$ = this.cueCardsSource.asObservable();
 
   private _cueCardActive: CueCard = null;
   cueCardActiveSource: BehaviorSubject<CueCard> = new BehaviorSubject<CueCard>(this._cueCardActive);

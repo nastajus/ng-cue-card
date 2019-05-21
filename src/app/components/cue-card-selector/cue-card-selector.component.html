@@ -10,7 +10,7 @@
     </select>
   </li>
   <li>
-    <button (click)="editHandler()">Edit Card</button> <button (click)="cancelHandler()">Nevermind</button>
+    <button (click)="editHandler()">Open Editor<span *ngIf="ccLoaderService.cueCardActive"> for selected</span></button> <button (click)="cancelHandler()">Close Editor</button>
   </li>
   <li>
     Test: {{ccLoaderService.cueCardActive | json}} {{ cueCards.length | json }}

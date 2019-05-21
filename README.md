@@ -1444,3 +1444,59 @@ then after attaching `{ '(@slider.done)="animDone()" }`, it was deleting both..
 - done.
 
 
+https://www.wikihow.com/Have-Fun-With-Memorization
+
+
+why isn't my rebalance 3d positioning code working?
+- https://stackoverflow.com/questions/38033723/angular-2-observable-subscription-not-triggering
+  - well, i had zero references to `providers`, but I added one to the `app.module.ts`, which made zero difference.
+  - then i realized this worked before, I had finished the rebalance code already. 
+  - This is a new bug, ever since I added dynamic components. Possibly related to losing the references to `ccid` on each card, maybe not.
+  - nope, wasn't it.
+  - okay, so this is what's happening actually:
+    - the subscribe callback is firing before the angular view refreshes
+
+
+rxjs subscribe firing before angular view refreshes
+- [Angular — Stop using observable when you should use a promise](https://netbasal.com/angular-stop-using-observable-when-you-should-use-a-promise-8da0788a8d2) ... of course...
+- well, this might be preferable, to stick with entirely pure observables, and avoid all promises
+  - https://stackoverflow.com/questions/40249629/how-do-i-force-a-refresh-on-an-observable-service-in-angular2
+
+  - [BehaviorSubject | RxJS TUTORIAL](https://www.youtube.com/watch?v=-mwNLRbfKmU) 
+    - talks about default values in `BehaviorSubject`s vs normal `Subjects` which don't have defaults.
+      - but i already use this, and this isn't the root cause of my problem.
+  - [Understanding RxJS (playlist)](https://www.youtube.com/watch?v=T9wOu11uU6U&list=PL55RiY5tL51pHpagYcrN9ubNLVXF8rGVi)
+    - ooh, looks succint, i wanna consume all this!
+  - [RxJs 6: AsyncSubject and ReplaySubject - Learn the Differences](https://www.youtube.com/watch?v=XcdElk9d3QE) hmm... good examples...
+  - Understanding RxJava Subject — Publish, Replay, Behavior and Async Subject
+    - https://blog.mindorks.com/understanding-rxjava-subject-publish-replay-behavior-and-async-subject-224d663d452f
+  - https://github.com/ReactiveX/RxJava/issues/1940
+
+
+replaySubject after event
+
+subscribe to page reload angular
+
+angular lifecycle hook after refresh view
+- https://angular.io/guide/lifecycle-hooks
+  - okay, with breakpoints, i veriified that `ngAfterViewChecked()` correctly fires **after** the dom element appears, which should be enough to combine with a double-flattened subscription of somekind.
+
+combine subscriptions...
+
+merge subscriptions rxjs
+  - [mergeMap() | RxJS TUTORIAL](https://www.youtube.com/watch?v=b59tcUwfpWU) hmm..
+    - `obs1.mergeMap( event1 => { return obs2 })`
+    - `obs1.mergeMap( event1 => { return obs2.map( event2 => event1.target.value + ' ' + event2.target.value) })`
+    - but
+    - the way i wanna hook in isn't exactly a merging of two observable streams, more like a delayed triggering of a singular observable stream.
+
+
+how to delay observable until event
+  - https://www.learnrxjs.io/operators/combination/forkjoin.html
+    - "`forkJoin` is similar to how you might use `Promise.all`.
+
+  - https://stackoverflow.com/questions/47173454/how-to-wait-completing-of-event-subscriber-with-observable-call
+    - "Don't use await/async, since rxjs already has these tools (via subscribe? or map?) - don't mix two methods."
+  - 
+
+

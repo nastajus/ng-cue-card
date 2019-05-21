@@ -3,9 +3,9 @@ import { CueCard } from 'src/app/models/cue-card';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
 import sassExport from 'src/app/generated/styles/base';
-import * as reduceCSSCalc from 'node_modules/reduce-css-calc';
 import { Subscription, fromEvent } from 'rxjs';
 //import 'rxjs/add/operator/takeUntil';
+import * as reduceCSSCalc from 'node_modules/reduce-css-calc';
 
 
 @Component({
@@ -36,7 +36,8 @@ import { Subscription, fromEvent } from 'rxjs';
       transition('* => slideLeftToUnder', [
         style({ 'z-index': '1' }),
         //WARNING: this usage occasionally causes @Component to appear broken in VSCODE... but app still works... ever since calling `export function`.
-        animate('0.5s', style({ transform: `translateX(-${slideDistance()}px)` })), 
+        //probably a *SECOND* good reason to push `slideDistance` into a `base.scss` variable instead, after clean code.
+        animate('0.5s', style({ transform: `translateX(-${slideDistance()}px)` })), //540 in 0.5s, 1080 in 1
         style({ 'z-index': '-1' }),
         animate('0.5s', style({ transform: 'translateX(0)' })),
         //reusing transition names / state names causes any style set defined inside to persist, after animation ends! 
@@ -45,7 +46,8 @@ import { Subscription, fromEvent } from 'rxjs';
       ]),
 
       transition('* => slideRightToOffscreen', [
-        animate('0.5s', style({ transform: 'translateX(+1200px)' })),
+        style({ 'z-index': '1' }),
+        animate('0.8s', style({ transform: 'translateX(+1200px)' })), //1.2s same speed. 0.8s faster speed.
       ])
     ]),
   ],
@@ -87,8 +89,9 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   }
 
   ngOnChanges() {
-    if (this._backShown) { 
-      this.resetFlip(); 
+    if (this._backShown) {
+      // this.toggleFlip();   //this causes some weird state too... 
+      this.resetFlip();
     }
   }
 
@@ -133,12 +136,14 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     this.onBackShown.emit(this._backShown);
   }
 
+  //slideLeftToUnder
   pickAnim() {
     if (this._hasRecalled) { return 'slideRightToOffscreen' }
     if (this._hasRecalled == false) { return 'slideLeftToUnder' }
     return undefined;
   }
 
+  //presumably i need this, as *ngIf in the parent isn't good enough ....... or wait... i can use this emit... and then i *CAN* USE the parent's own *ngIf="some expre!"
   //doneAnimGoUnderDeck($event) {
   //doneAnimGoOffScreen($event) {
 
@@ -235,5 +240,6 @@ export function getCssObject(cssPropertyName: string) : { name: string, value: s
 } 
 
 export function slideDistance() : number { 
-  return parseInt(reduceCSSCalc( getCssObject('$card-slide-distance-px').compiledValue ), 10);
+  return parseInt(reduceCSSCalc(`calc(${getCssObject('$card-width-with-padding-px').compiledValue} + 100px`), 10);
 }
+
