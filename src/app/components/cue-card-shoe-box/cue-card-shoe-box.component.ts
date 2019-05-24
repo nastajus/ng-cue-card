@@ -34,7 +34,7 @@ export class CueCardShoeBoxComponent implements OnInit, AfterViewInit, AfterView
   }
 
   ngAfterViewChecked() {
-    console.log("yo");
+    //console.log("yo");
   };
 
   rebalanceBoxCardPositions(cueCards: CueCard[]) {
