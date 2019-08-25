@@ -1,0 +1,9 @@
+@import 'src/styles/base.scss';
+
+.scene {
+  width: $scene-width;
+  height: $scene-height;
+  border: 2px dashed gray;
+  //margin: 100px;
+}
+

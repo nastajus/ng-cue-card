@@ -1500,3 +1500,23 @@ how to delay observable until event
   - 
 
 
+Aug 15
+- back after a long break. 
+- focusing on D3js to cluster and animate
+- it sucks being away from coding sooo long, and then getting back in. my brain's forgotten so many simple things, i have to re-acclimate again:
+  - that getting my library of choice D3 requires also the typings library
+  - `--save-dev` vs `--save` for example.
+  - that classes are indicated with a precededing dot `.` in CSS etc, and that the HTML needed `class="className"` needs to be added to a `<div ...>` most likely... (it took me only seconds to recall this, but my brain protested those few seconds...)
+  - how my own project works, how I setup so variables transform into CSS-accessible inputs upon importing.
+  - the command to add new libraries, eg. `npm install d3 --save` and `npm install @types/d3 --save-dev`
+  - the reason my d3 test code `d3.select("body").append("span").text("Hello, world!");` didn't work is because i put in `ngOnInit` instead of `ngAfterViewInit`
+  - etc.
+  - am done whining now.
+
+
+
+D3 enter
+- https://stackoverflow.com/questions/43356213/understanding-enter-and-exit
+  - super insightful
+
+

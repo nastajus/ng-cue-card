@@ -52,6 +52,7 @@ export class StudyTopic {
     }
 }
 
+//study group... maybe rename to that.
 export class Studiable {
 
     public studyTopic: StudyTopic;
