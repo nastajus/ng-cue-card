@@ -6,24 +6,28 @@ import { CueCard, Studiable, StudyTopic } from '../models/cue-card';
 })
 export class DbFakeService {
 
-  private _records: CueCard[];
-  //TODO REMOVE MAYBE
-  public get records() { return this._records; }
-
-  private _topics: StudyTopic[];
-  //TODO REMOVE MAYBE
-  public get topics(): StudyTopic[] { return this._topics; };
-
   private _studiables: Studiable[];
   public get studiables() { return this._studiables; }
 
+  //i want to kill this
+  //private _topics: StudyTopic[];
+  //TODO REMOVE MAYBE
+  //i want this to dynamically populate from whatever's inside _studiables.x'th index. map i think.
+  // public get topics(): StudyTopic[] { return this._topics; };
+  // public get topics(): StudyTopic[] {   };
+  public get topics(): StudyTopic[] { return this._studiables.map(studiable => studiable.studyTopic) };
+
   public topicActive: StudyTopic;
   public studiableActive: Studiable;
+  public get records() { return this.studiableActive.quizCueCards };
 
   //this will be used to fake store in a database for the time being.
   //intend this to be written more generically than just "cue card db".
   constructor() { 
-    this._records = [
+    this._studiables = [];
+
+    let gamelore_studiable : Studiable  = new Studiable(
+      new StudyTopic ("game lore"), [
       //the topic is necessarily something i know *VERY* WELL, so I don't 
       //get bogged down in researching unimportant facts I would care about.
       //ideally something I consider so trivial as it takes near-zero effort.
@@ -32,18 +36,7 @@ export class DbFakeService {
       new CueCard("The first female protagonist in video games is named ____ ?", "Samus"),
       new CueCard("The code to unlock 30 bonus lives in Contra III is?", "up down up down left right left right a b"),
       new CueCard("The Super Famicom was released in what year?") //no idea---deliberately no answer.
-    ];
-
-    this._topics = [ 
-      new StudyTopic("video games"),
-      //TODO: REMOVE MAYBE
-      new StudyTopic("fullstack dev")
-    ];
-
-    this._studiables = [];
-    this._studiables.push(
-      new Studiable(this.topics[0], this.records.slice(1) )
-    );
+    ]);
 
     let fullstack_studiable: Studiable = new Studiable(
       new StudyTopic("fullstack dev"), [
@@ -63,7 +56,6 @@ export class DbFakeService {
         //todo: support code backticks rendering ... full markdown... yeesh. stop it.
         new CueCard("how did `pipe` change with rxjs v5.5?"),
         new CueCard("what kind of chainable operations exist?"),
-
       ]
     );
 
@@ -83,7 +75,7 @@ export class DbFakeService {
       ]
     );
 
-    let culinary_studiable: Studiable = new Studiable(
+    let culinary_indian: Studiable = new Studiable(
       new StudyTopic("culinary indian"), [
         new CueCard("name a dozen essential spices used in Indian cuisine.", "Cardamom, Clove, Cumin, Coriander, Nutmeg, Fenugreek, Turmeric.... and Garam masala, Cinnamon,... and Mustard seeds, and Fennel seeds..."),
         new CueCard("what does 'masala' mean, basically?", "spices."), 
@@ -110,7 +102,15 @@ export class DbFakeService {
         new CueCard("what word means imitation crab?", "kani")
       ]
     );
-    
+
+    this._studiables.push( new Studiable(gamelore_studiable.studyTopic, gamelore_studiable.quizCueCards.slice(1) ));
+    this._studiables.push(fullstack_studiable);
+    this._studiables.push(observable_studiable);
+    this._studiables.push(nutrition_studiable);
+    this._studiables.push(exercise_studiable);
+    this._studiables.push(culinary_indian);
+    this._studiables.push(culinary_japanese);
+
     this.studiableActive = this._studiables[0];
   }
 }

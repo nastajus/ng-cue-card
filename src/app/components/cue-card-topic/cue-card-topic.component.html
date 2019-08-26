@@ -1,0 +1,17 @@
+<p>
+  cue-card-topic works!
+</p>
+
+<select name="topics" [size]="sz" class="cc-select scrollbar" (change)="setTopic($event.target.value)">
+  <option *ngFor="let topic of ccLoaderService.topics" [value]="topic">{{topic}}</option>
+</select>
+
+<!-- choosing to keep .topic private, forces me to work with observable here.  -->
+<!-- mixed feelings. certainly. -->
+Topic: {{ ccLoaderService.topicActive$ | async | json }}
+Topic: {{ topicActive  }}
+
+
+<pre>
+{{ ccLoaderService.topics | json }}
+</pre>

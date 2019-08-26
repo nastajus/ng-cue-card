@@ -22,6 +22,7 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { CueCardLoaderService } from './services/cue-card-loader.service';
 import { CueCardAniComponent } from './cue-card-ani/cue-card-ani.component';
+import { CueCardTopicComponent } from './components/cue-card-topic/cue-card-topic.component';
 library.add(fas, far);
 
 @NgModule({
@@ -35,7 +36,8 @@ library.add(fas, far);
     TestComponent,
     QuizComponent,
     StudyTopicComponent,
-    CueCardAniComponent
+    CueCardAniComponent,
+    CueCardTopicComponent
   ],
   imports: [
     BrowserModule,
