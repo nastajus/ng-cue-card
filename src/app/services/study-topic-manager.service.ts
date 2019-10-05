@@ -2,11 +2,6 @@ import { Injectable } from '@angular/core';
 import { StudyTopic, Studiable } from '../models/cue-card';
 import { DbFakeService } from '../services/db-fake.service';
 
-//current interface: 
-//storage of all "studiables" (as an array of entirely every topic set of cards), plus, managing input of new topics speficically
-//design? 
-//possibly should be separate, am debating.
-
 @Injectable({
   providedIn: 'root'
 })
@@ -19,15 +14,15 @@ export class StudyTopicManagerService {
   private _studiables: Studiable[];
   public get studiables(): Studiable[] { return this._studiables; } 
 
+  //needs more work...?
+  public topicActive: StudyTopic;
   public studiableActive: Studiable; 
-
-  quizzingCards: QuizzingCueCard[] = [];
-  quizzableRemains: QuizzingCueCard[];
 
   constructor(db: DbFakeService) { 
     this._topics = db.topics;
     this._studiables = db.studiables;
 
+    this.topicActive = db.topicActive;
     this.studiableActive = db.studiableActive;
   }
 

@@ -15,7 +15,8 @@ import sassExport from 'src/app/generated/styles/base';
 })
 export class QuizComponent implements OnInit {
 
-
+  quizzingCards: QuizzingCueCard[] = [];
+  quizzableRemains: QuizzingCueCard[];
 
   hasSeenBack: boolean = false;
   hasRecalled: boolean = false;

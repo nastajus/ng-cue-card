@@ -8,7 +8,7 @@ export class CueCard {
     public question: string;
     public answer: string;
 
-    //public topicCurrent: StudyTopic;
+    public topicCurrent: StudyTopic;
     public quizzingHistory: QuizzingMoment[];
 
     constructor(q?: string, a?: string, t?: StudyTopic) {
@@ -39,11 +39,11 @@ export class QuizzingMoment {
     }
 }
 
-//(seemingly pointless) abstraction for a string. (debating if should get rid of, but i want to enforce it through a class regardless)
+//(probably pointless) an abstraction for a string. (probably should get rid of)
 export class StudyTopic {
     private _topic: string;
     get topic() { return this._topic; }
-    set topic(topic: string) {
+    set topic(topic: string) { 
         this._topic = topic;
     }
 

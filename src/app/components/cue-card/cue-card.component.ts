@@ -104,15 +104,15 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     this._elemKid = this._elem.querySelector('.tp-card__front');
 
     //possibly causes my 2x call error to ngOnDestroy?
-    this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { 
+    // this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { 
 
-      //change height
-      let distance = this.calculateDistance(this._elem, e.pageX, e.pageY);
-      this.lerpChangeCardHeight(distance, this._elem);
+    //   //change height
+    //   let distance = this.calculateDistance(this._elem, e.pageX, e.pageY);
+    //   this.lerpChangeCardHeight(distance, this._elem);
 
-      //change color
-      this.lerpChangeCardColor(distance, this._elemKid);
-    })
+    //   //change color
+    //   this.lerpChangeCardColor(distance, this._elemKid);
+    // })
   }
 
   ngOnDestroy() {
