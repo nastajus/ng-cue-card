@@ -6,15 +6,25 @@ Cue Card is a 2019 flashcard prototype built around a 3D shoebox. Try to recall 
 
 ## Demos
 
-![A quiz card flips to reveal Samus, then slides away after a successful recall](docs/images/demos/cc1.gif)
+### Recall session
 
-*Flip to reveal the answer. A successful recall slides the card out and brings the next question forward.*
+![Three quiz cards are flipped, a missed card returns, and the session reaches its completion screen](docs/images/demos/recall-session.webp)
 
-![Four red cards in a 3D shoebox rise and shift toward purple as the pointer approaches](docs/images/demos/cc2.gif)
+The quiz cycles through all three seeded cards. A **nah** sends the first card back for another try, and **yup** advances through the rest to the completion screen. One seed card starts without an answer.
 
-*Move the pointer across the shoebox. Nearby cards rise and change colour in this historical build.*
+### Card selector and editor
 
-Both recordings come from the [original portfolio entry](https://nastajus.github.io/archive/portfolio/index.html#cc).
+![The selector opens the editor, saves an answer, deletes two cards, adds two new questions, and shows the updated card list and test array](docs/images/demos/card-editor.webp)
+
+The editor corrects a console name, removes two entries, and adds questions about Luigi and Link. The last view shows the updated list and its debug array.
+
+### Pointer-reactive shoebox
+
+![Four cards lift and shift through purple and pink during a slow pass and two quick passes of the pointer](docs/images/demos/shoebox-pointer.webp)
+
+A slow pass shows each card lift and change colour. Quick passes show how the stack responds as the pointer moves away and back.
+
+The [original quiz recording](docs/images/demos/cc1.gif) and [original shoebox recording](docs/images/demos/cc2.gif) are from the [portfolio archive](https://nastajus.github.io/archive/portfolio/index.html#cc).
 
 ## What’s in the prototype
 

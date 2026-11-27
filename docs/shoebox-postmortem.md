@@ -126,3 +126,7 @@ front.style.backgroundColor = `rgb(${Math.min(255, r)}, ${Math.min(255, g)}, ${M
 The host keeps the 3D slot computed by the shoebox. The inner wrapper moves in card-local coordinates, and the face owns its colour. Measuring the host keeps the distance anchored when the wrapper rises. The lift is bounded at 30 pixels and fades to zero at 100 pixels. Colour resets at 200 pixels. The existing colour calculation still travels through purple and pink, with a minimum distance and capped RGB channels so the CSS stays valid. Only shoebox cards subscribe, and each unsubscribe is guarded for card instances without a listener.
 
 Firefox and Edge checks confirmed lift, colour change and reset, four unchanged host transforms during pointer motion, and correct spacing and interaction after adding and deleting a card. The lift curve is smoother than the original reciprocal jump. Quiz and list cards retain their existing behaviour.
+
+![The restored shoebox effect with the nearest card raised and bright pink and its neighbours shaded purple](images/postmortem/shoebox-pointer-restored.png)
+
+The still captures one frame from the restored interaction. The [pointer recording](../README.md#pointer-reactive-shoebox) shows slow and fast passes.
