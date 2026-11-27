@@ -1,0 +1,17 @@
+li {
+  position: relative;
+}
+
+.selected-marker {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  pointer-events: none;
+  padding: 4px 14px;
+  border-radius: 6px;
+  background: #ffdd57;
+  color: #24171b;
+  font: bold 20px system-ui, sans-serif;
+}

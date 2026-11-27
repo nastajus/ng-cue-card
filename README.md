@@ -20,7 +20,7 @@ Both recordings come from the [original portfolio entry](https://nastajus.github
 
 - **Flashcard collection.** Add, edit and delete in-memory cards. The form allows a question, an answer or both.
 - **Recall quiz.** Flip a seeded card and mark it remembered or missed. Remembered cards leave the current session and missed cards can return. Separate card instances allow the outgoing and incoming cards to overlap during a slide.
-- **3D shoebox.** CSS transforms assemble the box. The component calculates card slots from shared SCSS dimensions. The current source has a known timing problem when rebalancing after collection changes. The pointer effect shown above is disabled in this checkout.
+- **3D shoebox.** CSS transforms assemble the box. The component calculates card slots from shared SCSS dimensions. The shoebox rebalances when cards are added or removed. The pointer effect shown above is disabled in this checkout.
 - **Study model.** A sample topic and card subset feed the quiz. Persistent decks, saved review history and scheduled Leitner progression are unfinished.
 
 The prototype was designed for desktop Chrome. The original roadmap called for local storage and full Leitner scheduling, with mobile and offline study, rich card content and Anki exchange as later ideas. [Historical roadmap](https://nastajus.github.io/archive/portfolio/cue-card.html).

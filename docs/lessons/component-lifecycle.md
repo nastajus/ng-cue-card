@@ -19,7 +19,7 @@ this.cc.changes.subscribe(t => {
 })
 ```
 
-The comment generalizes too far. A text edit that preserves the query’s results need not cause it to emit. That is fine if geometry only depends on which cards are present and their order. Changes to dimensions or viewport can require a separate signal. The [checkout](../../src/app/components/cue-card-shoe-box/cue-card-shoe-box.component.ts) has the view-query subscription commented out. It rebalances on the data emission and dereferences the result of `getElementById` directly. The later journal flags this timing problem again. [Late rebalancing notes](../archive/development-journal-2019.md?plain=1#L1417).
+The comment generalizes too far. A text edit that preserves the query’s results need not cause it to emit. That is fine if geometry only depends on which cards are present and their order. Changes to dimensions or viewport can require a separate signal. A [later revision](https://github.com/nastajus/ng-cue-card/blob/6c09c40/src/app/components/cue-card-shoe-box/cue-card-shoe-box.component.ts) reintroduced the timing problem by rebalancing directly on data emissions. The [current shoebox](../../src/app/components/cue-card-shoe-box/cue-card-shoe-box.component.ts) uses the view query again and positions the rendered hosts directly. [Late rebalancing notes](../archive/development-journal-2019.md?plain=1#L1417).
 
 ## Views, objects and elements
 

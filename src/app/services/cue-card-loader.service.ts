@@ -56,8 +56,7 @@ export class CueCardLoaderService {
       //replace with new object
       let i = this._cueCards.indexOf(ccOriginal);
       this._cueCards[i] = ccNew;
-      this.cueCardActiveSource.next(ccNew);
-      this.cueCardsSource.next(this._cueCards);
+      this.cueCardActive = ccNew;
     }
     else { 
       throw new Error("invalid CueCard, it is null or not found! Cannot edit!")

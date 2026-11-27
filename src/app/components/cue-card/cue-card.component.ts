@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { CueCard } from 'src/app/models/cue-card';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { trigger, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
 import sassExport from 'src/app/generated/styles/base';
 import { Subscription, fromEvent } from 'rxjs';
@@ -14,19 +14,6 @@ import * as reduceCSSCalc from 'node_modules/reduce-css-calc';
   styleUrls: ['./cue-card.component.scss'],
   animations:
   [
-    trigger('flipper', [
-      state('flip-front', style({
-        transform: 'rotateY(0)'
-      })),
-      state('flip-back', style({
-        transform: 'rotateY(180deg)'
-      })),
-      transition('flip-front => flip-back', animate('500ms ease-in')), //firefox bug, rotates twice... sigh.
-
-      //this transition "jumps" during mid-animation to an earlier point, unclear cause ...
-      //transition('back => front', animate('500ms ease-in'))
-    ]),
-
     trigger('slider', [
       //this state needs to exist, and to have it's name reused in the transition, for it to persist beyond animation.
       //which may be okay to not exist after all, because i'm going to be deleting immediately anyways.

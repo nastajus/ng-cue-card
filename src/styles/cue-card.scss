@@ -38,7 +38,11 @@ input {
   width: $card-width-with-padding-px;
   height: $card-height-with-padding-px;
   transform-style: preserve-3d;
-  transition: transform 1s;
+  transition: transform 500ms ease-in;
+
+  &.is-flipped {
+    transform: rotateY(180deg);
+  }
 
   &--in-box {
     @extend .tp-card;
@@ -77,10 +81,11 @@ input {
 }
 .tp-card__front {
   background: $primary-card-background;
+  transform: translateZ(1px);
 }
 .tp-card__back {
   background: #23262d;
-  transform: rotateY(179.9deg);
+  transform: rotateY(180deg) translateZ(1px);
 }
 .title {
   font-family: "Comic Sans MS", "Comic Sans", cursive;

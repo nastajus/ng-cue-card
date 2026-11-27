@@ -4,6 +4,7 @@
 
 <ul>
   <li *ngFor="let cueCard of (ccLoaderService.cueCards$ | async);">
+    <strong *ngIf="ccLoaderService.cueCardActive === cueCard" class="selected-marker">Selected</strong>
     <app-cue-card [cueCard]="cueCard"></app-cue-card>
   </li>
 </ul>

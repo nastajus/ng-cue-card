@@ -67,6 +67,10 @@
 
 .box.show-iso, .box.show-isometric { transform: rotateX( 45deg) rotateZ(-45deg); }
 
+#faces, #cards {
+  transform-style: preserve-3d;
+}
+
 .put-card-in-box {
   position: absolute;
   transform: rotateX(-90deg) rotateY(-90deg) translateZ(-100px);
