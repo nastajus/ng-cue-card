@@ -1,10 +1,9 @@
-import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, AfterViewInit, OnDestroy, Output, EventEmitter, NgZone } from '@angular/core';
 import { CueCard } from 'src/app/models/cue-card';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { CueCardShoeBoxComponent } from '../cue-card-shoe-box/cue-card-shoe-box.component';
 import sassExport from 'src/app/generated/styles/base';
 import { Subscription, fromEvent } from 'rxjs';
-//import 'rxjs/add/operator/takeUntil';
 import * as reduceCSSCalc from 'node_modules/reduce-css-calc';
 
 
@@ -44,12 +43,6 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
 
   private _mouseSubscription: Subscription;
 
-  //needed to promote to class-level scope, so can be referenced inside mouse move subscribe callback.
-  private _elem: HTMLElement;
-  private _elemKid: HTMLElement;
-  private _colorPrimary: string;
-  private _colorSecondary: string;
-
   flipState: string = 'flip-front';
 
   @Input() cueCard: CueCard
@@ -69,7 +62,7 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   @Output() onBackShown: EventEmitter<boolean> = new EventEmitter();
   @Output() isDoneAnim: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor(private zone: NgZone) { }
 
   ngOnInit() { 
     if (!this.cueCard) { throw new Error("No CueCard passed in! Cannot initialize CueCard component!"); }
@@ -85,30 +78,36 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
   ngAfterViewInit() {
     if (this.ccId === undefined) { return; }
 
-    this._elem = document.getElementById(this.ccId);
-    this._colorPrimary = getCssObject('$primary-card-background').compiledValue;
-    this._colorSecondary = getCssObject('$secondary-card-background').compiledValue;
-    this._elemKid = this._elem.querySelector('.tp-card__front');
+    const card = document.getElementById(this.ccId);
+    const wrapper = card.querySelector<HTMLElement>('.tp-wrapper');
+    const front = card.querySelector<HTMLElement>('.tp-card__front');
+    const primary = parseInt(getCssObject('$primary-card-background').compiledValue.slice(1), 16);
+    const secondary = parseInt(getCssObject('$secondary-card-background').compiledValue.slice(1), 16);
 
-    //possibly causes my 2x call error to ngOnDestroy?
-    // this._mouseSubscription = fromEvent(document, 'mousemove').subscribe( (e: MouseEvent) => { 
+    this.zone.runOutsideAngular(() => {
+      this._mouseSubscription = fromEvent<MouseEvent>(document, 'mousemove').subscribe(event => {
+        const box = card.getBoundingClientRect();
+        const distance = Math.hypot(event.clientX - (box.left + box.width / 2),
+                                    event.clientY - (box.top + box.height / 2));
+        const lift = 30 * Math.max(0, 1 - distance / 100);
 
-    //   //change height
-    //   let distance = this.calculateDistance(this._elem, e.pageX, e.pageY);
-    //   this.lerpChangeCardHeight(distance, this._elem);
+        // Move the wrapper so the shoebox still owns the host transform and spacing.
+        wrapper.style.transform = lift ? `translateY(-${lift}px)` : '';
+        if (distance >= 200) {
+          front.style.backgroundColor = '';
+          return;
+        }
 
-    //   //change color
-    //   this.lerpChangeCardColor(distance, this._elemKid);
-    // })
+        const { r, g, b } = this.lerpColor(primary, secondary, 400 / Math.max(distance, 1));
+        front.style.backgroundColor = `rgb(${Math.min(255, r)}, ${Math.min(255, g)}, ${Math.min(255, b)})`;
+      });
+    });
   }
 
   ngOnDestroy() {
-    //TODO remove this ugly hack -- it's ugly because it buries an unknown problem, and will lead to more problems later.
-    // if (!this._mouseSubscription) { 
-    //   console.warn(`attempting to destroy cue card despite it already destroying successfully earlier... hiding error related to second unnecessary attempt to unsubscribe:  ${this._mouseSubscription}... `);
-    //   return;
-    // }
-    // this._mouseSubscription.unsubscribe();
+    if (this._mouseSubscription) {
+      this._mouseSubscription.unsubscribe();
+    }
   }
 
   toggleFlip() {
@@ -143,45 +142,8 @@ export class CueCardComponent implements OnInit, OnChanges, AfterViewInit, OnDes
     }
   }
 
-  //TODO: test performance on low-power devices, ugly jittering jumps visible console was logging, but gone without.
-  //TODO: consider refactor. it's upsetting i need to use a mixof global variable + mix with parameter variables...  try to see if this can be rewritten more 'reactively'(?) later??? (not sure this solves it)
-  lerpChangeCardHeight(distance: number, elem: HTMLElement): number {
-    let cardHeightChange = this.lerp(0, 30, distance < 100 ? 30 / distance : 0);
-    let styleAttribute = elem.getAttribute('style').split('translateY')[0];
-    elem.setAttribute('style', `${styleAttribute} translateY(-${cardHeightChange}px)`);
-    return cardHeightChange;
-  }
-
-  lerpChangeCardColor(distance: number, elem: HTMLElement) {
-    let lerpAmount = distance < 200 ? 1 / distance * 400 : 0;
-    let lerpedHexValue = this.lerpColor(`0x${this._colorPrimary.split('#').pop()}`, `0x${this._colorSecondary.split('#').pop()}`, lerpAmount);
-    let rgbaArray = [ lerpedHexValue.r, lerpedHexValue.g, lerpedHexValue.b, 1];
-    elem.setAttribute('style', `background-color: rgba(${rgbaArray})`);
-  }
-  
-  calculateDistance(elem: HTMLElement, mouseX: number, mouseY: number) {
-    return Math.floor(Math.sqrt(Math.pow(mouseX - (this.getElementOffset(elem).left+(elem.clientWidth/2)), 2) + Math.pow(mouseY - (this.getElementOffset(elem).top+(elem.clientHeight/2)), 2)));
-  }
-
-  getElementOffset(element: HTMLElement)
-  {
-    var de = document.documentElement;
-    var box = element.getBoundingClientRect();
-    var top = box.top + window.pageYOffset - de.clientTop;
-    var left = box.left + window.pageXOffset - de.clientLeft;
-    return { top: top, left: left };
-  }
-
-  lerp(value1: number, value2: number, amount: number) {
-    amount = amount < 0 ? 0 : amount;
-    amount = amount > 1 ? 1 : amount;
-    return value1 + (value2 - value1) * amount;
-  };
-
-
-  // returns under 255 for each field, except when amount > 1, worst example is 33.33333333333333 returns  [1357, 13, 1013, 1]
-  // I deliberately 'abuse' this function, submitting values exceeding `amount > 1`, which results in a beautiful color range from blue to pink. It maxes out at pink, because the delta between the two primary and secondary colors is unchanging for 1 of 3 parameters, "g: 13", whereas the other 2 parameters "r: 255" and "b: 255" max out at 255, giving the result "pink". Otherwise if there was any slight difference in that last parameter, instead it would max out at entirely white.
-
+  // The original effect extrapolates past the secondary colour.
+  // Clamp the resulting channels at the CSS write to keep the blue-to-pink range.
  /**
  * A linear interpolator for hex colors.
  *
