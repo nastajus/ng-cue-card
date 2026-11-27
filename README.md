@@ -14,8 +14,6 @@ The quiz cycles through all three seeded cards. A **nah** sends the first card b
 
 ### Card selector and editor
 
-![The selector opens the editor, saves an answer, deletes two cards, adds two new questions, and shows the updated card list and test array](docs/images/demos/card-editor.webp)
-
 The editor corrects a console name, removes two entries, and adds questions about Luigi and Link. The last view shows the updated list and its debug array.
 
 ### Pointer-reactive shoebox
