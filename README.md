@@ -25,6 +25,10 @@ Both recordings come from the [original portfolio entry](https://nastajus.github
 
 The prototype was designed for desktop Chrome. The original roadmap called for local storage and full Leitner scheduling, with mobile and offline study, rich card content and Anki exchange as later ideas. [Historical roadmap](https://nastajus.github.io/archive/portfolio/cue-card.html).
 
+## Known issue
+
+A thin horizontal line has been reported on some card faces in Firefox since the November 2026 flip repair. The issue is open. The [shoebox postmortem](docs/shoebox-postmortem.md#follow-up--new-firefox-card-face-seam) includes the cropped screenshot and the one-line CSS candidate.
+
 ## How it works
 
 The Angular 7 application uses an RxJS service to publish the collection and selected card. The quiz creates and removes card views as transitions complete. A build step exports SCSS dimensions to TypeScript so the CSS box and the positioning math use the same values.
