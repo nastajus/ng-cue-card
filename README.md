@@ -2,6 +2,8 @@
 
 Cue Card is a 2019 flashcard prototype built around a 3D shoebox. Try to recall an answer, flip the card, then decide whether it should leave the quiz or come back for another try. The project takes inspiration from Nicky Case’s interactive explanation of active recall and the Leitner system. [How To Remember Anything Forever-ish](https://ncase.me/remember/).
 
+**[Try Cue Card live](https://nastajus.github.io/ng-cue-card/)** · Runs in your browser with a sample deck.
+
 ## Demos
 
 ![A quiz card flips to reveal Samus, then slides away after a successful recall](docs/images/demos/cc1.gif)

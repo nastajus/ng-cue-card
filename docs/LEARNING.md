@@ -1,6 +1,6 @@
 # Engineering notes from Cue Card
 
-[Back to the Cue Card README](../README.md)
+[Back to the Cue Card README](../README.md) · [Try the live prototype](https://nastajus.github.io/ng-cue-card/)
 
 Cue Card started as a flashcard prototype and became a hands-on study of how a UI turns changes in data into changes on screen. The original README follows those discoveries in real time, including searches, wrong turns, decisions and ideas for the product. Start here when you want to revisit a concept. Go to the journal when you want to see how the thinking changed.
 
