@@ -98,7 +98,7 @@ The markup has no divider at that position. The repair introduced two depth offs
 
 The follow-up tested the published flip styles and a temporary override removing only the front-face offset. Automated screenshots in headless Firefox and Edge at four combinations of device scale and page zoom showed no comparable seam with either version. With the override, both browsers still completed one transition per click in each direction. The reported artifact remains unverified with the override because the baseline did not reproduce it in those sessions.
 
-### Smallest candidate change
+### One-line mitigation under test
 
 ```diff
  .tp-card__front {
@@ -107,4 +107,22 @@ The follow-up tested the published flip styles and a temporary override removing
  }
 ```
 
-The back keeps `rotateY(180deg) translateZ(1px)`, so the faces still occupy different planes. For a direct check in the affected Firefox session, uncheck the front face's `transform: translateZ(1px)` declaration in the Inspector while the line is visible. Then flip to the answer and back. If the line disappears and neither face bleeds through, the one-line deletion has a verified effect. The live build still uses the original flip repair.
+The back keeps `rotateY(180deg) translateZ(1px)`, so the faces still occupy different planes. The one-line removal was applied in [`c2ed370`](https://github.com/nastajus/ng-cue-card/commit/c2ed370). The rebuilt app still flips in both directions in Firefox and Edge. The supplied screenshot shows the seam, but the test browsers did not reproduce it before the change, so the report stays open. [Try the updated demo](https://nastajus.github.io/ng-cue-card/).
+
+## Follow-up — Restoring the pointer effect
+
+The brightening and pop seen in the [archived shoebox demo](images/demos/cc2.gif) originally came from a document mouse listener on each box card. It used distance from the pointer to drive both height and the extrapolated colour. The May 8 animation work commented out the listener and its cleanup while investigating repeated destruction calls. The 3D layout repair recovered the stack, while the pointer effect remained inactive. [Original effect](https://github.com/nastajus/ng-cue-card/commit/e978777) · [Listener disabled](https://github.com/nastajus/ng-cue-card/commit/e48308a)
+
+Re-enabling the old height write would make the hover code and the spacing code both edit the host's inline transform. The [repair](https://github.com/nastajus/ng-cue-card/commit/78933f5) keeps each write on its own element:
+
+```ts
+const lift = 30 * Math.max(0, 1 - distance / 100);
+wrapper.style.transform = lift ? `translateY(-${lift}px)` : '';
+
+const { r, g, b } = this.lerpColor(primary, secondary, 400 / Math.max(distance, 1));
+front.style.backgroundColor = `rgb(${Math.min(255, r)}, ${Math.min(255, g)}, ${Math.min(255, b)})`;
+```
+
+The host keeps the 3D slot computed by the shoebox. The inner wrapper moves in card-local coordinates, and the face owns its colour. Measuring the host keeps the distance anchored when the wrapper rises. The lift is bounded at 30 pixels and fades to zero at 100 pixels. Colour resets at 200 pixels. The existing colour calculation still travels through purple and pink, with a minimum distance and capped RGB channels so the CSS stays valid. Only shoebox cards subscribe, and each unsubscribe is guarded for card instances without a listener.
+
+Firefox and Edge checks confirmed lift, colour change and reset, four unchanged host transforms during pointer motion, and correct spacing and interaction after adding and deleting a card. The lift curve is smoother than the original reciprocal jump. Quiz and list cards retain their existing behaviour.

@@ -18,7 +18,7 @@ SCSS defines dimensions used by both the compiled stylesheet and the component c
 
 ## Read the pointer in the same coordinate system as the card
 
-The [historical interaction](https://github.com/nastajus/ng-cue-card/blob/e978777/src/app/components/cue-card/cue-card.component.ts) found the distance between the pointer and card center with the Pythagorean formula. It used that distance to change height and interpolate RGB channels. The inner card face changes colour, while the outer geometry carries the movement. The archived GIF shows the effect. The equivalent document mouse listener in this checkout is commented out.
+The [historical interaction](https://github.com/nastajus/ng-cue-card/blob/e978777/src/app/components/cue-card/cue-card.component.ts) found the distance between the pointer and card center with the Pythagorean formula. It used that distance to change height and interpolate RGB channels. The inner card face changes colour, while the outer geometry carries the movement. The archived GIF shows the effect. The restored effect moves the inner wrapper, leaving the shoebox host transform available for slot positioning. [Pointer-effect repair](../shoebox-postmortem.md#follow-up--restoring-the-pointer-effect).
 
 Use matching coordinates for the measurement. For example, pair `getBoundingClientRect()` and `clientX/clientY` for viewport coordinates. The original reciprocal distance formula has a singularity at zero and can extrapolate past its intended colour endpoints. A bounded factor such as `Math.max(0, 1 - distance / radius)` is an alternative for a finite radius with predictable endpoints. [Pointer and colour investigation](../archive/development-journal-2019.md?plain=1#L104).
 
