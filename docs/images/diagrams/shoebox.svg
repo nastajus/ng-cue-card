@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="320" viewBox="0 0 900 320" role="img" aria-labelledby="title desc">
+<title id="title">Spacing cards across the shoebox depth</title>
+<desc id="desc">Three upright planes illustrate equal depth slots. Width centering is half the difference between box and card widths.</desc>
+<defs>
+<marker id="arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+<path d="M0 0 L8 4 L0 8 Z" fill="#405e91"/>
+</marker>
+</defs>
+<rect x="1" y="1" width="898" height="318" rx="18" fill="#f8faff" stroke="#a9b9d8"/>
+<g font-family="system-ui, Segoe UI, sans-serif">
+<text x="450" y="44" font-size="29" fill="#142951" font-weight="750" text-anchor="middle">Spacing cards across the shoebox depth</text>
+<polygon points="119,201 440,201 628,96 307,96" fill="#e5edff" stroke="#405e91" stroke-width="2"/>
+<polygon points="119,201 440,201 440,236 119,236" fill="#c3d3ef" stroke="#405e91" stroke-width="2"/>
+<polygon points="440,201 628,96 628,131 440,236" fill="#aac2e8" stroke="#405e91" stroke-width="2"/>
+<polygon points="256,125 532,125 532,63 256,63" fill="#e7f5ef" stroke="#405e91" stroke-width="2"/>
+<text x="394" y="87" font-size="18" fill="#253657" font-weight="500" text-anchor="middle">Card 3</text>
+<polygon points="195,159 471,159 471,97 195,97" fill="#e7f5ef" stroke="#405e91" stroke-width="2"/>
+<text x="333" y="121" font-size="18" fill="#253657" font-weight="500" text-anchor="middle">Card 2</text>
+<polygon points="134,193 410,193 410,131 134,131" fill="#e7f5ef" stroke="#405e91" stroke-width="2"/>
+<text x="272" y="155" font-size="18" fill="#253657" font-weight="500" text-anchor="middle">Card 1</text>
+<path d="M530 223 L700 126" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="750" y="112" font-size="19" fill="#253657" font-weight="500" text-anchor="middle">Depth axis</text>
+<text x="704" y="184" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Slot = depth ÷ count</text>
+<text x="450" y="284" font-size="20" fill="#253657" font-weight="500" text-anchor="middle">Width offset = (box width − card width) ÷ 2</text>
+</g>
+</svg>

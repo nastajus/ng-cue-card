@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="299" viewBox="0 0 900 299" role="img" aria-labelledby="title desc">
+<title id="title">One SCSS source, two build outputs</title>
+<desc id="desc">Base SCSS compiles into styles and goes through Sass export and sed to generate a TypeScript module.</desc>
+<defs>
+<marker id="arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+<path d="M0 0 L8 4 L0 8 Z" fill="#405e91"/>
+</marker>
+</defs>
+<rect x="1" y="1" width="898" height="297" rx="18" fill="#f8faff" stroke="#a9b9d8"/>
+<g font-family="system-ui, Segoe UI, sans-serif">
+<text x="450" y="44" font-size="29" fill="#142951" font-weight="750" text-anchor="middle">One SCSS source, two build outputs</text>
+<rect x="35" y="119" width="195" height="74" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="132.5" y="152" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">base.scss</text>
+<text x="132.5" y="179" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Shared dimensions</text>
+<path d="M233 145 L332 104" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M233 172 L332 211" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="338" y="64" width="221" height="74" rx="13" fill="#e7f5ef" stroke="#9caed1"/>
+<text x="448.5" y="97" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Sass compilation</text>
+<text x="448.5" y="124" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">CSS for the browser</text>
+<rect x="338" y="178" width="221" height="74" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="448.5" y="211" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">sass-export + sed</text>
+<text x="448.5" y="238" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Generate the module</text>
+<path d="M563 215 L644 215" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="650" y="178" width="215" height="74" rx="13" fill="#e7f5ef" stroke="#9caed1"/>
+<text x="757.5" y="211" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">base.ts</text>
+<text x="757.5" y="238" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">TypeScript import</text>
+</g>
+</svg>

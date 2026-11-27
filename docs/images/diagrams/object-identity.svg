@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="282" viewBox="0 0 900 282" role="img" aria-labelledby="title desc">
+<title id="title">Reference identity and record identity</title>
+<desc id="desc">Two variables can point to the same object. A reloaded object can have the same ID with a new reference.</desc>
+<defs>
+<marker id="arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+<path d="M0 0 L8 4 L0 8 Z" fill="#405e91"/>
+</marker>
+</defs>
+<rect x="1" y="1" width="898" height="280" rx="18" fill="#f8faff" stroke="#a9b9d8"/>
+<g font-family="system-ui, Segoe UI, sans-serif">
+<text x="450" y="44" font-size="29" fill="#142951" font-weight="750" text-anchor="middle">Reference identity and record identity</text>
+<rect x="35" y="75" width="160" height="58" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="115" y="111" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Editor</text>
+<rect x="35" y="161" width="160" height="58" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="115" y="197" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Quiz</text>
+<path d="M197 104 L340 134" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<path d="M197 190 L340 158" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="346" y="104" width="207" height="87" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="449.5" y="143.5" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Card object</text>
+<text x="449.5" y="170.5" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">ID: 42</text>
+<path d="M555 147 L655 147" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<text x="605" y="127" font-size="16" fill="#253657" font-weight="500" text-anchor="middle">reload</text>
+<rect x="660" y="104" width="205" height="87" rx="13" fill="#e7f5ef" stroke="#9caed1"/>
+<text x="762.5" y="143.5" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">New object</text>
+<text x="762.5" y="170.5" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">ID: 42</text>
+<text x="450" y="254" font-size="20" fill="#253657" font-weight="500" text-anchor="middle">The shared reference works in memory. The ID survives reconstruction.</text>
+</g>
+</svg>

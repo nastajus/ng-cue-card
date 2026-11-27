@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="232" viewBox="0 0 900 232" role="img" aria-labelledby="title desc">
+<title id="title">Three ways to inspect the quiz</title>
+<desc id="desc">Angular ownership, the rendered DOM and the CSS painting hierarchy answer different questions.</desc>
+<defs>
+<marker id="arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+<path d="M0 0 L8 4 L0 8 Z" fill="#405e91"/>
+</marker>
+</defs>
+<rect x="1" y="1" width="898" height="230" rx="18" fill="#f8faff" stroke="#a9b9d8"/>
+<g font-family="system-ui, Segoe UI, sans-serif">
+<text x="450" y="44" font-size="29" fill="#142951" font-weight="750" text-anchor="middle">Three ways to inspect the quiz</text>
+<rect x="27" y="83" width="264" height="93" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="159" y="125.5" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Angular view</text>
+<text x="159" y="152.5" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Quiz owns two card views</text>
+<rect x="318" y="83" width="264" height="93" rx="13" fill="#e7f5ef" stroke="#9caed1"/>
+<text x="450" y="125.5" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Rendered DOM</text>
+<text x="450" y="152.5" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Hosts and inner card faces</text>
+<rect x="609" y="83" width="264" height="93" rx="13" fill="#fff0da" stroke="#9caed1"/>
+<text x="741" y="125.5" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">CSS painting</text>
+<text x="741" y="152.5" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Context and paint order</text>
+<text x="450" y="209" font-size="20" fill="#253657" font-weight="500" text-anchor="middle">A child’s z-index is scoped to its stacking context.</text>
+</g>
+</svg>

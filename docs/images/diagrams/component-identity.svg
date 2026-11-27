@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="320" viewBox="0 0 900 320" role="img" aria-labelledby="title desc">
+<title id="title">Reusing a card versus creating another</title>
+<desc id="desc">A reused instance receives new input. Dynamic instances keep old and new cards alive independently.</desc>
+<defs>
+<marker id="arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+<path d="M0 0 L8 4 L0 8 Z" fill="#405e91"/>
+</marker>
+</defs>
+<rect x="1" y="1" width="898" height="318" rx="18" fill="#f8faff" stroke="#a9b9d8"/>
+<g font-family="system-ui, Segoe UI, sans-serif">
+<text x="450" y="44" font-size="29" fill="#142951" font-weight="750" text-anchor="middle">Reusing a card versus creating another</text>
+<text x="450" y="82" font-size="19" fill="#253657" font-weight="500" text-anchor="middle">Reuse one component instance</text>
+<rect x="28" y="100" width="408" height="76" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="232" y="134" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Instance A</text>
+<text x="232" y="161" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Shows card 1</text>
+<path d="M438 138 L459 138" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="464" y="100" width="408" height="76" rx="13" fill="#e7f5ef" stroke="#9caed1"/>
+<text x="668" y="134" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Instance A</text>
+<text x="668" y="161" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Receives card 2</text>
+<text x="450" y="209" font-size="19" fill="#253657" font-weight="500" text-anchor="middle">Create a second instance before removing the first</text>
+<rect x="28" y="219" width="262.6666666666667" height="76" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="159.33333333333334" y="253" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Instance A</text>
+<text x="159.33333333333334" y="280" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Shows card 1</text>
+<path d="M292.6666666666667 257 L313.6666666666667 257" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="318.6666666666667" y="219" width="262.6666666666667" height="76" rx="13" fill="#e7f5ef" stroke="#9caed1"/>
+<text x="450" y="253" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Instances A + B</text>
+<text x="450" y="280" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Outgoing and incoming</text>
+<path d="M583.3333333333334 257 L604.3333333333334 257" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="609.3333333333334" y="219" width="262.6666666666667" height="76" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="740.6666666666667" y="253" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Instance B</text>
+<text x="740.6666666666667" y="280" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Shows card 2</text>
+</g>
+</svg>

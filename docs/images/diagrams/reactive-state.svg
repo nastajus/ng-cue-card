@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="235" viewBox="0 0 900 235" role="img" aria-labelledby="title desc">
+<title id="title">State ownership with a BehaviorSubject</title>
+<desc id="desc">Suggested architecture. Only service commands write to the subject, while subscribers read through an observable.</desc>
+<defs>
+<marker id="arrow" markerWidth="9" markerHeight="8" refX="8" refY="4" orient="auto">
+<path d="M0 0 L8 4 L0 8 Z" fill="#405e91"/>
+</marker>
+</defs>
+<rect x="1" y="1" width="898" height="233" rx="18" fill="#f8faff" stroke="#a9b9d8"/>
+<g font-family="system-ui, Segoe UI, sans-serif">
+<text x="450" y="44" font-size="29" fill="#142951" font-weight="750" text-anchor="middle">State ownership with a BehaviorSubject</text>
+<rect x="28" y="80" width="262.6666666666667" height="76" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="159.33333333333334" y="114" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">UI command</text>
+<text x="159.33333333333334" y="141" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Add, edit or select</text>
+<path d="M292.6666666666667 118 L313.6666666666667 118" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="318.6666666666667" y="80" width="262.6666666666667" height="76" rx="13" fill="#e7f5ef" stroke="#9caed1"/>
+<text x="450" y="114" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Private subject</text>
+<text x="450" y="141" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Service publishes</text>
+<path d="M583.3333333333334 118 L604.3333333333334 118" fill="none" stroke="#405e91" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="609.3333333333334" y="80" width="262.6666666666667" height="76" rx="13" fill="#e5edff" stroke="#9caed1"/>
+<text x="740.6666666666667" y="114" font-size="21" fill="#162a52" font-weight="700" text-anchor="middle">Public observable</text>
+<text x="740.6666666666667" y="141" font-size="17" fill="#253657" font-weight="500" text-anchor="middle">Views subscribe</text>
+<text x="450" y="197" font-size="20" fill="#253657" font-weight="500" text-anchor="middle">Suggested boundary · the checkout exposes the subject as well</text>
+</g>
+</svg>
